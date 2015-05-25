@@ -1,0 +1,51 @@
+@charset "utf-8";
+/* CSS Document */
+/* CSS Document */
+body{margin:0;padding:0; margin:0 auto;line-height:22px;font-family:"微软雅黑";background:#fff;-webkit-text-size-adjust:none;color:#7e8c8d; width:100%;font-size: 14px;}
+form,ul,li,p,h1,h2,h3,h4,h5,h6,dl,dt,dd{margin:0;padding:0; font-weight:normal;}
+input,select{font-size:12px; color:#666; padding:4 0 0 5px; line-height:18px;}
+img{border:0;}
+.left{float:left;}
+.right{float:right;}
+ul,li{list-style-type:none;}
+.con{ background:#ecf1f0; width: 100%; position:relative;}
+.con .bg{ background:#fff; border:1px solid #e0e5e4; width: 98%; margin:0 auto;}
+.con h3{  font-size:18px; color:#599c66;line-height:28px;  font-weight: bold;}
+.con .wenjuan{ padding:20px;}
+.con h3.wenjuan_icon{ background: url(../images/icon.gif) 0 0 no-repeat; height:36px; padding-left:36px; }
+.con .red_bg{ float:left; height:79px; background:#ed6f67; width:554px; line-height:79px; font-size:32px; color:#fff; text-align:center;}
+.con .wenjuan dl{ margin:20px 0; font-size: 14px;}
+.con .wenjuan dl dt{ /* line-height:40px; */ font-weight: bold; font-size: 16px;}
+.con .wenjuan dl dd{ line-height:40px;}
+.con .wenjuan dl dd span{width: 50%;display: block;float: left;}
+.renling{ position:absolute;left:0px; width:800px; height:96px;}
+.tianxie{ padding:0px 20px 10px 30px;}
+.tianxie_icon{background: url(../images/icon.gif) 0 -40px no-repeat; height:28px; padding-left:42px; padding-bottom:20px;margin: 20px 0 0 0;}
+.info_write{}
+.info_write p{ padding: 2px 0;}
+.info_write span{float:left;line-height:50px; font-size: 16px;font-weight: bold;}
+.info_write div{padding-left:50px; line-height:50px;}
+.info_write div input.inp_w{ width: 70%; height: 36px; background:#eeeeee; border:2px solid #bfbfbf; border-radius:2px; margin-bottom:5px;}
+.btnbox{ margin: 5px auto; width: 88%;}
+.sub_btn{ border:none; border-radius:3px; background:#ed6f67; color:#fff; width: 100%; height: 50px; line-height: 50px; font-size: 22px; cursor:pointer; margin: 0 auto; display:block; text-align:center; text-decoration:none;}
+.shenming{font-size: 14px; color:#7e8c8d; line-height: 23px; padding: 10px 20px 30px 30px;}
+.info_write div input.yanzheng_btn{ background:#8acd97; height: 42px; border-radius:3px; border:none; font-size: 16px; line-height: 41px; color:#fff; cursor:pointer;}
+
+
+.chenggong{ /*background:url(../images/yes.gif) 0 0 no-repeat; padding-left:110px;*/  line-height:90px; color:green; font-size:32px; width:280px; margin:20px auto;}
+
+
+.tanchuang_input{padding:10px; width:90%; margin:0 auto;}
+.tanchuang_input2{padding:15px; width:90%; margin:0 auto; font-size:14px;}
+.tanchuang_input div{ margin:5px 0;}
+.tanchuang_input div span{ width:20%;}
+.tanchuang_input .input1{ width:80%; border:1px solid #d6bea4; border-radius:2px; height:30px; line-height:30px;}
+
+.blackbg{width: 100%; height: 100%; background-color: #000; opacity: 0.6; position: fixed; top: 0; left: 0; z-index:9999;}
+.tanchuang{width:80%; left: 50%; margin-left: -40%; top: 50%; margin-top: -100px; position: absolute; z-index: 3; background-color: #fff; z-index:99999; border-radius:8px;}
+.tanchuang_tit{background:#cf0000; text-align:center; color:#fff; height:40px; line-height:40px; font-weight:bold; border-radius:8px 8px 0 0; font-size:18px;}
+
+
+.queding_btn{text-align:center; line-height:42px; height:42px; border-top:1px solid #ddd; background:#f3f3f3; border-radius:0 0 8px 8px; font-weight:bold; }
+.queding_btn a{ text-decoration: none;color:#666;font-size:16px; display:block; width:100%; border-radius:0 0 8px 8px;}
+.queding_btn a:hover{background:#dddddd; border-radius:0 0 8px 8px;}
