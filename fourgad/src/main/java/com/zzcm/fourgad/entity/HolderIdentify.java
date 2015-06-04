@@ -17,6 +17,7 @@ public class HolderIdentify {
 	public String Birthday;
 	public String DocumentType;
 	public String DocumentID;
+	public String Mobile;
 	
 	/** 免费险凭证号，当Flag为TRUE时返回*/
 	public String FreeInsureNo;

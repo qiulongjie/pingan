@@ -10,7 +10,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" /> 
 	
 <title>欢乐转盘抽大奖，送大礼！</title>
-<link rel="stylesheet" type="text/css" href="${ctx }/static/styles/main_as.css">
+<%-- <link rel="stylesheet" type="text/css" href="${ctx }/static/styles/main_as.css"> --%>
+<link rel="stylesheet" type="text/css" href="http://rs.iadcn.com/pingan/static/zhuanpan/styles/main_as.css">
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/jquery.cookie.js"></script>
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/jQueryRotate.2.2.js"></script>
@@ -49,12 +50,15 @@
 
 <div class="big_box">
     	<div class="big_box_con">
-        <div class="zhuanpan">
+        <div class="zhuanpan"><%-- 
         	<div class="zhuan_pic"> <img src="${ctx }/static/images/ltyas/zhuanpan2.png" width="100%" id="zhuanpanImg"/> </div>
-            <div class="zhuan_qidong"><img src="${ctx }/static/images/ltyas/qidong.png"  id="lotteryBtn"/></div>
+            <div class="zhuan_qidong"><img src="${ctx }/static/images/ltyas/qidong.png"  id="lotteryBtn"/></div> --%>
+            <div class="zhuan_pic"> <img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ltyas/zhuanpan2.png" width="100%" id="zhuanpanImg"/> </div>
+            <div class="zhuan_qidong"><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ltyas/qidong.png"  id="lotteryBtn"/></div>
         </div>
         </div>
-        <div class="y_bg"><img src="${ctx }/static/images/ltyas/bg.png"  width="100%" /></div>
+        <%-- <div class="y_bg"><img src="${ctx }/static/images/ltyas/bg.png"  width="100%" /></div> --%>
+        <div class="y_bg"><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ltyas/bg.png"  width="100%" /></div>
     </div>
     
     <div class="con">
@@ -62,13 +66,18 @@
        	<h3>奖项设置</h3>
         <div class="jiangpin_list">
         	<ul>
-			<li><img src="${ctx }/static/images/ltyas/jiangpin1.jpg" width="100px" /></li>
+			<%-- <li><img src="${ctx }/static/images/ltyas/jiangpin1.jpg" width="100px" /></li>
             <li><img src="${ctx }/static/images/ltyas/jiangpin2.jpg" width="100px" /></li>
             <li><img src="${ctx }/static/images/ltyas/jiangpin3.jpg" width="100px" /></li>
 			<li><img src="${ctx }/static/images/ltyas/jiangpin4.jpg" width="100px" /></li>
             <li><img src="${ctx }/static/images/ltyas/jiangpin5.jpg" width="100px" /></li>
-            <li><img src="${ctx }/static/images/ltyas/jiangpin6.jpg" width="100px" /></li>
-			
+            <li><img src="${ctx }/static/images/ltyas/jiangpin6.jpg" width="100px" /></li> --%>
+			<li><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ltyas/jiangpin1.jpg" width="100px" /></li>
+            <li><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ltyas/jiangpin2.jpg" width="100px" /></li>
+            <li><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ltyas/jiangpin3.jpg" width="100px" /></li>
+			<li><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ltyas/jiangpin4.jpg" width="100px" /></li>
+            <li><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ltyas/jiangpin5.jpg" width="100px" /></li>
+            <li><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ltyas/jiangpin6.jpg" width="100px" /></li>
 			</ul>
             <br style="clear:both"/>
         </div>
@@ -146,6 +155,7 @@
 						$('#queding_btn').attr('href','${ctx}'+data.link_url+'?a='+a);
 					    $.session.set('ok_title', data.ok_title);
 						$.session.set('ok_info', data.ok_info);
+						$.session.set('lty_angle', data.lty_angle);
 						rotateFunc(parseFloat(data.lty_angle));
 					}
 				},

@@ -1,20 +1,22 @@
 package com.zzcm.fourgad.job;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
-import com.zzcm.fourgad.entity.Record;
+import cn.com.metlife.icare.webservice.YSW2ICareSaveServiceLocator;
+import cn.com.metlife.icare.webservice.YSW2ICareSave_PortType;
+
+import com.zzcm.fourgad.entity.HolderIdentify;
+import com.zzcm.fourgad.util.RecordXmlUtil;
 
 
 public class HttpclientTest {
@@ -52,13 +54,13 @@ public class HttpclientTest {
 	
 	// ******************************* metlife ****************
 	public static String pingAn() throws Exception{
-		String soap = readSoap("soapRecords.xml");
+		String soap = readSoap("soapRecords2.xml");
 		byte[] entity = soap.getBytes();
 		
-		String path = "http://icare-uat.metlife.com.cn/services/YSW2ICareSave?wsdl";
+		String path = "http://icare-uat.metlife.com.cn/services/YSW2ICareSave";
 		HttpURLConnection conn = (HttpURLConnection) new URL(path).openConnection();
 		conn.setConnectTimeout(5000);
-		conn.setRequestMethod("POST");
+		conn.setRequestMethod("GET");
 		conn.setDoOutput(true);
 		conn.setRequestProperty("Content-Type", "application/soap+xml; charset=GBK");
 		conn.setRequestProperty("Content-Length", String.valueOf(entity.length));
@@ -73,43 +75,26 @@ public class HttpclientTest {
 	
 	// ******************************* metlife2 ****************
 	public static String pingAn2() throws Exception{
-		
         DefaultHttpClient httpClient = new DefaultHttpClient();  
 //        String soapRequestData = readSoap("soap12.xml") ;  
 //        soapRequestData = soapRequestData.replaceAll("\\$mobile", "13752274675");
-        
-        String soapRequestData = readSoap("soapRecords.xml") ;  
-          
+        String soapRequestData = readSoap("soapRecords2.xml") ;  
         //HttpPost httppost = new HttpPost("http://webservice.webxml.com.cn/WebServices/MobileCodeWS.asmx?wsdl");  
-        HttpPost httppost = new HttpPost("http://icare-uat.metlife.com.cn/services/YSW2ICareSave?wsdl");  
-        
+        HttpPost httppost = new HttpPost("http://icare-uat.metlife.com.cn/services/YSW2ICareSave");  
         /*把Soap请求数据添加到PostMethod*/  
         //byte[] b = soapRequestData.getBytes("utf-8");  
         //InputStream is = new ByteArrayInputStream(b,0,b.length);  
         try {  
-            //HttpEntity re = new StringEntity(soapRequestData,HTTP.UTF_8); 
-        	
-        	
-            //HttpEntity re = new StringEntity(soapRequestData,HTTP.UTF_8);  
         	HttpEntity re = new StringEntity(soapRequestData,"GBK");  
-            //soapRequestData = EntityUtils.toString(re , "GBK").trim();   
-            
             httppost.setHeader("Content-Type","application/soap+xml; charset=GBK");  
-            //httppost.setHeader("Content-Type","application/soap+xml; charset=utf-8"); 
-            //httppost.setHeader("Content-Length", String.valueOf(soapRequestData.length()));  
-            httppost.setEntity(re);           
-            HttpResponse response = httpClient.execute(httppost);  
+            httppost.setEntity(re); 
+            HttpResponse response = httpClient.execute(httppost); 
+            HttpParams params = httppost.getParams();
             System.out.println("1:"+EntityUtils.toString(httppost.getEntity()));  
             System.out.println("2:"+response.getStatusLine());  
             System.out.println("3:"+EntityUtils.toString(response.getEntity()));           
-        } catch (UnsupportedEncodingException e) {  
-            // TODO Auto-generated catch block  
-            e.printStackTrace();  
-        } catch (ClientProtocolException e) {  
-            // TODO Auto-generated catch block  
-            e.printStackTrace();  
-        } catch (IOException e) {  
-            // TODO Auto-generated catch block  
+//            System.out.println("3:"+EntityUtils.toString(response.get));           
+        } catch (Exception e) {  
             e.printStackTrace();  
         }finally{  
             httpClient.getConnectionManager().shutdown();  
@@ -117,12 +102,38 @@ public class HttpclientTest {
         return null;
 	}
 	
+	private static void axisTest() throws Exception{
+		/*String xmlPath = "D:\\YSW2iCareSave.xml";
+		Document doc = null;
+		SAXBuilder builder = new SAXBuilder(); 
+		doc = (Document) builder.build(new File(xmlPath)); 
+		XMLOutputter xmlout = new XMLOutputter();
+		Format tFormat =  Format.getCompactFormat();
+		tFormat.setEncoding("GBK");
+		xmlout.setFormat(tFormat);
+		ByteArrayOutputStream bo = new ByteArrayOutputStream();
+		xmlout.output(doc,bo);
+		String xmlStr = bo.toString();
+		System.out.println("Request: ");
+		System.out.println(xmlStr);*/
+		
+		YSW2ICareSaveServiceLocator loc = new YSW2ICareSaveServiceLocator();
+		loc.setYSW2ICareSaveEndpointAddress("http://icare-uat.metlife.com.cn/services/YSW2ICareSave");
+		
+		YSW2ICareSave_PortType service = loc.getYSW2ICareSave();
+		String res = service.doRequest(readSoap("YSW2iCareSave.xml"));
+		System.out.println("Response: ");
+		System.out.println(res);
+		HolderIdentify holder = RecordXmlUtil.parserXmlResult(res);
+		System.out.println(holder);
+	}
 	// test
 	public static void main(String[] args) throws Exception {
-		String addr = getAddress("15278416564");
-		System.out.println(addr);
-		System.out.println("=-=-=-=-");
-		String result = pingAn2();
-		System.out.println(result);
+//		String addr = getAddress("13752274675");
+//		System.out.println(addr);
+//		System.out.println("=-=-=-=-");
+		//String result = pingAn();
+		//System.out.println(result);
+		axisTest();
 	}
 }

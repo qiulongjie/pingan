@@ -14,9 +14,9 @@
 <link rel="stylesheet" type="text/css" href="${ctx }/static/styles/main2.css">
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/js/jquery-1.7.1.min.js"></script>
 <!--<script type="text/javascript" src="http://rs.iadcn.com/pingan/static/js/jquery.cookie.js"></script> -->
-<%-- <script type="text/javascript" src="${ctx}/static/js/form2.1.2.js"></script> --%>
-<script type="text/javascript" src="http://rs.iadcn.com/pingan/static/js/form2.1.2.js"></script> 
-
+<script type="text/javascript" src="${ctx}/static/js/form2.1.2.js"></script>
+<!-- <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/js/form2.1.2.js"></script> 
+ -->
 
 </head>
 

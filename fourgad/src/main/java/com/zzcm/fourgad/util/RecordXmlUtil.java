@@ -121,7 +121,8 @@ public class RecordXmlUtil {
 	private static HolderIdentify paserHolderIdentify(Document document){
 		HolderIdentify identify = new HolderIdentify();
 		Element root = document.getRootElement();
-		Element HolderIdentify = root.element("HolderIdentify");
+		Element paq_body = root.element("paq_body");
+		Element HolderIdentify = paq_body.element("HolderIdentify");
 		identify.Flag = HolderIdentify.element("Flag").getTextTrim();
 		identify.Message = HolderIdentify.element("Message").getTextTrim();
 		identify.Email = HolderIdentify.element("Email").getTextTrim();
@@ -130,7 +131,8 @@ public class RecordXmlUtil {
 		identify.Birthday = HolderIdentify.element("Birthday").getTextTrim();
 		identify.DocumentType = HolderIdentify.element("DocumentType").getTextTrim();
 		identify.DocumentID = HolderIdentify.element("DocumentID").getTextTrim();
-		identify.FreeInsureNo = HolderIdentify.element("FreeInsureNo").getTextTrim();
+		identify.FreeInsureNo = HolderIdentify.element("FreeInsureNo")==null?"":HolderIdentify.element("FreeInsureNo").getTextTrim();
+		identify.Mobile = HolderIdentify.element("Mobile")==null?"":HolderIdentify.element("Mobile").getTextTrim();
 		return identify;
 	}
 }

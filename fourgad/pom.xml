@@ -368,12 +368,24 @@
 		</dependency>
 		<!-- TEST end -->
 		
-		<!-- <dependency>
+		<dependency>
 			<groupId>jdom</groupId>
 			<artifactId>jdom</artifactId>
 			<version>1.1</version>
+		</dependency>
+		<!-- <dependency>
+		    <groupId>org.jdom</groupId>
+		    <artifactId>jdom</artifactId>
+		    <version>2.0.2</version>
 		</dependency> -->
 		
+		<!-- axis begin -->
+		<dependency>
+		    <groupId>axis</groupId>
+		    <artifactId>axis</artifactId>
+		    <version>1.4</version>
+		</dependency>
+		<!-- axis end -->
 		
 	</dependencies>
 

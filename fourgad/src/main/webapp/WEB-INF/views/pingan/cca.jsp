@@ -97,7 +97,7 @@
 				</p>
 				<p>
 					<span class="inp_tit">生日：</span><span>
-					<input id="birthday" name="birthday" type="text" class="inp" placeholder="不填或者例如：19820308"/>
+					<input id="birthday" name="birthday" type="text" class="inp" placeholder="例如：19820308"/>
 					</span>
 				</p>
 				<p>

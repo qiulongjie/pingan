@@ -4,7 +4,7 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <div id="header">
 	<div id="title">
-	    <h1><a href="${ctx}">平安访问数据统计</a><small></small>
+	    <h1><a href="${ctx}">平安接口数据统计</a><small></small>
 	    <shiro:user>
 			<div class="btn-group pull-right">
 				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -19,6 +19,8 @@
 					</shiro:hasRole>
 <%-- 					<li><a href="${ctx}/api">APIs</a></li> --%>
                     <li><a href="${ctx}/count/reqOrdList">访问数据</a></li>
+                    <li><a href="${ctx}/count/ordList">访问数据-按天</a></li>
+                    <li><a href="${ctx}/count/zjList">中奖结果</a></li>
 					<li><a href="${ctx}/profile">修改密码</a></li>
 					<li><a href="${ctx}/logout">退出</a></li>
 				</ul>

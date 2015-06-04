@@ -9,12 +9,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,user-scalable=no">
 <title>填写信息领取大礼</title>
 <meta name="keywords" content="Array" >
-<meta name="description" content="中国平安大礼包，25万元意外险免费送，先到先得！">
+<meta name="description" content="">
 
-<link rel="stylesheet" type="text/css" href="${ctx }/static/styles/main_as.css">
+<%-- <link rel="stylesheet" type="text/css" href="${ctx }/static/styles/main_as.css"> --%>
+<link rel="stylesheet" type="text/css" href="http://rs.iadcn.com/pingan/static/zhuanpan/styles/main_as.css">
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/js/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="${ctx}/static/js/form_as.js"></script>
-
+<%-- <script type="text/javascript" src="${ctx}/static/js/form_as.js"></script> --%>
+<script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/form_as.js"></script>
+<%-- <script type="text/javascript" src="${ctx }/static/js/jquerysession.js"></script> --%>
+<script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/jquerysession.js"></script>
 
 </head>
 
@@ -33,7 +36,8 @@
 </div>
 
 <div class="banner">
-		<img src="${ctx }/static/images/ltyas/banner2.jpg" width="100%"/>
+<%-- 		<img src="${ctx }/static/images/ltyas/banner2.jpg" width="100%"/> --%>
+		<img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ltyas/banner2.jpg" width="100%"/>
 	</div>
 	
   <div class="con3">
@@ -43,8 +47,8 @@
 		<form action="${ctx}/ltyAs/addRewardInfo" name="form1" method="get">
 		
 		   <input name="a" type="hidden" value="${a }" />
-		  <%--  <input name="ok_title" type="hidden" value="${p }" />
-		   <input name="ok_info" type="hidden" value="${p2 }" /> --%>
+		  <input id="lty_angle" name="lty_angle" type="hidden" value="" />
+		  <input id="ok_title" name="ok_title" type="hidden" value="" />
 		   
 			<p class="red">请务必填写真实信息，以保障您领取大奖</p>
 			<div class="info">
@@ -69,5 +73,15 @@
 
 
 </body>
+<script>
+$(function() {
+	
+	var lty_angle = $.session.get('lty_angle');
+	var ok_title = $.session.get('ok_title');
+	
+	$('#lty_angle').val(lty_angle);
+	$('#ok_title').val(ok_title); 
+})
+</script>
 </html>
 

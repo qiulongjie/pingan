@@ -7,6 +7,7 @@
 		<pattern>/pa*</pattern>
 		<pattern>/cca*</pattern>
 		<pattern>/ltyAs*</pattern>
+		<pattern>/lty*</pattern>
 		<pattern>/ltyZqb*</pattern>
 	</excludes>
 	

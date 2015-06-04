@@ -25,7 +25,7 @@ public class LtyAsController {
 	}
 	
 	/**
-	 * 获取抽奖结果 -- 留着以后用 目前就是只有三等奖  返回转盘的旋转的角度 120 若要中其他奖项需要可以自己计算
+	 * 获取抽奖结果 
 	 * @param response
 	 * @return
 	 */
@@ -36,7 +36,9 @@ public class LtyAsController {
 		String z = request.getParameter("z");
 		String p = request.getParameter("p");
 		String c = request.getParameter("c");
-		String data = adService.getLtyInfo2As(channel,z,p,c);
+		String ip = WebUtil.getIpAddr(request);
+		String time = DateUtil.getDateTime();
+		String data = adService.getLtyInfo2As(channel,z,p,c,ip,time);
 		return data;
 	}
 	
@@ -52,12 +54,12 @@ public class LtyAsController {
 		String uname = request.getParameter("uname");
 		String phone = request.getParameter("phone");
 		String address = request.getParameter("address");
-		/*String ok_title = request.getParameter("ok_title");
-		ok_title = java.net.URLDecoder.decode(ok_title, "UTF-8");//一次解码
+		String ok_title = request.getParameter("ok_title");
+		//ok_title = java.net.URLDecoder.decode(ok_title, "UTF-8");//一次解码
 		
-		String ok_info = request.getParameter("ok_info");
-		ok_info = java.net.URLDecoder.decode(ok_info, "UTF-8");//一次解码
-*/		
+		String lty_angle = request.getParameter("lty_angle");
+		//ok_info = java.net.URLDecoder.decode(ok_info, "UTF-8");//一次解码
+		
 		String ip = WebUtil.getIpAddr(request);
 		String time = DateUtil.getDateTime();
 		
@@ -65,9 +67,8 @@ public class LtyAsController {
 			ua = ua.substring(0,40);
 		}
 		
-		adService.addRewardInfo(uname,phone,address,ip,channel,time, ua);
-		/*request.getSession().setAttribute("ok_title", ok_title);
-		request.getSession().setAttribute("ok_info", ok_info);*/
+		adService.addRewardInfo(uname,phone,address,ip,channel,time, ua,ok_title,lty_angle);
+		
 		return "redirect:/ltyAs/ok";
 	}
 	
