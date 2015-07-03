@@ -11,7 +11,7 @@
 
 <link rel="stylesheet" type="text/css" href="${ctx }/static/styles/main_cca.css">
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/js/jquery-1.7.1.min.js"></script>
-
+<script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/baidu_count.js"></script>
 </head>
 
 <body>

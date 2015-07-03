@@ -21,6 +21,9 @@
                     <li><a href="${ctx}/count/reqOrdList">访问数据</a></li>
                     <li><a href="${ctx}/count/ordList">访问数据-按天</a></li>
                     <li><a href="${ctx}/count/zjList">中奖结果</a></li>
+                    <li><a href="${ctx}/count/antiCheatingList">作弊分析数据</a></li>
+                    <li><a href="${ctx}/count/channelList">渠道信息</a></li>
+                    <li><a href="${ctx}/count/addChannel">渠道注册</a></li>
 					<li><a href="${ctx}/profile">修改密码</a></li>
 					<li><a href="${ctx}/logout">退出</a></li>
 				</ul>

@@ -28,6 +28,9 @@
 				/static/** = anon
 				/api/** = anon
 				/pa/** = anon
+				/nwd/** = anon
+				/rsd/** = anon
+				/pa1/** = anon
 				/ping** = anon
 				/ltyAs/** = anon
 				/lty/** = anon

@@ -43,6 +43,42 @@ public class LtyAsController {
 	}
 	
 	/**
+	 * 获取爱奇艺抽奖结果
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="getLottery2aqy",method = RequestMethod.POST)
+	@ResponseBody
+	public String getLottery2aqy(HttpServletRequest request) {
+		String channel = request.getParameter("a");
+		String z = request.getParameter("z");
+		String p = request.getParameter("p");
+		String c = request.getParameter("c");
+		String ip = WebUtil.getIpAddr(request);
+		String time = DateUtil.getDateTime();
+		String data = adService.getLtyInfo2aqy(channel,z,p,c,ip,time);
+		return data;
+	}
+	
+	/**
+	 * 获取  掌阅 抽奖结果
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="getLottery2zy",method = RequestMethod.POST)
+	@ResponseBody
+	public String getLottery2zy(HttpServletRequest request) {
+		String channel = request.getParameter("a");
+		String z = request.getParameter("z");
+		String p = request.getParameter("p");
+		String c = request.getParameter("c");
+		String ip = WebUtil.getIpAddr(request);
+		String time = DateUtil.getDateTime();
+		String data = adService.getLottery2zy(channel,z,p,c,ip,time);
+		return data;
+	}
+	
+	/**
 	 * 添加中奖信息
 	 * @param request
 	 * @return

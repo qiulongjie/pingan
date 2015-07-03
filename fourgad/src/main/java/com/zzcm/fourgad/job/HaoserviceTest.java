@@ -89,13 +89,37 @@ public class HaoserviceTest {
 		byte[] entity = req.getBytes();
 		
 		
-		//String path = "http://www.haoservice.com/home/cellapi";
-		String path = "http://192.168.0.53:8989/fourgad/lty/ok";
+		String path = "http://www.haoservice.com/home/cellapi";
+		//String path = "http://192.168.0.53:8989/fourgad/ping/rmi/addOrd";
 		HttpURLConnection conn = (HttpURLConnection) new URL(path).openConnection();
 		conn.setConnectTimeout(5000);
 		conn.setRequestMethod("POST");
 		conn.setDoOutput(true);
-		conn.setRequestProperty("Content-Type", "text/HTML; charset=utf-8");
+		//conn.setRequestProperty("Content-Type", "text/HTML; charset=utf-8");
+		conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+		conn.setRequestProperty("Content-Length", String.valueOf(entity.length));
+		conn.getOutputStream().write(entity);
+		int code = conn.getResponseCode();
+		System.out.println(code);
+		if(code == 200){
+			String result = parseSOAP(conn.getInputStream());
+			System.out.println(result);
+		}
+	}
+	
+	private static void testRsd() throws Exception{
+		String req = "feeData=[{\"date\":\"20150613\",\"data\":[{\"channel\":\"aaa\",\"fee_count\":\"567\",\"fee\":\"1040.00\"},{\"channel\":\"vvv\",\"fee_count\":\"1100\",\"fee\":\"1066.00\"}]},{\"date\":\"20150605\",\"data\":[{\"channel\":\"qwe\",\"fee_count\":\"444\",\"fee\":\"555.12\"},{\"channel\":\"wee\",\"fee_count\":\"233\",\"fee\":\"677.66\"}]}]";
+		byte[] entity = req.getBytes();
+		
+		
+		String path = "http://m.iadcn.com/rsd/feeData";
+		//String path = "http://192.168.0.53:8989/fourgad/ping/rmi/addOrd";
+		HttpURLConnection conn = (HttpURLConnection) new URL(path).openConnection();
+		conn.setConnectTimeout(5000);
+		conn.setRequestMethod("POST");
+		conn.setDoOutput(true);
+		//conn.setRequestProperty("Content-Type", "text/HTML; charset=utf-8");
+		conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 		conn.setRequestProperty("Content-Length", String.valueOf(entity.length));
 		conn.getOutputStream().write(entity);
 		int code = conn.getResponseCode();
@@ -113,6 +137,6 @@ public class HaoserviceTest {
 		System.out.println(re);
 	}
 	public static void main(String[] args) throws Exception {
-		test2();
+		testRsd();
 	}
 }

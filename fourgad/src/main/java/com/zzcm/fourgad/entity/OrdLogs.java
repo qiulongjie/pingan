@@ -81,6 +81,11 @@ public class OrdLogs extends IdEntity{
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");		 
 		return formatter.format(date);
 	}
+	public String getSelfVtime()
+	{
+	    return vtime;
+	}
+	
 	public void setVtime(String vtime) {
 		this.vtime = vtime;
 	}

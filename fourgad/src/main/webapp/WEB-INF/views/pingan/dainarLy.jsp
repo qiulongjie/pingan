@@ -18,6 +18,7 @@
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/jQueryRotate.2.2.js"></script>
 <%-- <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/alert.js"></script> --%>
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/form_lottery.js"></script>
+<script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/baidu_count.js"></script>
 </head>
 
 <body>

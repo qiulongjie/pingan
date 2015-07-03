@@ -11,12 +11,15 @@
 <meta name="keywords" content="Array" >
 <meta name="description" content="中国平安大礼包，25万元意外险免费送，先到先得！">
 
-<link rel="stylesheet" type="text/css" href="${ctx }/static/styles/main2.css">
+<%-- <link rel="stylesheet" type="text/css" href="${ctx }/static/styles/main2.css"> --%>
+<link rel="stylesheet" type="text/css" href="http://rs.iadcn.com/pingan/static/zhuanpan/styles/main2.css">
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/js/jquery-1.7.1.min.js"></script>
-<!--<script type="text/javascript" src="http://rs.iadcn.com/pingan/static/js/jquery.cookie.js"></script> -->
-<script type="text/javascript" src="${ctx}/static/js/form2.1.2.js"></script>
-<!-- <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/js/form2.1.2.js"></script> 
- -->
+<script type="text/javascript" src="http://rs.iadcn.com/pingan/static/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/jquerysession.js"></script>
+<%-- <script type="text/javascript" src="${ctx}/static/js/form_code_cookie.js"></script> --%>
+<!-- <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/js/form2.1.2.js"></script> -->
+<script type="text/javascript" src="http://rs.iadcn.com/pingan/static/js/form_code_cookie.js"></script>
+<script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/baidu_count.js"></script>
 
 </head>
 
@@ -38,7 +41,8 @@
 <!--***********************************************************-->
 
 <div class="banner">
-		<img src="${ctx }/static/images/lottery_new/banner.jpg" width="100%"/>
+<%-- 		<img src="${ctx }/static/images/lottery_new/banner.jpg" width="100%"/> --%>
+		<img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/lottery_new/banner.jpg" width="100%"/>
 	</div>
 	
   <div class="con2">
@@ -48,12 +52,15 @@
 		<form action="${ctx}/ping/submitGet" name="form1" method="get">
 		   <input name="code" type="hidden" value="${code }" />
 		   <input name="a" type="hidden" value="${a }" />
-			<p class="red">请务必填写真实信息，以保障您领取大奖</p>
+			<p class="red" id="ping_title">请务必填写真实信息，以保障您领取大奖</p>
 			
 			<div class="info">
-				<p><span>姓名：</span><input id="txtName" name="uname" type="text" class="m" placeholder="请填写您的真实姓名"/></p>
-				<p><span>生日：</span><input id="txtBirthday" name="birthday" type="text" class="m" placeholder="例如：19820308"/></p>
-				<p><span>手机：</span><input id="txtMobile" name="phone" type="text" class="m" placeholder="接收电子保单"/></p>
+				<p><span>姓名：</span><input value="${uname }" id="txtName" name="uname" type="text" class="m" placeholder="请填写您的真实姓名"/></p>
+				<p><span>生日：</span><input value="${birthday }" id="txtBirthday" name="birthday" type="text" class="m" placeholder="例如：19820308"/></p>
+				<p><span>手机：</span><input value="${phone }" id="txtMobile" name="phone" type="text" class="m" placeholder="请填写您的真实手机号码"/></p>
+				<p><span>验证：</span><input id="vcode" name="vryCode" type="text" class="m" placeholder="请输入验证码" style="width:60%"/>
+ 				 <img src="${ctx}/ping/go/img" width="20%" height="30px" id="code_img" style="margin-button:0px"/>
+ 				</p>
 			</div>
 			<div>
 				<!-- <a href="#" class="lingqu_btn" onclick="checkForm('s')">立即领取</a> -->
@@ -69,11 +76,9 @@
 	  <div class="hezuo">
 	  		<div class="tit"><h3>合作伙伴</h3></div>
 			<div>
-				<ul>
-					<li><a href="#"><img src="${ctx }/static/images/lottery_new/pingan.png" /></a></li>
-					<li><a href="#"><img src="${ctx }/static/images/lottery_new/renshou.png" /></a></li>
-					<li><a href="#"><img src="${ctx }/static/images/lottery_new/taikang.png" /></a></li>
-					<li><a href="#"><img src="${ctx }/static/images/lottery_new/logo4.png" /></a></li>
+				<ul style="width:50%;margin:0 auto;">
+					<li style="float: left;height: 40px;width: 45%;margin: 0 1%;"><a href="#"><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/lottery_new/pingan.png" /></a></li>
+					<li style="float: left;height: 40px;width: 45%;margin: 0 1%;"><a href="#"><img src="http://192.168.0.53:8989/fourgad/static/images/lottery_new/logo5.jpg" /></a></li>
 				</ul>
 			</div>
 		 <br class="clear"/>
@@ -83,5 +88,30 @@
 
 
 </body>
+<script>
+$(function() {
+	
+	var ping_title = $.session.get('ping_title');
+	if(ping_title){
+		if(ping_title != '' && ping_title != 'null'){
+		   $('#ping_title').html(ping_title);
+		}
+	}
+	var vry = "${vry}";
+	if(vry === 'failure_vry'){
+		alert("验证码错误！");
+		$('#vcode').css({ 'borderColor': 'red' });
+        document.getElementById('vcode').value = '';
+	} 
+	
+	 $("#vcode").focus(function(){
+		 $('#code_img').attr('src','${ctx}/ping/go/img?'+ Math.floor(Math.random() * 100)).fadeIn();
+	 });
+
+		$('#code_img').click(function() {//生成验证码  
+			$(this).hide().attr('src','${ctx}/ping/go/img?'+ Math.floor(Math.random() * 100)).fadeIn();
+		})
+})
+</script>
 </html>
 

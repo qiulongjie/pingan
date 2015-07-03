@@ -9,16 +9,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,user-scalable=no">
 <title>中国平安车险计算器</title>
 
-<link rel="stylesheet" type="text/css" href="${ctx }/static/styles/main_cca.css">
+<%-- <link rel="stylesheet" type="text/css" href="${ctx }/static/styles/main_cca.css"> --%>
+<link rel="stylesheet" type="text/css" href="http://rs.iadcn.com/pingan/static/cca/styles/main_cca.css">
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/js/jquery-1.7.1.min.js"></script>
 
-<script type="text/javascript" src="${ctx}/static/js/cca.js"></script>
-
+<%-- <script type="text/javascript" src="${ctx}/static/js/cca.js"></script> --%>
+<script type="text/javascript" src="http://rs.iadcn.com/pingan/static/cca/js/cca.js"></script>
+<script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/baidu_count.js"></script>
 </head>
 
 <body>
     <div class="banner">
-		<img src="${ctx }/static/images/cca/BANNER2.jpg"  width="100%"/>
+<%-- 		<img src="${ctx }/static/images/cca/BANNER2.jpg"  width="100%"/> --%>
+		<img src="http://rs.iadcn.com/pingan/static/cca/images/cca/BANNER2.jpg"  width="100%"/>
 	</div>
 <form action="${ctx}/cca/submitGet" name="form1" method="get">
 	<div class="con">
@@ -106,7 +109,7 @@
 					</span>
 				</p>
 				<p style="padding-left:70px;">
-					<input name="ywx" checked type="checkbox" value="1" id="mf"/>
+<!-- 					<input name="ywx" checked type="checkbox" value="1" id="mf"/> -->
 					<label for="mf">车车安用户免费领取最高25万元意外险</label>
 				</p>
 				
@@ -114,6 +117,7 @@
 			<div style="padding-top: 5px;">
 				<!-- <a href="#" class="jisuan_btn">开始计算</a> -->
 				<input name="a" type="hidden" value="${a }" />
+				<input name="ywx" type="hidden" value="1" id="mf"/>
 				<input type="button" class="jisuan_btn" onclick="checkForm()"  value="开始计算" />
 			</div>
 		</div>

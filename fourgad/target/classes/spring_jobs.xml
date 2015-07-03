@@ -32,12 +32,68 @@
             </property>
         </bean>
         <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  -->
-        <!-- <bean id="startQuertz" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+         
+        <bean id="startQuertz" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
             <property name="triggers">
                 <list>
-                    <ref bean="doTime"/>
+                	<!--  
+                	<ref bean="doTime"/>
+                	<ref bean="doTime_antiCheating"/>
+                    
+                    -->
+                    <ref bean="doTime_antiCheatingUpdate"/>
                 </list>
             </property>
-        </bean> -->
+        </bean>
 	
+		<!-- 要调用的工作类 -->
+    	<bean id="antiCheatingJob" class="com.zzcm.fourgad.job.AntiCheatingJob"></bean>
+        <!-- 定义调用对象和调用对象的方法 -->
+        <bean id="antiCheatingJobtask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+            <!-- 调用的类 -->
+            <property name="targetObject">
+                <ref bean="antiCheatingJob"/>
+            </property>
+            <!-- 调用类中的方法 -->
+            <property name="targetMethod">
+                <value>work</value>
+            </property>
+        </bean>
+        <!-- 定义触发时间 -->
+        <bean id="doTime_antiCheating" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+            <property name="jobDetail">
+                <ref bean="antiCheatingJobtask"/>
+            </property>
+            <!-- cron表达式 -->
+            <!-- 秒，分钟，小时，日，月，星期 -->
+            <property name="cronExpression">
+                <!--  <value>1/3 0 10 * * ?</value>-->
+                <value>0 * * * * ?</value>
+            </property>
+        </bean>
+        
+        <bean id="antiCheatingupdateJob" class="com.zzcm.fourgad.job.AntiCheatingJob2"></bean>
+        <!-- 定义调用对象和调用对象的方法 -->
+        <bean id="antiCheatingupdateJobtask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+            <!-- 调用的类 -->
+            <property name="targetObject">
+                <ref bean="antiCheatingupdateJob"/>
+            </property>
+            <!-- 调用类中的方法 -->
+            <property name="targetMethod">
+                <value>work</value>
+            </property>
+        </bean>
+        <!-- 定义触发时间 -->
+        <bean id="doTime_antiCheatingUpdate" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+            <property name="jobDetail">
+                <ref bean="antiCheatingupdateJobtask"/>
+            </property>
+            <!-- cron表达式 -->
+            <!-- 秒，分钟，小时，日，月，星期 -->
+            <property name="cronExpression">
+                <!--  <value>1/3 0 10 * * ?</value>-->
+                <value>0 15 * * * ?</value>
+            </property>
+        </bean>
 </beans>

@@ -49,7 +49,17 @@ public class PaController {
 		String prov = request.getParameter("code") == null ? "" : request.getParameter("code");
 		request.setAttribute("code", prov);
 		String vtime = DateUtil.getDateTime();
-		adService.AddReqLogs(channel, ipaddr, prov, vtime,ua);
+		if(path.startsWith("lty") || 
+		   path.startsWith("dainarLy") || 
+		   path.startsWith("survey") || 
+		   path.startsWith("lotteryDai") || 
+		   path.startsWith("pingLottery")){
+			adService.AddReqLogs(channel, ipaddr, prov, vtime,ua);
+		}if(path.startsWith("niwodai")){
+			adService.AddReqLogs(channel, ipaddr, prov, vtime,ua,"2");
+		}else{
+			adService.AddReqLogs(channel, ipaddr, prov, vtime,ua,"1");
+		}
 
 		return "pingan/"+path;
 	}
@@ -71,5 +81,4 @@ public class PaController {
 	public String ok() {
 		return "redirect:/pa/go/ok";
 	}
-	
 }

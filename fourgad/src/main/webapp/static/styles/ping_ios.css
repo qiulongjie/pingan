@@ -1,0 +1,19 @@
+body{margin:0;padding:0; margin:0 auto;line-height:22px;font-family:"微软雅黑";background:#fff;-webkit-text-size-adjust:none;color:#7e8c8d; width:100%;font-size: 14px;}
+form,ul,li,p,h1,h2,h3,h4,h5,h6,dl,dt,dd{margin:0;padding:0; font-weight:normal;}
+input,select{font-size:12px; color:#666; padding:4 0 0 5px; line-height:18px;}
+img{border:0;}
+.left{float:left;}
+.right{float:right;}
+ul,li{list-style-type:none;}
+.clear{ clear:both; height:0; overflow:hidden;}
+html,body{ height:100%;}
+a{ text-decoration:none;}
+ul,li{ list-style-type:none; margin:0; padding:0;}
+.lingqu_btn{border:none; border-radius:5px; background:#3896c9; color:#fff; width:100%; margin:0 auto; height: 42px; line-height: 42px; cursor:pointer; margin: 0 auto; display:block; text-align:center; text-decoration:none; margin-bottom:10px;-webkit-appearance:none;}
+.con2{ width:100%; background:#ecf1f0; padding:10px 0;}
+.conbox2{ width:90%; margin:0px auto; background:#fff; padding:10px; border-radius:10px;}
+.conbox2 h3{ color:#1f92d5; font-weight:bold; border-bottom:1px solid #ddd; padding-bottom:10px; margin-bottom:10px; background:url(../images/ping_ios/pencil.png) 0 0 no-repeat; padding-left:25px;}
+.red{ color:#f75248;}
+.info p{ margin:10px 0;}
+.info p input.m{ height:34px; width:70%; border-radius:5px; border:1px solid #b7b7b7; background:#f7f8f8; outline:none;}
+.con3{ width:100%; background:#6fb67e; padding:10px 0 30px 0;}

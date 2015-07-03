@@ -1,0 +1,74 @@
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{margin:0;padding:0;font-size:13px;font-weight:normal;font-family:"microsoft yahei","simsun";color:#666;}
+.topWrapper, .bottomWrapper, .otherWrapper{max-width:720px;margin:0 auto; background: #1eca82;}
+.wrapper{/*max-width:720px;margin:0 auto;border-left:1px solid #e7dcc4;border-right:1px solid #e7dcc4;*/}
+.topWrapperBg{}
+.topWrapper, .bottomWrapper, .otherWrapper{max-width:720px;margin:0 auto; background: #1eca82;}
+.tittleWrapper{}
+.banner{}
+.banner img{width:100%;}
+.boxBg{margin-top:-10px;background:#1eca82;}
+.popupBoxBg{width:100%;height:100%;}
+.fade{background:#000;position:fixed;left:0;top:0;width:100%;height:100%;opacity:.70;z-index:9;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=70);}
+.popupBoxShow{position:absolute;z-index:999;top:10%;left:50%;margin-left:-190px;margin-top: -55px;width: 380px;height: 330px;background:url(../images/lty_d_zy/zhongjiangtishi.png) no-repeat;}
+.popupBoxShow p{width:180px;margin:255px 0 0 110px;line-height:25px;display:block;font-size:14px;color:#2b2b2b;}
+.popupBoxShow p b{color:#ff1111;}
+	.boxBg {margin-top: -10px;background: #1eca82;}
+	.type_ShowGrey{color: #e8d4a5;}
+	.defaultTableBox div input{height: 40px;line-height: 40px;font-size: 16px;border-radius: 5px;padding: 0 2%;width: 76%;min-width: 100px;border: 1px dashed #00468c;}
+	.defaultTableBox div{ margin:10px 0px;}
+	.defaultTableBox .labelBox {text-align: right;padding-right: 5px;font-size: 16px;color: #2e353e;min-width: 80px;}
+	{padding:10px 30px 10px;}
+	.defaultInputBox2{padding: 0px 30px 10px 30px;
+background: #11b26f;
+width: 80%;
+margin: 0 auto;
+border-radius: 10px;
+margin-top: 36px;}
+.defaultInputBox2{}
+	.defaultInputBox{padding: 10px 30px 0px 30px;}
+	.defaultInputBox .addTittle,.defaultInputBox2 .addTittle{font-size:26px;color:#e73030;margin-top:10px;}
+	.defaultInputBox .label47{display:block;line-height:18px;}
+	.defaultInputBox .label47 .tittle{color:#2e353e;font-size:18px;}
+	.defaultInputBox .label47 .introduce{display:block;font-size:16px;padding:5px 0 10px 20px;color:#353535;}
+	.defaultInputBox .label47 input{cursor:pointer;}
+	.defaultTableBox{padding:0 20px 20px 5px;}
+	.defaultTableBox table{}
+	.defaultTableBox tr{height:50px;line-height:50px;}
+	.defaultTableBox td{}
+	.defaultTableBox .tittleBox{font-size:16px;color:#2e353e;width:100px;text-align:right;padding-right:10px;}
+	.defaultTableBox .inputBox{font-size:18px;}
+	.defaultTableBox .labelBox{text-align:right;padding-right:5px;font-size:16px;color:#2e353e;min-width:80px;}
+	.defaultTableBox .inputBox input{height:40px;line-height:40px;font-size:16px;border-radius:5px;padding:0 2%;width:96%;min-width:100px;border:1px dashed #00468c;}
+	.defaultTableBox .finallyInputBox input{border: 1px dashed #00468c;}
+	.defaultTableBox .inputBox input.type_ShowGrey{color:#e8d4a5;}
+	.defaultTableBox .inputBox input.type_ShowBlack{color:#2e353e;}
+	.defaultTableBox .selectBox select{width:100%;color:#2e353e;font-size:14px;padding:8px 0;border:1px solid #c9880d;border-radius:5px;}
+	.defaultTableBox .selectBox select.province{width:98%;min-width:100px;}
+	.defaultTableBox .getNum a{display:block;position:absolute;padding:0 10px;border-top-right-radius:5px;border-bottom-right-radius:5px;top:5px;right:0;height:42px;line-height:42px;background:#e8d4a5;color:#2b5643;text-align:center;}
+.defaultButton .button{display:block;width:100%;background:#ff9d01;color:#FFF;font-size:32px;text-align:center;padding:18px 0;cursor:pointer;border-bottom:8px solid #CF801C;}
+.defaultButton .button span{font-size:20px;color:#2e353e;}
+.defaultButton .button:hover{background:#007eff;border-bottom:8px solid #1269c2;}
+.picTroduceBox{margin-top: 20px;padding-bottom:1px;border-bottom:1px dashed #e5c88b;}
+.picTroduceBox table{}
+.picTroduceBox table td{text-align: center;}
+.picTroduceBox span{display:block;padding:0 5px 15px 5px;}
+
+.picTroduceBox span.Type{font-size:22px;color:#000;}
+.picTroduceBox span.intro{font-size:20px;color:#434343;padding-bottom:20px;}
+.picTroduceBox span.intro b{font-weight:normal;color:#cf3333;}
+.picTroduceBox span img{width:100%;max-width:330px;text-align:center;}
+.activeNote{padding:0 30px 20px;background:#ff9d01;}
+.activeNote h3{font-size:26px;padding:20px 0 5px 0;color:#545454;}
+.activeNote li{color:#212121;font-size:18px;padding-bottom:5px;}
+
+
+.activeNote{padding:0 30px 20px;background:#ff9d01;}
+.activeNote h3{font-size:26px;padding:20px 0 5px 0;color:#545454;}
+.activeNote li{color:#212121;font-size:14px;padding-bottom:5px; list-style-type:none;}
+
+.footer{background:#1eca82;padding:10px;text-align:center;}
+.footer a{color:#666; text-decoration:underline;}
+.positionFooter{background:#1eca82;padding:10px 0;text-align:center;}
+.positionFooter{position:absolute;bottom:0;padding:10px 0;width:100%;}
+.positionFooter a{color:#666; text-decoration:underline;}
+.positionFooter p{font-size:12px;}

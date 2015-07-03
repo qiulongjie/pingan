@@ -8,20 +8,14 @@
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no,width=device-width" />
     <title>中国平安保险</title>
 <%--     <link rel="stylesheet" href="${ctx}/static/css/index3.css" /> --%>
-    <link rel="stylesheet" type="text/css" href="${ctx }/static/styles/main2.css">
+    <link rel="stylesheet" type="text/css" href="http://rs.iadcn.com/pingan/static/zhuanpan/styles/main2.css">
+    <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/baidu_count.js"></script>
 </head>
-
-
-<!-- <body>     -->
-<!--     <div runat="server" class="content" id="divResult"  > -->
-<%--         <img src="${ctx}/static/images/pubPingAnSuccess.png" class="navLogThree" runat="server" id="imgResult" /> --%>
-<!--     </div>     -->
-<!-- </body> -->
 
 
 <body style="height:100%;">
 	<div class="banner">
-		<img src="${ctx }/static/images/lottery_new/banner.jpg" width="100%"/>
+		<img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/lottery_new/banner.jpg" width="100%"/>
 	</div>
 	
   <div class="con2">
@@ -32,10 +26,17 @@
 			<div class="scu_text">
 				感谢您申请中国平安免费意外险，为了保证您的成功领取，请勿重复申请，如需更改赠险信息，请在客服电话确认时按提示操作
 			</div>
-		
+			<div style="margin: 0px auto; width:85%; padding-bottom:12px;">
+			  <img onclick="gotoHao()" src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ok/red.png" width="100%">
+			</div>
 		</div>
+		
+		
     </div>
 </body>
-
-
+<script>
+function gotoHao(){
+	window.location.href='http://m.hao123.com/?union=1&from=1012539e&tn=ops1012539e';
+}
+</script>
 </html>

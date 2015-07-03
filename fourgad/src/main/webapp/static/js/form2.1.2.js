@@ -92,10 +92,22 @@ function checkForm(o) {
     if (flag) 
 		{
         	document.form1.submit();
+        	var a = getQueryString('a');
+        	$.cookie("ios"+a, "true", {
+    			expires : 1
+    		});
         }
     $('.lingqu_btn').attr('disabled','');
     return true;
 }
+function getQueryString(name) { 
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+	var r = window.location.search.substr(1).match(reg); 
+	if (r != null) {
+		return unescape(r[2]); 
+	}
+	return null; 
+} 
 
 function alertText(txt){
 	//$('#alert_text').text(txt);
@@ -171,7 +183,7 @@ var dx = ['赵','钱','孙','李','周','吴','郑','王','冯','陈','楮','卫
           '商牟','佘佴','伯赏','南宫',
           '墨哈','谯笪','年爱','阳佟'];
 function isvalidname(str) {  
-	var s = str.substring(0,1);
+	/*var s = str.substring(0,1);
 	if(isDx(s)){
 		return true;
 	}
@@ -179,7 +191,8 @@ function isvalidname(str) {
 	if(isFx(s2)){
 		return true;
 	}
-    return false;    
+    return false;*/
+	return true;  
 }
 function isDx(s){
 	for(var i = 0 ; i < dx.length ; i++){
@@ -203,8 +216,8 @@ function jsGetAge(strBirthday) {
     var birthYear = strBirthday.substr(0, 4);
     var birthMonth = strBirthday.substr(4, 2);
     var birthDay = strBirthday.substr(6, 2);
-    d = new Date();
-    var nowYear = 2014;
+    var d = new Date();
+    var nowYear = d.getFullYear();
 
     var nowMonth = d.getMonth() + 1;
 

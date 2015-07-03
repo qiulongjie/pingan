@@ -16,7 +16,7 @@
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/jquery.cookie.js"></script>
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/jQueryRotate.2.2.js"></script>
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/jquerysession.js"></script>
-
+<script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/baidu_count.js"></script>
 </head>
 
 <body style=" max-width:400px; margin:0 auto;">
@@ -38,27 +38,36 @@
 <div  id="submitFormDiv2" style="display:none;">
 	<div class="blackbg"></div>
 	<div class="tanchuang" >
-		<div class="tanchuang_input2" style="color:#666;">
-			Oh~No~您已经抽了1 次奖,不能再抽了,下次再来吧!
+		<div id="f_alert_txt" class="tanchuang_input2" style="color:#666;">
+			
 		</div>
 		<div class="queding_btn">
 			<a id="queding_btn_xiaoshi" href="#">确&nbsp;&nbsp;&nbsp;定</a> 
 		</div>
 	</div>
 </div>
-
+<div  id="submitFormDiv3" style="display:none;">
+	<div class="blackbg"></div>
+	<div class="tanchuang" >
+	<div id="close_cjg_id" style="position:absolute;right:5px;top:3px;"><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/lty_d/iconfont-xalt.png"  width="20px" height="20px"/></div>
+		<div class="tanchuang_input2" style="color:#666;">
+			您已经抽过奖，需要完善信息？
+		</div>
+		<div class="queding_btn">
+			<a href="${ctx }/pa1/ping?p=7&a=${a }">完善信息</a> 
+		</div>
+	</div>
+</div>
 	<div class="big_box3">
     	<div class="big_box_con3">
 		<div class="tongzhi">
-			<div id="scrollobj" style="white-space:nowrap;overflow:hidden; line-height:32px; color:#e74d2b;">周*(139****4582)六等奖，获得自拍杆&nbsp;&nbsp;&nbsp;&nbsp;肖*(189****2159)二等奖，获得16g的ipad mini3&nbsp;&nbsp;&nbsp;&nbsp;陈**(135****2193)三等奖，获得价值25万元的交通意外保险&nbsp;&nbsp;&nbsp;&nbsp;黄*(135****2422)四等奖，获得移动电源&nbsp;&nbsp;&nbsp;&nbsp;葛**(139****9703)五等奖，获得50元话费&nbsp;&nbsp;&nbsp;&nbsp;吴**(159****0124)六等奖，获得自拍杆&nbsp;&nbsp;&nbsp;&nbsp;蔡*(158****0707)六等奖，获得自拍杆&nbsp;&nbsp;&nbsp;&nbsp;韩**(159****5764)三等奖，获得价值25万元的交通意外保险&nbsp;&nbsp;&nbsp;&nbsp;陈*(159****6745)五等奖，获得50元话费&nbsp;&nbsp;&nbsp;&nbsp;李*(135****5122)六等奖，获得自拍杆&nbsp;&nbsp;&nbsp;&nbsp;程*(158****4670)五等奖，获得50元话费&nbsp;&nbsp;&nbsp;&nbsp;汤*(135****9308)四等奖，获得移动电源&nbsp;&nbsp;&nbsp;&nbsp;章**(159****6975)二等奖，获得16g的ipad mini3&nbsp;&nbsp;&nbsp;&nbsp;赵**(139****1684)五等奖，获得50元话费&nbsp;&nbsp;&nbsp;&nbsp;黄*(139****5122)三等奖，获得价值25万元的交通意外保险&nbsp;&nbsp;&nbsp;&nbsp;陈**(139****6408)四等奖，获得移动电源&nbsp;&nbsp;&nbsp;&nbsp;袁*(139****0065)六等奖，获得自拍杆&nbsp;&nbsp;&nbsp;&nbsp;高**(159****7453)五等奖，获得50元话费</div>
+			<div id="scrollobj" style="white-space:nowrap;overflow:hidden; line-height:32px; color:#e74d2b;"></div>
 		</div>
 		
 		
         <div class="zhuanpan">
         	<div class="zhuan_pic3"> <img src="" width="100%" id="zhuanpanImg"/> </div>
             <div id="zhan_qidong1" class="zhuan_qidong3"><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/lty_d/qidong_btn3.gif" id="lotteryBtn" /></div>
-            <!-- <div id="zhan_qidong2" class="zhuan_qidong3" style="display:none"><img src="http://192.168.0.53:8989/fourgad/static/images/lty_d/qidong_btn3.png" id="lotteryBtn2" /></div> -->
-
         </div>
         </div>
         <div class="y_bg3"><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/lty_d/bg3.png"  width="100%" /></div>
@@ -72,12 +81,6 @@
 	   	<h3>奖项设置</h3>
         <div class="jiangpin_list">
         	<ul>
-				<!-- <li><img src="images/lipin1.jpg" width="100px" /></li>
-				<li><img src="images/lipin2.jpg" width="100px" /></li>
-				<li><img src="images/lipin3.jpg" width="100px" /></li>
-				<li><img src="images/lipin4.jpg" width="100px" /></li>
-				<li><img src="images/lipin5.jpg" width="100px" /></li>
-				<li><img src="images/lipin6.jpg" width="100px" /></li> -->
 				<li><img id="jiangping1_link" src="" width="100px" /></li>
 	            <li><img id="jiangping2_link" src="" width="100px" /></li>
 	            <li><img id="jiangping3_link" src="" width="100px" /></li>
@@ -130,6 +133,12 @@ var _timer = setInterval("scroll(document.getElementById('scrollobj'))", 20);
 		init();
 		
 		function init(){
+			if(!z){
+				z='7';
+			}
+			if(!p || p==='pingLottery'){
+				p='1';
+			}
 			$.ajax({
 				type : "POST",
 				cache : false,
@@ -148,6 +157,9 @@ var _timer = setInterval("scroll(document.getElementById('scrollobj'))", 20);
 						$('#jiangping5_link').attr('src',data.jiangping5_link);
 						$('#jiangping6_link').attr('src',data.jiangping6_link);
 						
+						$('#scrollobj').html(data.top_croll_text);
+						$('#f_alert_txt').html(data.f_alert_txt);
+						
 						bannerLink = data.banner_link;
 						
 						initing = false;
@@ -164,6 +176,9 @@ var _timer = setInterval("scroll(document.getElementById('scrollobj'))", 20);
 		$('#queding_btn_xiaoshi').click(function(e) {
 			$('#submitFormDiv2').hide();
 		});
+		$('#close_cjg_id').click(function(e) {
+			$('#submitFormDiv3').hide();
+		});
 
 		var running = false;
 		var rotateFunc = function(angle) {
@@ -173,9 +188,26 @@ var _timer = setInterval("scroll(document.getElementById('scrollobj'))", 20);
 				duration : 5000,
 				animateTo : angle + 1440,
 				callback : function() {
-					$.cookie("ltyChoujiang"+a, "true", {
-						expires : 1
-					});
+					if ($.cookie("ltyChoujiang"+a)) {
+						if ($.cookie("ltyChoujiang_cnt"+a)){
+							var cnt = parseInt($.cookie("ltyChoujiang_cnt"+a));
+							cnt = cnt - 1;
+							$.cookie("ltyChoujiang_cnt"+a, cnt+"", {
+								expires : parseInt(z)
+							});
+						}
+					}else{
+						$.cookie("ltyChoujiang"+a, "true", {
+							expires : parseInt(z)
+						});
+						var cnt = 1;
+						if(parseInt(p)){
+						  cnt=parseInt(p);
+						}
+						$.cookie("ltyChoujiang_cnt"+a, cnt+"", {
+							expires : parseInt(z)
+						});
+					}
 					running = false;
 					$('#submitFormDiv').show();
 				}
@@ -192,8 +224,13 @@ var _timer = setInterval("scroll(document.getElementById('scrollobj'))", 20);
 						return;
 					}
 					if ($.cookie("ltyChoujiang"+a)) {
-						$('#submitFormDiv2').show();
-						return;
+						if ($.cookie("ltyChoujiang_cnt"+a)){
+							var cnt = parseInt($.cookie("ltyChoujiang_cnt"+a));
+							if(cnt<=1){
+								$('#submitFormDiv2').show();
+								return;
+							}
+						}
 					}
 					getLottery();
 				}

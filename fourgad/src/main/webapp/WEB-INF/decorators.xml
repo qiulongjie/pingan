@@ -9,6 +9,8 @@
 		<pattern>/ltyAs*</pattern>
 		<pattern>/lty*</pattern>
 		<pattern>/ltyZqb*</pattern>
+		<pattern>/nwd*</pattern>
+		<pattern>/rsd*</pattern>
 	</excludes>
 	
 	<decorator name="default" page="default.jsp">

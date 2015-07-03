@@ -15,7 +15,7 @@
 <%-- <link rel="stylesheet" type="text/css" href="${ctx}/static/styles/main.css"> --%>
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/jquery-1.7.1.min.js"></script>
 <%-- <script type="text/javascript" src="${ctx}/static/js/jquery-1.7.1.min.js"></script> --%>
-
+<script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/baidu_count.js"></script>
 <style type="text/css">
 body{margin:0;padding:0; margin:0 auto;line-height:22px;font-family:"微软雅黑";background:#fff;-webkit-text-size-adjust:none;color:#7e8c8d; width:100%;font-size: 14px;}
 form,ul,li,p,h1,h2,h3,h4,h5,h6,dl,dt,dd{margin:0;padding:0; font-weight:normal;}

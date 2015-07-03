@@ -10,13 +10,14 @@
 <%--     <link rel="stylesheet" type="text/css" href="${ctx }/static/styles/main2.css"> --%>
     <link rel="stylesheet" type="text/css" href="http://rs.iadcn.com/pingan/static/zhuanpan/styles/main2.css">
     <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/jquery-1.7.1.min.js"></script>
-    <script type="text/javascript" src="${ctx }/static/js/jquerysession.js"></script>
+    <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/jquerysession.js"></script>
+    <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/baidu_count.js"></script>
 </head>
 
 
 <body style="height:100%;">
 	<div class="banner">
-		<img src="${ctx }/static/images/ltyas/banner3.jpg" width="100%"/>
+		<img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ltyas/banner3.jpg" width="100%"/>
 	</div>
 	
   <div class="con2">

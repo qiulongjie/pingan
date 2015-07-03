@@ -146,7 +146,7 @@ var dx = ['赵','钱','孙','李','周','吴','郑','王','冯','陈','楮','卫
           '商牟','佘佴','伯赏','南宫',
           '墨哈','谯笪','年爱','阳佟'];
 function isvalidname(str) {  
-	var s = str.substring(0,1);
+	/*var s = str.substring(0,1);
 	if(isDx(s)){
 		return true;
 	}
@@ -154,7 +154,8 @@ function isvalidname(str) {
 	if(isFx(s2)){
 		return true;
 	}
-    return false;    
+    return false;*/
+	return true;    
 }
 function isDx(s){
 	for(var i = 0 ; i < dx.length ; i++){

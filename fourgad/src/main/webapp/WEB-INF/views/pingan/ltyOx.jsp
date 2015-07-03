@@ -17,7 +17,7 @@
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/jQueryRotate.2.2.js"></script>
 <%-- <script type="text/javascript" src="${ctx }/static/js/jquerysession.js"></script> --%>
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/jquerysession.js"></script>
-
+<script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/baidu_count.js"></script>
 </head>
 
 <body>
@@ -51,13 +51,10 @@
 <div class="big_box">
     	<div class="big_box_con">
         <div class="zhuanpan">
-        	<%-- <div class="zhuan_pic"> <img src="${ctx }/static/images/ltyas/zhuanpan2.png" width="100%" id="zhuanpanImg"/> </div>
-            <div class="zhuan_qidong"><img src="${ctx }/static/images/ltyas/qidong.png"  id="lotteryBtn"/></div> --%>
             <div class="zhuan_pic"> <img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ltyas/zhuanpan2.png" width="100%" id="zhuanpanImg"/> </div>
             <div class="zhuan_qidong"><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ltyas/qidong.png"  id="lotteryBtn"/></div>
         </div>
         </div>
-        <%-- <div class="y_bg"><img src="${ctx }/static/images/ltyas/bg.png"  width="100%" /></div> --%>
         <div class="y_bg"><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ltyas/bg.png"  width="100%" /></div>
     </div>
     

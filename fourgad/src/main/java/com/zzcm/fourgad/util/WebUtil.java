@@ -12,6 +12,7 @@ public class WebUtil {
 	 * 获取IP
 	 * @param request
 	 * @return
+	 * 修改获取ip方法，对于10.内网段重新获取远程ip地址
 	 */
 	public static String getIpAddr(HttpServletRequest request) { 		
 	    String ip = request.getHeader("x-forwarded-for");  
@@ -28,7 +29,7 @@ public class WebUtil {
 	    	ip = request.getHeader("HTTP_X_FORWARDED_FOR");	    	
 	    }
 	    	    
-	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)||ip.startsWith("10.")) {
 	    	ip = request.getRemoteAddr();	    	
 	    } 	   
 	    return ip;  

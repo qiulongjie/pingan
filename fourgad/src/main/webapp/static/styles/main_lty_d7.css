@@ -1,0 +1,61 @@
+@charset "utf-8";
+/* CSS Document */
+body{margin:0;padding:0; margin:0 auto;line-height:22px;font-family:"微软雅黑";background:#fff;-webkit-text-size-adjust:none;color:#7e8c8d; width:100%;font-size: 14px;}
+form,ul,li,p,h1,h2,h3,h4,h5,h6,dl,dt,dd{margin:0;padding:0; font-weight:normal;}
+input,select{font-size:12px; color:#666; padding:4 0 0 5px; line-height:18px;}
+img{border:0;}
+.left{float:left;}
+.right{float:right;}
+ul,li{list-style-type:none;}
+.clear{ clear:both; height:0; overflow:hidden;}
+html,body{ height:100%;}
+a{ text-decoration:none;}
+ul,li{ list-style-type:none; margin:0; padding:0;}
+
+.zhuanpan img, .con img {border: 0px;border-image: none;max-width: 100%;}
+
+.big_box{position:relative; width:100%;height:306px;}
+.big_box_con{background:#eb382c; width:100%;height:298px;}
+.zhuanpan{ max-width:320px; margin:0 auto;position:relative; z-index:3; }
+.zhuan_pic{position:absolute; width:85%;top:10px;left:7%;}
+.zhuan_qidong{position:absolute; z-index:9999; left:108px;top:104px; width:100px; max-width:100px;}
+.y_bg{position:absolute; z-index:1;bottom:-3px; width:100%;}
+
+
+/*动态转盘页面开始*/
+.big_box_con3{background:#efe8d6 0 0 repeat; width:100%;height:320px;}
+.zhuan_qidong3{position:absolute; z-index:9999; left:111px;top:72px; width:100px; max-width:100px;}
+.zhuan_pic3{position:absolute; width:100%;top:0px;left:0;}
+.zhuan_pic4{position:absolute; width:90%;top:4px;left:17px;}
+.tongzhi{ width:90%; overflow:hidden; background:url(../images/lty_d_zy/tongzhi.gif) 0 0 no-repeat; padding-left:30px; display:block;}
+.tongzhi ul{ width:800%; margin:0 auto;}
+.tongzhi ul li{ float:left; margin:0 10px; line-height:32px; color:#885a38;}
+.big_box3{position:relative; width:100%;height:345px;}
+.con33{ background:#dfd2b2; width:100%;  padding:10px 0 30px 0;}
+.conbox3{ width:94%; margin:0px auto; background:#efe8d6;}
+.conbox3 h3{ background:#8f512a url(../images/lty_d_zy/tit.png) right 0 no-repeat; height:26px; line-height:26px; width:100px; color:#fff; margin-bottom:10px; display:block; text-indent:10px;}
+.y_bg3{position:absolute; z-index:1;bottom:-3px; width:100%;}
+.conbox3_nr{ padding:20px 10px; color:#a14619;}
+
+.jiangpin_list2{}
+.jiangpin_list2 ul li{ width: 46.8%;border: 1px solid #ddd;background: #ffffff;display: block;margin: 1.3%;float: left; }
+.jiangpin_list2 ul li img{width:100%;}
+
+/* 我的加的  begin */
+/* 弹出框 */
+.tanchuang_input{padding:10px; width:90%; margin:0 auto;}
+.tanchuang_input2{padding:15px; width:90%; margin:0 auto; font-size:14px;}
+.tanchuang_input div{ margin:5px 0;}
+.tanchuang_input div span{ width:20%;}
+.tanchuang_input .input1{ width:80%; border:1px solid #d6bea4; border-radius:2px; height:30px; line-height:30px;}
+
+.blackbg{width: 100%; height: 100%; background-color: #000; opacity: 0.6; position: fixed; top: 0; left: 0; z-index:9999;}
+.tanchuang{width:80%; left: 50%; margin-left: -40%; top: 50%; margin-top: -100px; position: absolute; z-index: 3; background-color: #fff; z-index:99999; border-radius:8px;}
+.tanchuang_tit{background:#cf0000; text-align:center; color:#fff; height:40px; line-height:40px; font-weight:bold; border-radius:8px 8px 0 0; font-size:18px;}
+.sub_btn{width:90%; height:40px; line-height:40px; color:#fff; background:#ff6400; border-radius:8px; display:block; margin:0 auto; text-align:center; outline:none;}
+a.sub_btn:hover{ background:#e95b00;}
+
+.queding_btn{text-align:center; line-height:42px; height:42px; border-top:1px solid #ddd; background:#f3f3f3; border-radius:0 0 8px 8px; font-weight:bold; }
+.queding_btn a{ color:#666;font-size:16px; display:block; width:100%; border-radius:0 0 8px 8px;}
+.queding_btn a:hover{background:#dddddd; border-radius:0 0 8px 8px;}
+/* 我的加的  end  */

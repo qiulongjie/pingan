@@ -1,5 +1,8 @@
 package com.zzcm.fourgad.web.count;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -7,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zzcm.fourgad.service.count.CountService;
@@ -116,6 +120,196 @@ public class CountController {
 	public String updateZJSendStatus(HttpServletRequest request,Integer id,Integer if_send) throws Exception {
 		String data = countService.updateZJSendStatus(id,if_send);
 		return data;
+	}
+	
+	@RequestMapping(value = "getAntiCheatingData",method = RequestMethod.POST)
+    @ResponseBody
+    public String getAntiCheatingData(HttpServletRequest request) throws Exception {
+        String pageSize = getParameter(request,"length","10");
+        String pageNum = getParameter(request,"start","0");
+        String begin_vtime = getParameter(request,"begin_vtime","");
+        String end_vtime = getParameter(request,"end_vtime","");
+        String channel = getParameter(request,"channel","");
+        String draw = getParameter(request,"draw","1");
+        String data = countService.queryAntiCheatingData(pageNum,pageSize,begin_vtime.trim()+" 00:00:00",end_vtime.trim()+" 23:59:59",channel,draw);
+        return data;
+    }
+	
+	/**
+	 * 注册渠道的时候ajax请求检查渠道是否唯一
+	 * @param channel
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "checkChannel")
+    @ResponseBody
+    public String checkChannel(@RequestParam("channel") String channel) throws Exception {
+		List<Map<String,Object>> list = countService.queryChannelInfo(channel);
+		if( list != null && list.size() > 0 ){
+			return "false";
+		}
+		return "true";
+    }
+	
+	/**
+	 * 注册渠道
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "addChannel",method = RequestMethod.POST)
+	public String addChannel(HttpServletRequest request) throws Exception {
+		String channel = getParameter(request,"channel","");
+        String busyName = getParameter(request,"busy_name","");
+        String customer = getParameter(request,"customer","");
+        String startTime = getParameter(request,"start_time",null);
+        String endTime = getParameter(request,"end_time",null);
+        if(endTime != null && endTime.equals("")){
+        	endTime = null;
+        }
+        if( endTime != null && startTime.compareTo(endTime) > 0){
+        	request.setAttribute("channel", channel);
+			request.setAttribute("busy_name", busyName);
+			request.setAttribute("customer", customer);
+			request.setAttribute("start_time", startTime);
+			request.setAttribute("end_time", endTime);
+			request.setAttribute("message", "渠道注册失败。生效时间不能大于终止时间！");
+			return "manage/addChannel";
+		}
+        boolean isExist = countService.checkChannel(null,channel,startTime,endTime);
+        if(isExist){
+        	request.setAttribute("channel", channel);
+			request.setAttribute("busy_name", busyName);
+			request.setAttribute("customer", customer);
+			request.setAttribute("start_time", startTime);
+			request.setAttribute("end_time", endTime);
+			request.setAttribute("message", "渠道注册失败。与已有渠道时间冲突！");
+        	return "manage/addChannel";
+        }
+		countService.addChannel(channel.trim(),busyName.trim(),customer.trim(),startTime,endTime);
+		request.setAttribute("message", "渠道添加成功!");
+		return "manage/channelList";
+	}
+	
+	/**
+	 * 设置渠道状态
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "updateChannelSt")
+	public String updateChannelSt(HttpServletRequest request) throws Exception {
+		String id = getParameter(request,"i","");
+		String flag = getParameter(request,"f","");
+		countService.updateChannelSt(id.trim(),flag.trim());
+		return "manage/channelList";
+	}
+	
+	/**
+	 * 获取渠道信息
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "getChannelData",method = RequestMethod.POST)
+	@ResponseBody
+	public String getChannelData(HttpServletRequest request) throws Exception {
+		String pageSize = getParameter(request,"length","10");
+		String pageNum = getParameter(request,"start","0");
+		String channel = getParameter(request,"channel","");
+		String draw = getParameter(request,"draw","1");
+		String data = countService.getChannelData(pageNum,pageSize,channel,draw);
+		return data;
+	}
+	
+	/**
+	 * 更新界面
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "updateChannelForm")
+	public String updateChannelForm(HttpServletRequest request) throws Exception {
+		String id = getParameter(request,"i","");
+		List<Map<String,Object>> list = countService.queryChannelInfo(Integer.valueOf(id));
+		if( list != null && list.size() > 0){
+			request.setAttribute("id", list.get(0).get("id"));
+			request.setAttribute("channel", list.get(0).get("channel"));
+			request.setAttribute("busy_name", list.get(0).get("busy_name"));
+			request.setAttribute("customer", list.get(0).get("customer"));
+			request.setAttribute("start_time", list.get(0).get("start_time"));
+			request.setAttribute("end_time", list.get(0).get("end_time"));
+		}
+		return "manage/updateChannel";
+	}
+	
+	/**
+	 * 更新渠道
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "updateChannel",method = RequestMethod.POST)
+	public String updateChannel(HttpServletRequest request) throws Exception {
+		String id = getParameter(request,"id","");
+		String channel = getParameter(request,"channel","");
+        String busyName = getParameter(request,"busy_name","");
+        String customer = getParameter(request,"customer","");
+        String startTime = getParameter(request,"start_time",null);
+        String endTime = getParameter(request,"end_time",null);
+        if(endTime != null && endTime.equals("")){
+        	endTime = null;
+        }
+        if( endTime != null && startTime.compareTo(endTime) > 0){
+        	request.setAttribute("id", id);
+        	request.setAttribute("channel", channel);
+			request.setAttribute("busy_name", busyName);
+			request.setAttribute("customer", customer);
+			request.setAttribute("start_time", startTime);
+			request.setAttribute("end_time", endTime);
+			request.setAttribute("message", "渠道修改失败。生效时间不能大于终止时间！");
+			return "manage/updateChannel";
+		}
+        boolean isExist = countService.checkChannel(id,channel,startTime,endTime);
+        if(isExist){
+        	request.setAttribute("id", id);
+        	request.setAttribute("channel", channel);
+			request.setAttribute("busy_name", busyName);
+			request.setAttribute("customer", customer);
+			request.setAttribute("start_time", startTime);
+			request.setAttribute("end_time", endTime);
+			request.setAttribute("message", "渠道修改失败。与已有渠道时间冲突！");
+        	return "manage/updateChannel";
+        }
+		countService.updateChannel(id,channel,busyName,customer,startTime,endTime);
+		request.setAttribute("message", "渠道更新成功!");
+		return "manage/channelList";
+	}
+	
+	/**
+	 * 删除渠道
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "deleteChannel")
+	public String deleteChannel(HttpServletRequest request) throws Exception {
+		String id = getParameter(request,"i","");
+		countService.deleteChannel(id);
+		return "manage/channelList";
+	}
+	
+	/**
+	 * 刷新渠道信息缓存
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "refreshChannel",method = RequestMethod.POST)
+	@ResponseBody
+	public String refreshChannel(HttpServletRequest request) throws Exception {
+		countService.refreshChannel();
+		return "";
 	}
 	
 	/**

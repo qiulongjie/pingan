@@ -17,7 +17,7 @@
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/form_as.js"></script>
 <%-- <script type="text/javascript" src="${ctx }/static/js/jquerysession.js"></script> --%>
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/jquerysession.js"></script>
-
+<script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/baidu_count.js"></script>
 </head>
 
 <body>
@@ -35,10 +35,7 @@
 </div>
 
 <div class="banner">
-		<img src="${ctx }/static/images/ltynmzs/banner.jpg" width="100%"/> 
-		<%-- 
-		<img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ltyas/banner3.jpg" width="100%"/>
-		--%>
+		<img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ltynmzs/banner.jpg" width="100%"/> 
 	</div>
 	
   <div class="con3">

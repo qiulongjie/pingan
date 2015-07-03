@@ -1,0 +1,33 @@
+@charset "utf-8";
+body{margin:0;padding:0; margin:0 auto;line-height:22px;font-family:"微软雅黑";background:#fff;-webkit-text-size-adjust:none;color:#666666; width:100%;font-size: 14px;}
+form,ul,li,p,h1,h2,h3,h4,h5,h6,dl,dt,dd{margin:0;padding:0; font-weight:normal;}
+input,select{font-size:12px; color:#666; padding:4 0 0 5px; line-height:18px;}
+img{border:0;}
+.left{float:left;}
+.right{float:right;}
+ul,li{list-style-type:none;}
+.clear{ clear:both; height:0; overflow:hidden;}
+html,body{ height:100%;}
+a{ text-decoration:none;}
+ul,li{ list-style-type:none; margin:0; padding:0;}
+
+body{ background:#ecf1f0;}
+.biaodan{ position:relative;}
+.inputbox{ position:absolute; top:0;left:50%;margin-left:-40%; width:77%; margin-top:10px;}
+.inputbox input{ width:100%;}
+.inputbg{ }
+
+.jieshaobox{ width:96%; margin:0 auto; background:#fff; border:1px solid #ddd;  margin-bottom:5px;}
+.title1{ position:relative; padding-top:10px; padding-left:16px;}
+.title1 h3{ margin-bottom:10px;}
+ul.jieshao li{ background:url(../images/niwodai/li.jpg) 0 0 no-repeat; padding-left:20px; line-height:32px; margin-left:10px;}
+ul.jieshao li strong{ font-weight:bold; color:#e61d15;}
+
+.miaoshu{ padding:16px;}
+.miaoshu h4{ font-family:"微软雅黑"; font-size:20px; font-weight:bold; margin-bottom:10px;}
+.border{border:1px solid #ddd; border-radius:10px; font-size:12px; padding:3px;}
+.inp{ height:28px; border-radius:6px; border:2px solid #d4d4d4; background:#f3f3f3;}
+.title2 h3{ margin-left:16px; margin-top:10px;}
+
+.bottom{width:265px; margin:10px auto;}
+.zhanghu{ color:#666666; line-height:25px; background:url(../images/niwodai/anquan.jpg) 0 0 no-repeat; padding-left:32px;}

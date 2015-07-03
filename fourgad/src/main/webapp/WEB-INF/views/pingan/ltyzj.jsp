@@ -18,7 +18,7 @@
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/form_as.js"></script>
 <%-- <script type="text/javascript" src="${ctx }/static/js/jquerysession.js"></script> --%>
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/jquerysession.js"></script>
-
+<script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/baidu_count.js"></script>
 </head>
 
 <body>

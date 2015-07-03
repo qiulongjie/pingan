@@ -1,0 +1,20 @@
+.jihuo{}
+.jihuo p{ line-height:30px;}
+.jihuo strong{ font-size:22px; color:#ff7800;}
+.gongxi2{ width:90%; margin:10px auto 90px auto; background:#f3ffed; border:5px solid #fff; border-radius:5px;}
+.gongxi2 p{ font-size:18px; color:#639a39; padding:0 20px 0 20px;}
+.con2 h2.scu2{ background:url(../images/lty_d5/scu.png) 0 0 no-repeat; padding-left:33px; color:#639a39; font-size:26px; line-height:35px; text-align:center; width:40%; margin:10px auto;}
+.scu_text2{ background:#fff; border-radius:3px; padding:10px; height:182px; width:85%; margin:10px auto; color:#639a39;}
+
+.popupBoxBg{width:100%;height:100%;}
+.fade{background:#000;position:fixed;left:0;top:0;width:100%;height:100%;opacity:.70;z-index:9;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=70);}
+.popupBoxShow{position:absolute;z-index:999;top:50%;left:50%;margin-left:-190px;margin-top:-98px;width:380px;height:193px;background:url(../images/pingan_bz/defaultBox.png) no-repeat;}
+.popupBoxShow p{width:180px;margin:80px 0 0 68px;line-height:25px;display:block;font-size:14px;color:#2b2b2b;}
+.popupBoxShow p b{color:#ff1111;}
+	.boxBg {margin-top: -10px;background: #1eca82;}
+	.type_ShowGrey{color: #e8d4a5;}
+	.defaultTableBox div input{height: 40px;line-height: 40px;font-size: 16px;border-radius: 5px;padding: 0 2%;width: 76%;min-width: 100px;border: 1px dashed #00468c;}
+	.defaultTableBox div{ margin:10px 0px;}
+	.defaultTableBox .labelBox {text-align: right;padding-right: 5px;font-size: 16px;color: #2e353e;min-width: 80px;}
+	{padding:10px 30px 10px;}
+	.defaultInputBox2{padding: 0px 30px 10px 30px;

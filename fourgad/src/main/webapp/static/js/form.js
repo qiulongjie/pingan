@@ -178,8 +178,8 @@ function jsGetAge(strBirthday) {
     var birthYear = strBirthday.substr(0, 4);
     var birthMonth = strBirthday.substr(4, 2);
     var birthDay = strBirthday.substr(6, 2);
-    d = new Date();
-    var nowYear = 2014;
+    var d = new Date();
+    var nowYear = d.getFullYear();
 
     var nowMonth = d.getMonth() + 1;
 

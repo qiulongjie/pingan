@@ -7,10 +7,12 @@
     <meta content="email=no" name="format-detection" />
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no,width=device-width" />
     <title>中国平安保险</title>
-    <link rel="stylesheet" href="${ctx}/static/css/index3.css" />
+<%--     <link rel="stylesheet" href="${ctx}/static/css/index3.css" /> --%>
+    <link rel="stylesheet" href="http://rs.iadcn.com/pingan/static/css/index3.css" />
+    <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/baidu_count.js"></script>
 </head><body>    
     <div runat="server" class="content" id="divResult"  >
-        <img src="${ctx}/static/images/pubPingAnSuccess.png" class="navLogThree" runat="server" id="imgResult" />
+        <img src="http://rs.iadcn.com/pingan/static/images/pubPingAnSuccess.png" class="navLogThree" runat="server" id="imgResult" />
     </div>    
 </body>
 </html>

@@ -41,9 +41,12 @@
 		    <tr>
 		        <th>日期</th>
 		        <th>渠道</th>
+		        <th>商务</th>
+		        <th>客户</th>
+		        <th>状态</th>
 		        <th>订单数</th>
 		        <th>有效订单数</th>
-		        <th>操作</th>
+		        <th width="140px">操作</th>
 		    </tr>
 		</thead>
 	</table>
@@ -64,7 +67,7 @@
 	        dataType: "text",
 	        success: function(data,textStatus){
 	        	//alert(data);
-	        	span.text(data);
+	        	span.html(data);
 	        },
 	        error : function() {    
 	            alert("数据异常！");    
@@ -86,7 +89,7 @@
 	        "bLengthChange": false,
 	        "processing": true,
 	        "serverSide": true,
-	        "pageLength": 30,
+	        "pageLength": 60,
 	        "ajax": {
 	            "url": "${ctx}/count/getData",
 	            "type": "post",
@@ -98,7 +101,7 @@
 	        },
 	        "columnDefs": [ 
 	                 	  {
-	                   	    "targets": 4,
+	                   	    "targets": 7,
 	                   	    "data": "",
 	                   	    "render": function ( data, type, full, meta ) {
 	                   	      var link = "'"+full.vtime+"','"+full.a+"'";
@@ -110,6 +113,9 @@
 	        "columns": [
 	                     { "data": "vtime"},
 	                     { "data": "a"},
+	                     { "data": "busy_name"},
+	                     { "data": "customer"},
+	                     { "data": "st"},
 	                     { "data": "ord_cnt"},
 	                     { "data": "eft_cnt"},
 	                     { "data": null}
