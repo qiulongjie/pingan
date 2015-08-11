@@ -36,8 +36,8 @@
                 <div class="defaultTableBox">
                     
                 </div>   
-<img onclick="gotoHao()" src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ok/yellow.jpg" width="100%">             
-            </div>
+<!-- <img onclick="gotoHao()" src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ok/yellow.jpg" width="100%">             
+  -->           </div>
         </div>
       
         </div>

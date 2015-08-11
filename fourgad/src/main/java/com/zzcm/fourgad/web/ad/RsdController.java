@@ -22,6 +22,7 @@ public class RsdController {
 	@ResponseBody
 	public String feeData(HttpServletRequest request) {
 		String feeData = request.getParameter("feeData");
+		System.out.println("=====feeData=="+feeData);
 		String ipaddr = WebUtil.getIpAddr(request);
 		String vtime = DateUtil.getDateTime();
 		try {

@@ -21,6 +21,12 @@
 	</context:component-scan>
 	
 	<import resource="classpath:spring-remote.xml"/>
+	
+	<bean id="ipSeeker" class="com.zzcm.fourgad.service.addr.IPSeeker" scope="singleton" lazy-init="true">
+		<constructor-arg name="ipDatFile">
+			<value>D:\qiulongjie\work\IPService\ip.dat</value>
+		</constructor-arg>
+	</bean>
 
 	<!-- Jpa Entity Manager 配置 -->
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"> 

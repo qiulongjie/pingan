@@ -159,7 +159,8 @@ var _timer = setInterval("scroll(document.getElementById('scrollobj'))", 20);
 					}
 					running = false;
 					$('#a_goto_bz').attr('href','${ctx }/pa1/ping_bz_g?code=ping_bz_ok_g2&p='+z+'&p2='+p+'&a='+a);
-					$('#submitFormDiv').show();
+					//$('#submitFormDiv').show();
+					window.location.href = '${ctx }/pa1/ping_bz_g?code=ping_bz_ok_g2&p='+z+'&p2='+p+'&a='+a;
 				}
 			});
 		};

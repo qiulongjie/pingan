@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -25,16 +25,18 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.zzcm.fourgad.entity.AddrBean;
 import com.zzcm.fourgad.entity.OrdLogs;
-import com.zzcm.fourgad.job.JsonUtil;
 
 @Component
 @Transactional
 public class AdService {
-	
-	
+	private Logger logger = Logger.getLogger(this.getClass());
+	@Autowired
+	private IPService iPService;
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
 	public void AddReqLogs(String channel,String ipaddr,String prov,String vtime,String ua ){
 		String sql = "insert into ad_req_log (channel,ipaddr,prov,vtime,ua) values (?,?,?,?,?)";
 		Object o [] = {channel,ipaddr,prov,vtime,ua};
@@ -286,21 +288,52 @@ public class AdService {
 	 * @return
 	 */
 	public String getLottery2zy(String channel, String z,String p ,String c, String ip, String time) {
+		// 没有渠道
+		if(channel == null || channel.trim().equals("")){
+			channel = "xx";
+		}
 		
 		//统计转盘点击日志
 		String insertSql = " insert into ad_lty_click_log(channel,vtime,ipaddr) values(?,?,?) ";
 		jdbcTemplate.update(insertSql, new Object[]{channel,time,ip});
 		
 		Map<String,Object> resultMap = new HashMap<String, Object>();//结果信息
-		// 没有渠道
-		if(channel == null || channel.trim().equals("")){
-			channel = "xx";
+		List<Map<String,Object>> condition = new ArrayList<Map<String,Object>>();
+		
+		// **** 根据IP定位位置跳转到大都会  start ******
+		long startTime1 = System.currentTimeMillis();
+		logger.info("startTime===="+startTime1);
+		AddrBean addrBean = iPService.getIPAddr2(ip);
+		long endTime1 = System.currentTimeMillis();
+		logger.info("耗时=="+(endTime1-startTime1));
+		String province = addrBean.getProvinceCode();// 根据IP获取的省份名称
+		// 从数据库中获取渠道省份对应的跳转链接 
+		String proSql = "select * from ad_province_redirect where channel = ? and province_name like ?";
+		condition = jdbcTemplate.queryForList(proSql,new Object[]{channel,province+"%"});
+		if( condition != null && condition.size() > 0 ){
+			Map<String,Object> map = condition.get(0);
+			// 取出默认的中奖信息  即平安意外险 
+			String s = "select * from ad_lty_info where channel = ? and v_count = 0 ";
+			condition.clear();
+			condition = null;
+			condition = jdbcTemplate.queryForList(s,new Object[]{channel});
+			if( condition != null && condition.size() > 0 ){
+				resultMap = condition.get(0);
+				resultMap.put("link_url", map.get("link_url"));// 修改跳转链接
+				// 返回中奖信息
+				logger.info(ip+"命中"+province+",跳转"+map.get("link_url"));
+				return getJson(resultMap);
+			}
 		}
+		// **** 根据IP定位位置跳转到大都会  END ******
+		
 		// 获取渠道的活动时间
 		Date date=new Date();//取时间				
 		String currTime = new SimpleDateFormat("yyyy-MM-dd").format(date);
 		String sql = "select * from ad_lty_info where channel = ? limit 0,1";
-		List<Map<String,Object>> condition = jdbcTemplate.queryForList(sql,new Object[]{channel});
+		condition.clear();
+		condition = null;
+		condition = jdbcTemplate.queryForList(sql,new Object[]{channel});
 		if( condition == null || condition.size() <= 0 ){
 			condition = jdbcTemplate.queryForList("select * from ad_lty_info where channel = 'xx' ",new Object[]{});
 			if( condition != null && condition.size() > 0 ){
@@ -361,6 +394,8 @@ public class AdService {
 		
 		resultMap = null;//中奖信息
 		String s = "select * from ad_lty_info where channel = ? and v_count = 0 ";
+		condition.clear();
+		condition = null;
 		condition = jdbcTemplate.queryForList(s,new Object[]{channel});
 		if( condition != null && condition.size() > 0 ){
 			resultMap = condition.get(0);
@@ -521,7 +556,7 @@ public class AdService {
 	 * 荣时代结算数据同步
 	 * @param feeData
 	 */
-	public void saveFeeData(String feeData,final String ipaddr,final String vtime) {
+	public void saveFeeData(String feeData,final String ipaddr,final String vtime) throws Exception{
 		String sql = "insert into tb_channel_fee(c_date,channel,fee_count,fee,ipaddr,vtime) values(?,?,?,?,?,?)";
 		String sqlDel = "delete from tb_channel_fee where c_date = ? ";
 		JsonParser parser = new JsonParser();
@@ -593,4 +628,141 @@ public class AdService {
 			});
 		}*/
 	}
+
+	// ************************** 新的抽奖页面  九宫格  start ******************
+	/**
+	 * 获取九宫格抽奖页面初始化信息
+	 * @param channel
+	 * @param ltyType
+	 * @return
+	 */
+	public String getLtyInitInfoNew(String channel, String ltyType) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("select * from ad_lty_init_info_new where channel = ? and lty_type = ? ");
+		List<Map<String, Object>> data = jdbcTemplate.queryForList(sb.toString(),new Object[]{channel,ltyType});
+		if( data != null && data.size() > 0 ){
+			return getJson(data.get(0));
+		}
+		return null;
+	}
+	
+	/**
+	 * 获取九宫格抽奖结果
+	 * @param channel
+	 * @param z
+	 * @param p
+	 * @param c
+	 * @param ip
+	 * @param time
+	 * @return
+	 */
+	public String getLotteryNew(String channel, String z, String p, String c, String ip, String time) {
+		//统计转盘点击日志
+		String insertSql = " insert into ad_lty_click_log(channel,vtime,ipaddr) values(?,?,?) ";
+		jdbcTemplate.update(insertSql, new Object[]{channel,time,ip});
+		
+		Map<String,Object> resultMap = new HashMap<String, Object>();//结果信息
+		// 没有渠道
+		if(channel == null || channel.trim().equals("")){
+			channel = "xx";
+		}
+		// 获取渠道的活动时间
+		
+		String sql = "select * from ad_lty_info_new where channel = ? limit 0,1";
+		List<Map<String,Object>> condition = jdbcTemplate.queryForList(sql,new Object[]{channel});
+		if( condition == null || condition.size() <= 0 ){
+			//resultMap.put("error", "此渠道还未设置奖项信息或者活动未开始或已结束");
+			//return getJson(resultMap);
+			condition = jdbcTemplate.queryForList("select * from ad_lty_info_new where channel = 'xx' ",new Object[]{});
+			if( condition != null && condition.size() > 0 ){
+				resultMap = condition.get(0);
+				
+				// 返回中奖信息
+				return getJson(resultMap);
+			}
+		}
+		
+		// 判断当前是否符合条件
+		// 查询该时间范围的有效订单数flag=1
+		Date date=new Date();//取时间				
+		String currTime = new SimpleDateFormat("yyyy-MM-dd").format(date);
+		String eft_cnt_sql = " select pubcode a,sum(case when flag=1 then 1 else 0 end) eft_cnt "+
+							" from ad_ord_log "+
+							" where 1=1 "+
+							" and vtime <= ? "+
+							" and pubcode = ? ";
+		List<Map<String,Object>> eftCnt = jdbcTemplate.queryForList(eft_cnt_sql,new Object[]{currTime+" 23:59:59",channel});
+		//有效订单数
+		int eftCntNum = 0;
+		if(eftCnt != null && eftCnt.size() > 0 ){
+			if( eftCnt.get(0).get("eft_cnt") != null ){
+				eftCntNum = Integer.valueOf(String.valueOf(eftCnt.get(0).get("eft_cnt")));
+			}
+		}
+		eftCntNum++;
+		
+		String sql2 = "select * from ad_lty_info_new where channel = ? and v_count = ? and allow_num > 0 ";
+		List<Map<String,Object>> condition2 = jdbcTemplate.queryForList(sql2,new Object[]{channel,eftCntNum});
+		if( condition2 != null && condition2.size() > 0 ){
+			
+			// 有中奖信息
+			resultMap = condition2.get(0);
+			String updateSql = " update ad_lty_info_new set allow_num = allow_num-1 where id = ? ";
+			jdbcTemplate.update(updateSql, new Object[]{resultMap.get("id")});
+			
+			// 返回中奖信息
+			return getJson(resultMap);
+		}
+		
+		resultMap = null;//中奖信息
+		
+		String s = "select * from ad_lty_info_new where channel = ? and v_count = 0 ";
+		condition = jdbcTemplate.queryForList(s,new Object[]{channel});
+		if( condition != null && condition.size() > 0 ){
+			resultMap = condition.get(0);
+			
+			// 返回中奖信息
+			return getJson(resultMap);
+		}
+		
+		// 返回中奖信息
+		return getJson(resultMap);
+	}
+	// ************************** 新的抽奖页面  九宫格  END ******************
+
+	/**
+	 * 获取掌阅的中奖  1000月饼
+	 * @param channel
+	 * @param ip
+	 * @param time
+	 * @return
+	 */
+	public String getLtyPrizeZy(String channel,String ltyPrize, String ip, String time) {
+		String sql = "select * from tb_zy_yuebing where channel = ? and lty_prize = ? and flag > 0";
+		List<Map<String, Object>> result = jdbcTemplate.queryForList(sql,new Object[]{channel,ltyPrize});
+		String duihuan_code = "";
+		if(result != null && result.size() > 0){
+			duihuan_code = String.valueOf(result.get(0).get("duihuan_code"));
+			sql = "update tb_zy_yuebing set flag = 0 where id = ? ";
+			jdbcTemplate.update(sql, new Object[]{result.get(0).get("id")});
+			// 记录访问记录
+			sql = "insert into tb_zy_yuebing_log(channel,duihuan_code,ipaddr,vtime) values(?,?,?,?)";
+			jdbcTemplate.update(sql, new Object[]{channel,duihuan_code,ip,time});
+			return getJson(result.get(0));
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param cid
+	 * @param ipaddr
+	 * @param vtime
+	 * @param ua
+	 */
+	public void addDaiLogs(String cid, String ipaddr, String vtime, String ua) {
+		String sql = "insert into ad_dai_log (cid,ipaddr,vtime,ua) values (?,?,?,?)";
+		jdbcTemplate.update(sql,new Object[]{cid,ipaddr,vtime,ua});
+	}
+
 }

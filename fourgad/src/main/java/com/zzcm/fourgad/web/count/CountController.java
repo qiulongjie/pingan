@@ -1,10 +1,15 @@
 package com.zzcm.fourgad.web.count;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -131,7 +136,7 @@ public class CountController {
         String end_vtime = getParameter(request,"end_vtime","");
         String channel = getParameter(request,"channel","");
         String draw = getParameter(request,"draw","1");
-        String data = countService.queryAntiCheatingData(pageNum,pageSize,begin_vtime.trim()+" 00:00:00",end_vtime.trim()+" 23:59:59",channel,draw);
+        String data = countService.queryAntiCheatingData(pageNum,pageSize,begin_vtime.trim(),end_vtime.trim(),channel,draw);
         return data;
     }
 	
@@ -310,6 +315,122 @@ public class CountController {
 	public String refreshChannel(HttpServletRequest request) throws Exception {
 		countService.refreshChannel();
 		return "";
+	}
+	
+	/**
+	 * 获取渠道结算数据信息
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "getChannelFeeData",method = RequestMethod.POST)
+	@ResponseBody
+	public String getChannelFeeData(HttpServletRequest request) throws Exception {
+		String pageSize = getParameter(request,"length","10");
+		String pageNum = getParameter(request,"start","0");
+		String channel = getParameter(request,"channel","");
+		String c_date = getParameter(request,"c_date","");
+		String draw = getParameter(request,"draw","1");
+		String data = countService.getChannelFeeData(pageNum,pageSize,channel,c_date,draw);
+		return data;
+	}
+	
+	/**
+	 * 获取结算总计
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "getChannelTotalFeeData",method = RequestMethod.POST)
+	@ResponseBody
+	public String getChannelTotalFeeData(HttpServletRequest request) throws Exception {
+		String channel = getParameter(request,"channel","");
+		String c_date = getParameter(request,"c_date","");
+		String data = countService.getChannelTotalFeeData(channel,c_date);
+		return data;
+	}
+	
+	/**
+	 * 获取大都会订单数
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "getDdhData",method = RequestMethod.POST)
+	@ResponseBody
+	public String getDdhData(HttpServletRequest request) throws Exception {
+		String pageSize = getParameter(request,"length","10");
+		String pageNum = getParameter(request,"start","0");
+		String draw = getParameter(request,"draw","1");
+		String channel = getParameter(request,"channel","");
+		String c_date = getParameter(request,"c_date","");
+		String data = countService.getDdhData(channel,c_date,pageSize,pageNum,draw);
+		return data;
+	}
+	
+	/**
+	 * 获取订单详细信息
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "getOrdDetailData",method = RequestMethod.POST)
+	@ResponseBody
+	public String getOrdDetailData(HttpServletRequest request) throws Exception {
+		String pageSize = getParameter(request,"length","10");
+		String pageNum = getParameter(request,"start","0");
+		String draw = getParameter(request,"draw","1");
+		String channel = getParameter(request,"channel","");
+		String vtime = getParameter(request,"vtime","");
+		String data = countService.getOrdDetailData(channel,vtime,pageSize,pageNum,draw);
+		return data;
+	}
+	
+	/**
+	 * 下载订单数据 
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="downloadOrdDetailData",method = RequestMethod.GET)
+	@ResponseBody
+	public String downloadOrdDetailData(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		String channel = getParameter(request,"chn","");
+		String vtime = getParameter(request,"vt","");
+		
+		// 生成文件
+		String filePath = countService.createCSVforOrd(channel,vtime);
+		File file = new File(filePath);
+		InputStream in = new FileInputStream(file);
+
+		String fileName = filePath.substring(filePath.lastIndexOf("/")+1);
+		// 下载
+		if (in != null) {
+			// response.setCharacterEncoding("UTF-8");
+			// 写数据到客户端 "application/octet-stream" application/vnd.ms-excel
+			response.setContentType("application/octet-stream");
+			response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+			response.setHeader("Pragma", "public");
+			// 设置超时时间
+			response.setDateHeader("Expires", (System.currentTimeMillis() + 5000));
+			response.addHeader("Content-Disposition",
+					"attachment;filename=\""+fileName+"\"");
+
+			OutputStream out = response.getOutputStream();
+			int len = 0;
+			byte[] buffer = new byte[1024];
+			while ((len = in.read(buffer)) != -1) {
+				out.write(buffer, 0, len);
+				out.flush();
+			}
+			out.close();
+			in.close();
+		}
+		
+		//删除文件 
+		file.delete();
+		return null;
 	}
 	
 	/**

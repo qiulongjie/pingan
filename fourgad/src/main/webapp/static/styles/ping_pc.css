@@ -1,0 +1,32 @@
+@charset "utf-8";
+/* CSS Document */
+body{margin:0;padding:0; margin:0 auto;line-height:22px;font-family:"微软雅黑";background:#fff;-webkit-text-size-adjust:none;color:#666666; width:100%;font-size: 14px;}
+form,ul,li,p,h1,h2,h3,h4,h5,h6,dl,dt,dd{margin:0;padding:0; font-weight:normal;}
+input,select{font-size:12px; color:#666; padding:4 0 0 5px; line-height:18px;}
+img{border:0;}
+.left{float:left;}
+.right{float:right;}
+ul,li{list-style-type:none;}
+.clear{ clear:both; height:0; overflow:hidden;}
+html,body{ height:100%;}
+a{ text-decoration:none;}
+ul,li{ list-style-type:none; margin:0; padding:0;}
+
+.con{ background:#106eb6; width:100%; padding:40px 0;}
+.conbox{ width:1040px; margin:0 auto;}
+.tltle{ position:absolute;}
+.right-inp{ float:right; position:relative;}
+.inp_box{ background:#ffffff; position:absolute;top:51px;left:53px; width:380px;  height:300px; border-radius:0 0 5px 5px; padding:10px;} 
+.inp_box div{ margin:10px 0;}
+.name{ width:70px; float:left; text-align:right; line-height:30px;}
+.inp{ width:260px; border-radius:2px; height:40px; line-height:40px; border:1px solid #ddd;}
+
+.yanzheng{ width:100px; height:42px; background:#000000; float:left; }
+.btn{ width:365px; height:52px; border-radius:5px; background:#ef4920; border:none; color:#ffffff; line-height:52px; text-align:center; font-size:22px; margin-top:20px; display:block;}
+.frlendlink{}
+.frlendlink ul{ width:1100px; margin:10px auto;}
+.frlendlink ul li{ float:left; margin:0 4px;}
+
+
+.inp_box strong{ color:#e25a00; font-size:22px; text-align:center; margin-left:80px; line-height:50px;}
+.text{ background:url(../images/ping_pc/textbg.jpg) 0 0 repeat; border-radius:5px; padding:10px; color:#a46e1e; text-align:center; line-height:30px;  font-size:16px;}

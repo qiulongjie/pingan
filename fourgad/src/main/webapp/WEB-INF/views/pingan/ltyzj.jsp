@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,user-scalable=no">
 <title>填写信息领取大礼</title>
 <meta name="keywords" content="Array" >
-<meta name="description" content="中国平安大礼包，25万元意外险免费送，先到先得！">
+<meta name="description" content="填写信息领取大礼">
 
 <%-- <link rel="stylesheet" type="text/css" href="${ctx }/static/styles/main_as.css"> --%>
 <link rel="stylesheet" type="text/css" href="http://rs.iadcn.com/pingan/static/zhuanpan/styles/main_as.css">
@@ -59,9 +59,9 @@
 			</div>
 			<div>
 				<!-- <a href="#" class="lingqu_btn">立即领取</a> -->
-				<input type="button" class="lingqu_btn" value="立即领取" onclick="checkForm('s')" />
+				<input id="commit_info" type="button" class="lingqu_btn" value="立即领取" onclick="checkForm('s')" />
 			</div>
-			<p>*温馨提示：请提供真实详细的邮寄地址和手机号码，在您中奖后我司会在2-3个工作日和您联系。<br />
+			<p id="tip_info">*温馨提示：请提供真实详细的邮寄地址和手机号码，在您中奖后我司会在2-3个工作日和您联系。<br />
 			</p>
 		    <p></p>
 		 </form>
@@ -79,6 +79,10 @@ $(function() {
 	
 	var lty_angle = $.session.get('lty_angle');
 	var ok_title = $.session.get('ok_title');
+	if(!ok_title){
+		$('#commit_info').remove();
+		$('#tip_info').html("*温馨提示：你回话已超时，请重新抽奖");
+	}
 	
 	var banner_link = $.session.get('banner_link');
 	$('#banner_link').attr('src',banner_link);

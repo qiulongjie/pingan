@@ -7,7 +7,7 @@
 <%
   Calendar   cal   =   Calendar.getInstance();
   cal.add(Calendar.DATE,   -1);
-  String vtime = new SimpleDateFormat( "yyyy-MM-dd ").format(cal.getTime());
+  String vtime = new SimpleDateFormat( "yyyy-MM-dd").format(cal.getTime());
 %>
 <br/>
 	<c:if test="${not empty message}">

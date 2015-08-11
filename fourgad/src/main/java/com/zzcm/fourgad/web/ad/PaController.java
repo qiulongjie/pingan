@@ -55,8 +55,11 @@ public class PaController {
 		   path.startsWith("lotteryDai") || 
 		   path.startsWith("pingLottery")){
 			adService.AddReqLogs(channel, ipaddr, prov, vtime,ua);
-		}if(path.startsWith("niwodai")){
+		}else if(path.startsWith("niwodai")){
 			adService.AddReqLogs(channel, ipaddr, prov, vtime,ua,"2");
+		}else if(path.equals("dai")){
+			String cid = request.getParameter("cid");
+			adService.addDaiLogs(cid ,ipaddr, vtime,ua);
 		}else{
 			adService.AddReqLogs(channel, ipaddr, prov, vtime,ua,"1");
 		}

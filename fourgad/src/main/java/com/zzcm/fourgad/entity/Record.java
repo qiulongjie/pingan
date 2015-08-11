@@ -1,5 +1,9 @@
 package com.zzcm.fourgad.entity;
 
+import java.util.Random;
+
+import com.zzcm.fourgad.util.DateUtil;
+
 /**
  * 免费险同步接口数据实体 
  * @author qiulongjie
@@ -7,15 +11,30 @@ package com.zzcm.fourgad.entity;
  */
 public class Record {
 	
+	public Record(){
+		this.DonateTime = DateUtil.getTodayDate();
+	}
+	
+	public Record(String fromSystem) {
+		this.FromSystem = fromSystem;
+		this.Key = fromSystem+createKey();
+		this.DonateTime = DateUtil.getTodayDate();
+	}
+	
+	private String createKey(){
+		Random random = new Random();
+		return ""+System.currentTimeMillis()+random.nextInt(9)+random.nextInt(9);
+	}
+
 	// 带#号的为必录信息
 	
 	//  customer  begin
 	
 	/** # 流水号（小于32位） 必录，合作方提供，用来源+时间等唯一标示**/
-	public String Key = "";
+	public String Key = "ZhangZhong";
 	
 	/** # 来源，必录，需要分配**/
-	public String FromSystem = "";
+	public String FromSystem = "ZhangZhong";
 	
 	/** # 姓名 必录**/
 	public String Name = "";
@@ -84,11 +103,11 @@ public class Record {
 	/** 默认放空，免费险种凭证号，具体根据业务需要，再双方约定 */
 	public String Code = "";
 	
-	/** 赠品编号 ,由业务提供，一般PC开始 */
-	public String PresentCode = "";
+	/** PC0000000123 产品代码 赠品编号 ,由业务提供，一般PC开始 */
+	public String PresentCode = "PC0000000123";
 	
 	/** TSR号 具体工号分配 */
-	public String TSRCode = "";
+	public String TSRCode = "805095";
 	
 	/** #  赠送日期 YYYY-MM-DD 必录 */
 	public String DonateTime = "";
@@ -100,7 +119,12 @@ public class Record {
 	public String FlghtNo = "";
 	
 	/** 默认放空，扩展字段，生效时间*/
-	public String ValidTime = "1";
+	public String ValidTime = "";
 	
 	// Activity  end 
+	
+	public static void main(String[] args) {
+		Record r = new Record("qwe");
+		System.out.println(r.Key);
+	}
 }

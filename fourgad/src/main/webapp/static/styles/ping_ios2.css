@@ -1,0 +1,10 @@
+@charset "utf-8";
+/* CSS Document */
+
+.inputbox{ position:relative;}
+.inp{ position:absolute;top:12px; width:62%;right:0px;}
+.input1{ border:none; background:#2e82a7; height:22px; width:76%;}
+.inpbg{}
+.yuedu{ background:#4cc5fe; color:#fff; padding:5px 20px 5px 26px; line-height:30px;}
+.yuedu a{ color:#fff100;}
+.yanzheng{ background:#2e82a7; position:absolute; right:40px; z-index:999999; width:22%; height:28px;top:13px;}

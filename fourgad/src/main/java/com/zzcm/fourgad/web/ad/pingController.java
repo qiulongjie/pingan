@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.zzcm.fourgad.service.ad.AdService;
+import com.zzcm.fourgad.service.ad.DdhService;
 import com.zzcm.fourgad.util.DateUtil;
 import com.zzcm.fourgad.util.WebUtil;
 
@@ -19,6 +20,8 @@ import com.zzcm.fourgad.util.WebUtil;
 public class pingController {
 	@Autowired
 	private AdService adService;
+	@Autowired
+	private DdhService ddhService;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String input(Model model,
@@ -73,7 +76,6 @@ public class pingController {
 		
 		String verifyCode = (String) request.getSession().getAttribute("verifyCode");
 		String realCode = request.getParameter("vryCode");
-		System.out.println("verifyCode="+verifyCode+"  realCode="+realCode);
 		// 判断验证码是否正确
 		if (verifyCode != null && realCode != null && realCode.equalsIgnoreCase(verifyCode)) {
 			String vtime = DateUtil.getDateTime();
@@ -108,5 +110,56 @@ public class pingController {
 		}
 		
 		return "redirect:/ping/ok";
+	}
+	
+	/**
+	 * 大都会提交数据 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="ddhSumbit")
+	public String ddhSumbit(HttpServletRequest request) {
+		String uname = request.getParameter("uname");
+		String birthday =request.getParameter("birthday");
+		String ddlSex = request.getParameter("ddlSex") == null ? "Male" : request.getParameter("ddlSex");
+		String phone = request.getParameter("phone");
+		
+		String prov = request.getParameter("code") == null ? "" : request.getParameter("code");
+		String channel = request.getParameter("a");
+		
+		String[] checkArr= request.getParameterValues("checkBaoxian");
+		String isCheck = null;
+		if(checkArr == null || checkArr.length == 0){
+			isCheck = "0";
+		}else{
+			isCheck = checkArr[0];
+		}
+		String verifyCode = (String) request.getSession().getAttribute("verifyCode");
+		String realCode = request.getParameter("vryCode");
+		// 判断验证码是否正确
+		if (verifyCode != null && realCode != null && realCode.equalsIgnoreCase(verifyCode)) {
+			// 检查参数 
+			String ipaddr = WebUtil.getIpAddr(request);
+			Object[] result = ddhService.checkDdhSumbit(uname,birthday,ddlSex,phone,ipaddr);
+			if( Integer.valueOf(String.valueOf(result[0])) == 0 ){
+				String vtime = DateUtil.getDateTime();
+				ddhService.addRecordDdh(channel,uname, birthday, ddlSex, phone, ipaddr, vtime,isCheck,result);	
+			}else{
+				return "redirect:/ping/go/pingDdh_fail?result="+String.valueOf(result[0]);
+			}
+		}else{
+			// 判断验证码错误
+			request.setAttribute("a", channel);
+			request.setAttribute("uname", uname);
+			request.setAttribute("birthday", birthday);
+			request.setAttribute("ddlSex", ddlSex);
+			request.setAttribute("phone", phone);
+			request.setAttribute("isCheck", isCheck);
+			
+			request.setAttribute("vry", "failure_vry");
+			return "pingan/pingDdh";
+		}
+		
+		return "redirect:/ping/go/pingDdh_ok";
 	}
 }

@@ -1,0 +1,30 @@
+@charset "utf-8";
+/* CSS Document */
+body{margin:0;padding:0; margin:0 auto;line-height:22px;font-family:"微软雅黑";background:#fff;-webkit-text-size-adjust:none;color:#666666; width:100%;font-size: 14px;}
+form,ul,li,p,h1,h2,h3,h4,h5,h6,dl,dt,dd{margin:0;padding:0; font-weight:normal;}
+input,select{font-size:12px; color:#666; padding:4 0 0 5px; line-height:18px;}
+img{border:0;}
+.left{float:left;}
+.right{float:right;}
+ul,li{list-style-type:none;}
+.clear{ clear:both; height:0; overflow:hidden;}
+html,body{ height:100%;}
+a{ text-decoration:none;}
+ul,li{ list-style-type:none; margin:0; padding:0;}
+img{diplay:block;*display:block;}
+
+.zpbox{position:relative;}
+.zhuanpan{position: absolute;width: 73%;left: 15%;top:16%;}
+.zhuanpan_pic{ }
+.qidong_box{ position: absolute;top:23%;width:35%;left: 33%;}
+
+.tongzhi{ position:relative;top:0; z-index:9999; height:40px;}
+.tongzhi_text{ position:absolute;top:0px;left:0px; line-height:35px; height:35px; vertical-align:middle; }
+.tongzhi_text .wenzi{ overflow:hidden; float:left; height:35px;line-height:35px;}
+
+/* 弹窗 */
+.blackbg{width: 100%;height: 100%;background-color: #000;opacity: 0.6;position: fixed;top: 0;left: 0;z-index: 9999;}
+.tanchuang{width: 80%;height: 245px;left: 50%;margin-left: -150px;top: 25%;margin-top: -100px;position: fixed;z-index: 3;z-index:199999;border-radius: 8px;}
+.sub_btn{ text-align: center;background: #37dfbc;height: 43px;line-height:43px;width: 288px;border: none;border-radius: 10px;position: absolute;bottom: -97px;left:6px;color: #ffffff; font-size:22px; }
+.sub_btn:hover{ background:#32cbab;}
+.tanchuang img{width:300px;}

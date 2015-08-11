@@ -21,6 +21,7 @@
 
 <body style=" max-width:400px; margin:0 auto;">
 
+<!-- 弹窗 start -->
 <div  id="submitFormDiv" style="display:none;">
 	<div class="blackbg"></div>
 	<div class="tanchuang" >
@@ -56,10 +57,11 @@
 		</div>
 		<div class="queding_btn">
 <%-- 			<a id="queding_btn_xiaoshi" href="http://m.iadcn.com/pa/ping_hiwifi?a=${a }">完善信息</a>  --%>
-			<a id="queding_btn_xiaoshi" href="${ctx }/pa/ping_bz_g_zy?p=1000&a=${a }">完善信息</a> 
+			<a id="wanshan_btn" href="${ctx }/pa/ping_bz_g_zy?p=1000&a=${a }">完善信息</a> 
 		</div>
 	</div>
 </div>
+<!-- 弹窗 END -->
 
 	<img id="top_img_id" src=""  width="100%" />
 	<div class="big_box3">
@@ -131,6 +133,7 @@ var _timer = setInterval("scroll(document.getElementById('scrollobj'))", 20);
 		var initing = true;
 		var bannerLink = '';
 		var ping_title = '';
+		var isDdh = false;
 		
 		var a = '${a }';
 		var z = '${p }';
@@ -144,6 +147,8 @@ var _timer = setInterval("scroll(document.getElementById('scrollobj'))", 20);
 				$('#submitFormDiv2').show();
 			}else{
 				if ($.cookie("ltyChoujiang"+a)) {
+					var u = $.cookie("ltyChoujiang"+a);
+					$('#wanshan_btn').attr('href',u);
 					$('#submitFormDiv3').show();
 				}
 			}
@@ -197,11 +202,11 @@ var _timer = setInterval("scroll(document.getElementById('scrollobj'))", 20);
 				duration : 5000,
 				animateTo : angle + 1440,
 				callback : function() {
-					$.cookie("ltyChoujiang"+a, "true", {
-						expires : 1000
-					});
 					running = false;
 					var url = $('#queding_btn').attr('href');
+					$.cookie("ltyChoujiang"+a, url, {
+						expires : 1000
+					});
 					window.location.href = url;
 				}
 			});
@@ -221,6 +226,8 @@ var _timer = setInterval("scroll(document.getElementById('scrollobj'))", 20);
 						return;
 					}
 					if ($.cookie("ltyChoujiang"+a)) {
+						var u = $.cookie("ltyChoujiang"+a);
+						$('#wanshan_btn').attr('href',u);
 						$('#submitFormDiv3').show();
 						return;
 					}
@@ -246,6 +253,7 @@ var _timer = setInterval("scroll(document.getElementById('scrollobj'))", 20);
 						
 						$('.tanchuang_input2').html(data.title_info);
 						$('#queding_btn').attr('href','${ctx}'+data.link_url+'?a='+a);
+						
 					    $.session.set('ok_title', data.ok_title);
 						$.session.set('ok_info', data.ok_info);
 						$.session.set('lty_angle', data.lty_angle);

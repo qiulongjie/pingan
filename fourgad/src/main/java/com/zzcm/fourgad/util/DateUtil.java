@@ -11,6 +11,8 @@ public class DateUtil {
     
     /** 日期格式 yyyy-MM-dd **/
     public static final String YYYY_MM_DD = "yyyy-MM-dd";
+    /** 日期格式 yyyyMMdd **/
+    public static final String YYYYMMDD = "yyyyMMdd";
     
 	@SuppressWarnings("static-access")
 	public static String getYestDay(){
@@ -24,6 +26,34 @@ public class DateUtil {
 	 
 		//System.out.println(dateString);
 		return dateString;
+	}
+	
+	/**
+	 * 获取当前日期 yyyy-MM-dd
+	 * @return
+	 */
+	public static String getTodayDate(){
+		Date date=new Date();//取时间				
+		SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD);
+		String dateString = formatter.format(date);	 
+		return dateString;
+	}
+	
+	/**
+	 * 把yyyyMMdd格式日期转为yyyy-MM-dd
+	 * @param date
+	 * @return
+	 */
+	public static String changeDateFormat(String date){
+		try {
+			Date d = new SimpleDateFormat(YYYYMMDD).parse(date);
+			SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD);
+			String dateString = formatter.format(d);	 
+			return dateString;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return date;
 	}
 	
 	public static String getDateTime(){

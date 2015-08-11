@@ -6,7 +6,7 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <%
   Calendar   cal   =   Calendar.getInstance();
-  SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd ");
+  SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd");
   String end_time = sdf.format(cal.getTime());
   cal.add(Calendar.DATE,   -7);
   String begin_time = sdf.format(cal.getTime());
@@ -72,7 +72,7 @@
 	        "bLengthChange": false,
 	        "processing": true,
 	        "serverSide": true,
-	        "pageLength": 10,
+	        "pageLength": 30,
 	        "ajax": {
 	            "url": "${ctx}/count/getAntiCheatingData",
 	            "type": "post",

@@ -1,5 +1,9 @@
 package com.zzcm.fourgad.service.count;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -459,17 +463,17 @@ public class CountService {
 
         if(!StringUtil.isEmpty(begin_vtime))
         {
-            sql.append(" AND vtime>='").append(begin_vtime).append("'");
+            sql.append(" AND vtime>='").append(begin_vtime+" 00:00:00").append("'");
         }
         if(!StringUtil.isEmpty(end_vtime))
         {
-            sql.append(" AND vtime<='").append(end_vtime).append("'");
+            sql.append(" AND vtime<='").append(end_vtime+" 23:59:59").append("'");
         }
         if(!StringUtil.isEmpty(channel))
         {
         	sql.append(" and pubcode like '%" + channel.trim() + "%' ");
         }
-        sql.append(" group by pubcode order by pubcode limit ?,?");
+        sql.append(" group by pubcode order by SUM(total) desc limit ?,?");
         
         StringBuffer sbCount = new StringBuffer();
         sbCount.append("SELECT COUNT(1) as cnt FROM( SELECT pubcode FROM ad_cheatingcount WHERE 1=1 ");
@@ -703,4 +707,221 @@ public class CountService {
 		return true;
 	}
 
+	/**
+	 * 获取渠道结算数据信息
+	 * @param pageNum
+	 * @param pageSize
+	 * @param channel
+	 * @param c_date
+	 * @param draw
+	 * @return
+	 */
+	public String getChannelFeeData(String pageNum, String pageSize, String channel, String c_date, String draw) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("select * from tb_channel_fee where 1=1 ");
+		
+		if( channel != null && channel.trim().length() > 0){
+			sb.append(" and channel like '%" + channel.trim() + "%' ");
+		}
+		if( c_date != null && c_date.trim().length() > 0){
+			sb.append(" and c_date ='" + c_date.trim() + "' ");
+		}
+		sb.append(" limit ?,?  ");
+		
+		StringBuffer sbCount = new StringBuffer();
+		sbCount.append(" select count(1) cnt from tb_channel_fee where 1=1 ");
+		
+		if( channel != null && channel.trim().length() > 0){
+			sbCount.append(" and channel like '%" + channel.trim() + "%' ");
+		}
+		if( c_date != null && c_date.trim().length() > 0){
+			sbCount.append(" and c_date ='" + c_date.trim() + "' ");
+		}
+		
+		return getJsonData(pageNum, pageSize, draw, sb, sbCount);
+	}
+
+	/**
+	 * 获取结算总计 
+	 * @param channel
+	 * @param c_date
+	 * @return
+	 */
+	public String getChannelTotalFeeData(String channel, String c_date) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("select sum(fee_count) total_cnt,sum(fee) total_fee  from tb_channel_fee where 1=1 ");
+		
+		if( channel != null && channel.trim().length() > 0){
+			sb.append(" and channel like '%" + channel.trim() + "%' ");
+		}
+		if( c_date != null && c_date.trim().length() > 0){
+			sb.append(" and c_date ='" + c_date.trim() + "' ");
+		}
+		List<Map<String,Object>> cnt = jdbcTemplate.queryForList(sb.toString(), new Object[]{});
+		if( cnt != null && cnt.size() > 0 ){
+			if( cnt.get(0).get("total_cnt") != null ){
+				return String.valueOf(cnt.get(0).get("total_cnt")) + "-"+String.valueOf(cnt.get(0).get("total_fee"));
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 获取大都会订单数
+	 * @param channel
+	 * @param c_date
+	 * @param draw 
+	 * @param pageNum 
+	 * @param pageSize 
+	 * @return
+	 */
+	public String getDdhData(String channel, String c_date, String pageSize, String pageNum, String draw) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("select channel ,left(vtime,10) c_date, count(1) cnt , sum(case when flag='true' then 1 else 0 end) true_cnt  ");
+		sb.append("from ad_record_ddh ");
+		sb.append("where 1=1 ");
+		
+		if( channel != null && channel.trim().length() > 0){
+			sb.append(" and channel like '%" + channel.trim() + "%' ");
+		}
+		if( c_date != null && c_date.trim().length() > 0){
+			sb.append(" and vtime >='" + c_date.trim() + " 00:00:00' and vtime<='"+ c_date.trim() +" 23:59:59'");
+		}
+		sb.append(" group by channel,left(vtime,10)");
+		sb.append(" limit ?,?  ");
+		
+		StringBuffer sbCount = new StringBuffer();
+		sbCount.append(" select count(1) cnt from ( select count(1) from ad_record_ddh where 1=1 ");
+		
+		if( channel != null && channel.trim().length() > 0){
+			sbCount.append(" and channel like '%" + channel.trim() + "%' ");
+		}
+		if( c_date != null && c_date.trim().length() > 0){
+			sbCount.append(" and vtime >='" + c_date.trim() + " 00:00:00' and vtime<='"+ c_date.trim() +" 23:59:59'");
+		}
+		
+		sbCount.append(" group by channel,left(vtime,10) ) a");
+		
+		return getJsonData(pageNum, pageSize, draw, sb, sbCount);
+	}
+
+	/**
+	 * 获取订单详细信息
+	 * @param channel
+	 * @param vtime
+	 * @param pageSize
+	 * @param pageNum
+	 * @param draw
+	 * @return
+	 */
+	public String getOrdDetailData(String channel, String vtime, String pageSize, String pageNum, String draw) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("select * from ad_ord_log where 1=1 ");
+		
+		if(vtime != null && vtime.trim().length() > 0 ){
+			sb.append(" and vtime >= '"+vtime.trim() +" 00:00:00' and vtime <= '"+vtime.trim()+" 23:59:59'");
+		}
+		if(channel != null && channel.trim().length() > 0){
+			sb.append(" and pubcode = '" + channel.trim() + "'");
+		}
+		sb.append(" limit ?,?  ");
+		 
+		StringBuffer sbCount = new StringBuffer();
+		sbCount.append("select count(1) cnt from ad_ord_log where 1=1 ");
+		if(vtime != null && vtime.trim().length() > 0 ){
+			sbCount.append(" and vtime >= '"+vtime.trim() +" 00:00:00' and vtime <= '"+vtime.trim()+" 23:59:59'");
+		}
+		if(channel != null && channel.trim().length() > 0){
+			sbCount.append(" and pubcode = '" + channel.trim() + "'");
+		}
+		
+		return getJsonData(pageNum, pageSize, draw, sb, sbCount);
+	}
+
+	/**
+	 * 生成订单数据csv文件
+	 * @param channel
+	 * @param vtime
+	 * @return
+	 */
+	public String createCSVforOrd(String channel, String vtime) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("select * from ad_ord_log where 1=1 ");
+		if(vtime != null && vtime.trim().length() > 0 ){
+			sb.append(" and vtime >= '"+vtime.trim() +" 00:00:00' and vtime <= '"+vtime.trim()+" 23:59:59'");
+		}
+		if(channel != null && channel.trim().length() > 0){
+			sb.append(" and pubcode = '" + channel.trim() + "'");
+		}
+		sb.append(" limit ?,? ");
+		int begin = 0;
+		int len = 500;
+		// 文件名称
+		String fileName = System.currentTimeMillis()+"_"+(channel == null || channel.trim().length() <= 0 ? "all":channel)+"_"+(vtime == null || vtime.trim().length() <= 0 ? "all":vtime)+".csv";
+		// 文件输出位置 /WEB_INF/export_files/
+		String filePath = this.getClass().getClassLoader().getResource("/").getPath();
+		filePath = filePath.substring(0,filePath.lastIndexOf("classes/")) + "export_files/" + fileName;
+		System.out.println(filePath);
+		OutputStream outStream = null;
+		try {
+			File file = new File(filePath);
+			if(!file.getParentFile().exists()){
+				file.getParentFile().mkdirs();
+			}
+			outStream = new FileOutputStream(file);
+			// 准备写数据了 
+			long beginTime = System.currentTimeMillis();
+			System.out.println("开始写数据--"+channel+"--"+vtime+"--"+beginTime);
+			// 写标题
+			outStream.write(ordTitle.getBytes("UTF-8"));
+			outStream.write("\n\t".getBytes("UTF-8"));
+			//获取数据
+			List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), new Object[]{begin,len});
+			StringBuilder strB = new StringBuilder();
+			int count = 1;
+			while( list != null && list.size() > 0 ){
+				for( Map<String, Object> map : list ){
+					// 拼装数据 
+					strB.append(map.get("uname") == null ? "" : map.get("uname").toString()).append(",");
+					strB.append(map.get("birthday") == null ? "" : map.get("birthday").toString()).append(",");
+					strB.append(map.get("ddlSex") == null ? "" : map.get("ddlSex").toString()).append(",");
+					strB.append(map.get("phone") == null ? "" : map.get("phone").toString()).append(",");
+					strB.append(map.get("ipaddr") == null ? "" : map.get("ipaddr").toString()).append(",");
+					strB.append(map.get("vtime") == null ? "" : map.get("vtime").toString()).append(",");
+					strB.append(map.get("pubcode") == null ? "" : map.get("pubcode").toString()).append(",");
+					strB.append(map.get("flag") == null ? "" : map.get("flag").toString()).append(",");
+					strB.append(map.get("vstr1") == null ? "" : map.get("vstr1").toString());
+					strB.append("\n\t");
+					// 写数据到文件
+					outStream.write(strB.toString().getBytes("UTF-8"));
+					strB.setLength(0);// 清除数据
+					count++;
+				}
+				outStream.flush();
+				// 重新获取数据
+				begin = begin + len;
+				list.clear();
+				list = null;
+				list = jdbcTemplate.queryForList(sb.toString(), new Object[]{begin,len});
+			}
+			long endTime = System.currentTimeMillis();
+			System.out.println("写完成--"+channel+"--"+vtime+"--耗时："+(endTime-beginTime)+"毫秒");
+			System.out.println("count="+count);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			if( outStream != null ){
+				try {
+					outStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return filePath;
+	}
+	
+	/** 订单详情导出文件的标题 */
+	private static final String ordTitle = "姓名,生日,性别,号码,IP,时间,渠道,同步状态,同步信息";
+	
 }

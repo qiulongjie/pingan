@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
@@ -24,6 +25,11 @@ import com.zzcm.fourgad.service.ad.AdService;
 
 public class QuartzJob {
 	private Logger logger = Logger.getLogger(this.getClass());
+	/** 答案生成策略 */
+	private static final int[] ANSWER2_3= {3,3};
+	/** 问卷类型 */
+	private static final String ANSWERTYPE10 = "10";
+	private static final char CHAR_A = 'A';
 	@Autowired
 	private AdService adService;
 	public void work()
@@ -47,7 +53,7 @@ public class QuartzJob {
 	
 	public void SendData(String url){
 		List<Map<String,Object>> list = adService.getOrdsByFlag(0, 100);
-		for(Map l:list){
+		for(Map<String,Object> l:list){
 			Long id = new Long(Integer.parseInt(l.get("id").toString()));
 			PostBean bean = new PostBean();
 			bean.setName(l.get("uname").toString());
@@ -66,6 +72,9 @@ public class QuartzJob {
 				pcontent = "";
 			}else{
 				pcontent = l.get("pcontent").toString();
+			}
+			if(pcontent.equals("") || pcontent.equals("null,null,null,null")){
+				pcontent = createAnswer(ANSWERTYPE10,ANSWER2_3);
 			}
 			bean.setPubCode(pubcode);
 			bean.setRemark(pcontent); 
@@ -105,34 +114,66 @@ public class QuartzJob {
         post.setEntity(myEntity);// 设置请求体
         String responseContent = null; // 响应内容
         CloseableHttpResponse response = null;
-		         try {
-		             response = client.execute(post);
-		             if (response.getStatusLine().getStatusCode() == 200) {
-		                 HttpEntity entity = response.getEntity();
-		                 responseContent = EntityUtils.toString(entity, "UTF-8");
-		             }
-		         } catch (ClientProtocolException e) {
-		        	 logger.error(e.toString());
-		             
-		         } catch (IOException e) {
-		        	 logger.error(e.toString());
-		             
-		         } finally {
-		             try {
-		                 if (response != null)
-		                     response.close();
-		 
-		             } catch (IOException e) {
-		            	 logger.error(e.toString());		                 
-		             } finally {
-		                 try {
-		                     if (client != null)
-		                         client.close();
-		                 } catch (IOException e) {
-		                	 logger.error(e.toString());		                     
-		                 }
-		             }
-		         }
-		         return responseContent;
-		     }
+        try {
+             response = client.execute(post);
+             if (response.getStatusLine().getStatusCode() == 200) {
+                 HttpEntity entity = response.getEntity();
+                 responseContent = EntityUtils.toString(entity, "UTF-8");
+             }
+         } catch (ClientProtocolException e) {
+        	 logger.error(e.toString());
+             
+         } catch (IOException e) {
+        	 logger.error(e.toString());
+             
+         } finally {
+             try {
+                 if (response != null)
+                     response.close();
+ 
+             } catch (IOException e) {
+            	 logger.error(e.toString());		                 
+             } finally {
+                 try {
+                     if (client != null)
+                         client.close();
+                 } catch (IOException e) {
+                	 logger.error(e.toString());		                     
+                 }
+             }
+         }
+         return responseContent;
+     }
+
+	/**
+	 * 生成Remark字段的数据  对应问卷答案
+	 * @param type 问卷类型
+	 * @param creator
+	 * @return
+	 */
+	public static String createAnswer(String type,int[] creator){
+		return type+":"+createAnswer(creator);
+	}
+	
+	/**
+	 * 随机创建答案 
+	 * @param creator 数组的长度为答案的个数，值为从A开始的答案类型  如{3,3}数据 答案为2个以ABC三种答案类型的
+	 * @return
+	 */
+	public static String createAnswer(int[] creator){
+		Random random = new Random();
+		StringBuffer sb = new StringBuffer();
+		for(int i : creator){
+			sb.append((char)(CHAR_A + random.nextInt(i))).append(",");
+		}
+		sb.delete(sb.length()-1,sb.length());
+		return sb.toString();
+	}
+	
+	
+	public static void main(String[] args) {
+		//System.out.println(createAnswer("10",new int[]{3,3}));
+		Random random = new Random();
+		System.out.println(random.nextInt(3));
+	}
 }

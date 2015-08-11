@@ -6,7 +6,7 @@
     <meta content="telephone=no" name="format-detection" />
     <meta content="email=no" name="format-detection" />
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no,width=device-width" />
-    <title>中国平安保险</title>
+    <title>免费交通意外险</title>
 <%--     <link rel="stylesheet" href="${ctx}/static/css/index3.css" /> --%>
     <link rel="stylesheet" type="text/css" href="http://rs.iadcn.com/pingan/static/zhuanpan/styles/main2.css">
     <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/baidu_count.js"></script>
@@ -21,14 +21,14 @@
   <div class="con2">
    		<div class="gongxi">
 			<h2 class="scu">恭喜您！</h2>
-			<p>获得平安免费意外险</p>
+			<p>获得免费交通意外险</p>
 			
 			<div class="scu_text">
-				感谢您申请中国平安免费意外险，为了保证您的成功领取，请勿重复申请，如需更改赠险信息，请在客服电话确认时按提示操作
+				感谢您申请免费交通意外险，为了保证您的成功领取，请勿重复申请，如需更改赠险信息，请在客服电话确认时按提示操作
 			</div>
-			<div style="margin: 0px auto; width:85%; padding-bottom:12px;">
+			<!-- <div style="margin: 0px auto; width:85%; padding-bottom:12px;">
 			  <img onclick="gotoHao()" src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ok/red.png" width="100%">
-			</div>
+			</div> -->
 		</div>
 		
 		

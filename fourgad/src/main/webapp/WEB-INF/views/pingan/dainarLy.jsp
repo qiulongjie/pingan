@@ -74,7 +74,6 @@
 						<img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/lottery/tit1.png" width="80%" />
 					</div>
 					<br class="clear" />
-					<div
 						<div class="nr">
 	每人最多允许抽奖次数:1次<br />
 	一等奖: iPhone 6 16G 金色手机1部
@@ -97,7 +96,6 @@
 								<img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/lottery/tit1.png" width="80%" />
 							</div>
 							<br class="clear" />
-							<div
 							
 							<div class="nr">
 	请点击大转盘“开始抽奖”按钮进行抽奖<br />
