@@ -130,19 +130,15 @@ var lottery={
 					
 					if($.cookie("ltyChoujiang"+a)){
 						if($.cookie("ltyChoujiang"+a) == '1'){//用户在这里已经抽过奖
-							//hongbao
-							lottery.prize=5;
-							lottery.speed=100;
-							roll();
+							//hongbao --> thanks
+							toRoll(7);
 							return false;
 						}
-						if($.cookie("ltyChoujiang"+a) == '2'){
+						/*if($.cookie("ltyChoujiang"+a) == '2'){
 							//thanks
-							lottery.prize=7;
-							lottery.speed=100;
-							roll();
+							toRoll(7);
 							return false;
-						}
+						}*/
 					}else{
 						if(!parseInt(p)){
 						   p='1000';
@@ -150,25 +146,19 @@ var lottery={
 						$.cookie("ltyChoujiang"+a, "1", {
 							expires : parseInt(p)
 						});
-						//hongbao
-						lottery.prize=5;
-						lottery.speed=100;
-						roll();
+						//hongbao --> thanks
+						toRoll(7);
 						return false;
 					}
 				}else{
 					if($.cookie("ltyChoujiang"+a) == '1'){//用户在这里已经抽过奖
-						//hongbao
-						lottery.prize=5;
-						lottery.speed=100;
-						roll();
+						//hongbao --> thanks
+						toRoll(7);
 						return false;
 					}
 					if($.cookie("ltyChoujiang"+a) == '2'){
 						//thanks
-						lottery.prize=7;
-						lottery.speed=100;
-						roll();
+						toRoll(7);
 						return false;
 					}
 					gotoBx();
@@ -178,10 +168,14 @@ var lottery={
 		}
 	});
 	
-	function gotoBx(){
-		lottery.prize=0;
+	function toRoll(ltyPrize){
+		lottery.prize=ltyPrize;
 		lottery.speed=100;
 		roll();
+	}
+	
+	function gotoBx(){
+		toRoll(0);
 		setBxUrl();
 		return false;
 	}
@@ -216,17 +210,17 @@ var lottery={
 		if($.cookie("ltyChoujiang"+a)){
 			var cnt = parseInt($.cookie("ltyChoujiang"+a));
 			cnt = cnt + 1;
-			if(cnt === 3){// 谢谢参与
+			if(cnt === 2){// 谢谢参与
 				setTimeout(showThanks,500);
 			}else{
 				$.cookie("ltyChoujiang"+a, cnt+"", {
 					expires : parseInt(p)
 				});
 			}
-			if(cnt === 2){
+			/*if(cnt === 2){
 				// zhonghongbao
 				setTimeout(showHongbao,500);
-			}
+			}*/
 		}else{
 			$.cookie("ltyChoujiang"+a, "1", {
 				expires : parseInt(p)

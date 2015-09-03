@@ -20,13 +20,24 @@
 		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
 	</context:component-scan>
 	
+	<!-- job节点需要的配置 -->
 	<import resource="classpath:spring-remote.xml"/>
 	
 	<bean id="ipSeeker" class="com.zzcm.fourgad.service.addr.IPSeeker" scope="singleton" lazy-init="true">
 		<constructor-arg name="ipDatFile">
 			<value>D:\qiulongjie\work\IPService\ip.dat</value>
+			<!-- 服务器上的路径 -->
+			<!-- <value>/home/ad/ip.dat</value> -->
 		</constructor-arg>
 	</bean>
+	
+	<context:property-placeholder ignore-unresolvable="true" location="classpath*:/zoom-client.properties" />	
+	<!-- zookeeper -->   			  
+    <bean name="zoomTaskApp" class="com.zzcm.monitor.zookeeper.spring.ZoomTaskApp" scope="singleton" lazy-init="false">
+        <property name="hostPort" value="${zookeeper.hostPort}"/>
+        <property name="node" value="${zookeeper.node}" />
+        <property name="email" value="${zookeeper.email}" />
+    </bean>
 
 	<!-- Jpa Entity Manager 配置 -->
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"> 
@@ -69,9 +80,8 @@
 	
 	<!-- production环境 -->
  	<beans profile="production">
- 		<context:property-placeholder ignore-unresolvable="true"
-			location="classpath*:/application.properties" />	
-		
+ 		<context:property-placeholder ignore-unresolvable="true" location="classpath*:/application.properties" />	
+			
 		<!-- 数据源配置, 使用Tomcat JDBC连接池 -->
 		<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
 			<!-- Connection Info -->
@@ -91,62 +101,4 @@
 		<!--<jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/ExampleDB" />-->
 	</beans>
 	
-	<!-- local development环境 -->
-	<beans profile="development">
-		<context:property-placeholder ignore-resource-not-found="true"
-			location="classpath*:/application.properties,
-          			  classpath*:/application.development.properties" />	
-
-		<!-- Tomcat JDBC连接池 -->
-		<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
-			<property name="driverClassName" value="${jdbc.driver}" />
-			<property name="url" value="${jdbc.url}" />
-			<property name="username" value="${jdbc.username}" />
-			<property name="password" value="${jdbc.password}" />
-			<property name="defaultAutoCommit" value="false" />
-		</bean>
-	</beans>
-	
-	<!-- functional test 环境 -->
-	<beans profile="functional">
-		<context:property-placeholder ignore-resource-not-found="true"
-			location="classpath*:/application.properties,
-          			  classpath*:/application.functional.properties,
-          			  classpath*:/application.functional-local.properties" />	
-
-		<!-- Tomcat JDBC连接池 -->
-		<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
-			<property name="driverClassName" value="${jdbc.driver}" />
-			<property name="url" value="${jdbc.url}" />
-			<property name="username" value="${jdbc.username}" />
-			<property name="password" value="${jdbc.password}" />
-			<property name="defaultAutoCommit" value="false" />
-		</bean>
-
-		<!-- 初始化数据表结构 -->
-		<jdbc:initialize-database data-source="dataSource" ignore-failures="ALL">
-			<jdbc:script location="classpath:sql/${db.type}/schema.sql" />
-		</jdbc:initialize-database>	
-	</beans>
-	
-	<!-- unit test环境 -->
-	<beans profile="test">
-	 	<context:property-placeholder ignore-resource-not-found="true"
-			location="classpath*:/application.properties,
-          			  classpath*:/application.test.properties" />	
-		
-		<!-- Spring Simple连接池 -->
-		<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
-			<property name="driverClass" value="${jdbc.driver}" />
-			<property name="url" value="${jdbc.url}" />
-			<property name="username" value="${jdbc.username}" />
-			<property name="password" value="${jdbc.password}" />
-		</bean>
-
-		<!-- 初始化数据表结构 与默认数据-->
-		<jdbc:initialize-database data-source="dataSource" ignore-failures="ALL">
-			<jdbc:script location="classpath:sql/h2/schema.sql" />
-			<jdbc:script location="classpath:data/h2/import-data.sql" encoding="UTF-8"/>
-		</jdbc:initialize-database>
-	</beans>
 </beans>

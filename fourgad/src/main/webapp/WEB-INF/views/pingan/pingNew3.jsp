@@ -102,6 +102,9 @@ a.sub_btn:hover{ background:#e95b00;}
 	<div>
 		<img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/pingNew3/5.jpg" width="100%" />
 		<input name="" type="image" src="http://rs.iadcn.com/pingan/static/zhuanpan/images/pingNew3/6.jpg" width="100%" />
+		<a href="http://wap.i139.cn/3g/l/s.do?p=1">
+		<img id="mmbtn" style="display:none" src="http://rs.iadcn.com/pingan/static/zhuanpan/images/pingNew3/mm_btn.jpg" width="100%" />
+		</a>
 		<img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/pingNew3/7.jpg" width="100%" />
 		
 	</div>
@@ -111,7 +114,10 @@ a.sub_btn:hover{ background:#e95b00;}
 
 <script>
 $(function() {
-	
+	var a = "${a}";
+	if(a == 'A3796207'){
+		$('#mmbtn').show();
+	}
 	var ping_title = $.session.get('ping_title');
 	if(ping_title){
 		if(ping_title != '' && ping_title != 'null'){
@@ -129,9 +135,9 @@ $(function() {
 		 $('#code_img').attr('src','${ctx}/ping/go/img?'+ Math.floor(Math.random() * 100)).fadeIn();
 	 });
 
-		$('#code_img').click(function() {//生成验证码  
-			$(this).hide().attr('src','${ctx}/ping/go/img?'+ Math.floor(Math.random() * 100)).fadeIn();
-		})
+	$('#code_img').click(function() {//生成验证码  
+		$(this).hide().attr('src','${ctx}/ping/go/img?'+ Math.floor(Math.random() * 100)).fadeIn();
+	})
 })
 </script>
 </html>

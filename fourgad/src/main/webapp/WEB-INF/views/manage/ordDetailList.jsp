@@ -5,32 +5,43 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <%
-  Calendar   cal   =   Calendar.getInstance();
+  Calendar cal = Calendar.getInstance();
   cal.add(Calendar.DATE,   0);
-  String vtime = new SimpleDateFormat( "yyyy-MM-dd").format(cal.getTime());
+  String vtime = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
 %>
 <br/>
 	<c:if test="${not empty message}">
 		<div id="message" class="alert alert-success"><button data-dismiss="alert" class="close">×</button>${message}</div>
 	</c:if>
+	<div id="message" class="alert alert-success">
+       温馨提示：在windows平台下如果导出的文件使用微软office打开的时候提示文件格式与文件扩展名的格式不一致。是否立即打开该文件？<br/>
+       请点击【是】，如果想消除这种提示，请另存为一份该文件即可。如果想用程序读取导出的文件也先另存为一份该文件再来读取新文件即可。<br/>
+       还有疑问请联系管理员
+	</div>
 	<br/>
 	<div class="row">
 	 <form class="form-search" action="#">
-		  <div class="span4">
+		  <div class="span3">
 			  <div class="input-group">
-			    <label>日期：</label>
-			    <input id="vtime" value="<%=vtime %>" type="text" class="input-medium input-datepicker"/>
+			    <label>开始日期：</label>
+			    <input id="begin_vtime" value="<%=vtime %>" type="text" class="input-medium input-datepicker"/>
+			  </div>
+		  </div>
+		  <div class="span3">
+			  <div class="input-group">
+			    <label>结束日期：</label>
+			    <input id="end_vtime" value="<%=vtime %>" type="text" class="input-medium input-datepicker"/>
 			  </div>
 		  </div>
 		 
-		  <div class="span4">
+		  <div class="span3">
 			
 				<label>渠道编码：</label> 
 				<input type="text" id="channel" name="channel" class="input-medium" /> 
 		   
 	      </div>
 	      
-		  <div class="span4">
+		  <div class="span3">
 				<input id="query_data" type="button" value="&nbsp;&nbsp;查&nbsp;&nbsp;询&nbsp;&nbsp;" class="btn btn-primary" />
 				<input id="output_data" type="button" value="&nbsp;&nbsp;导&nbsp;&nbsp;出&nbsp;&nbsp;" class="btn btn-default" />
 	      </div>
@@ -76,7 +87,8 @@
 	            "type": "post",
 	            "data":function ( d ) {
 	                d.date = new Date();
-	                d.vtime = $('#vtime').val();
+	                d.begin_vtime = $('#begin_vtime').val();
+	                d.end_vtime = $('#end_vtime').val();
 	                d.channel = $('#channel').val();
 	            }
 	        },
@@ -117,8 +129,9 @@
 		//导出数据
 		//alert($('#vtime').val()+$('#channel').val());
 		//window.open('http://www.baidu.com');
-		if(confirm('确定下载以下订单数据吗?\n日期：'+$('#vtime').val()+'\n渠道：'+$('#channel').val())){
-			var url = '${ctx}/count/downloadOrdDetailData?vt='+$('#vtime').val()+'&chn='+$('#channel').val();
+		if(confirm('确定下载以下订单数据吗?\n开始日期：'+$('#begin_vtime').val()+'\n结束日期：'+$('#end_vtime').val()+'\n渠道：'+$('#channel').val())){
+			//var url = '${ctx}/count/downloadOrdDetailData?vt='+$('#begin_vtime').val()+'&vt2='+$('#end_vtime').val()+'&chn='+$('#channel').val()+'&t=csv';
+			var url = '${ctx}/count/downloadOrdDetailData?vt='+$('#begin_vtime').val()+'&vt2='+$('#end_vtime').val()+'&chn='+$('#channel').val();
 			var a = document.createElement("a");
 		    a.setAttribute("href", url);
 		    a.setAttribute("target", '_blank');

@@ -15,6 +15,12 @@
 			<pattern>%date{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
 		</encoder>
 	</appender>
+	
+	<appender name="zzcmKeeLog" class="com.zzcm.monitor.zookeeper.log.LogBackAppender">
+		<encoder>
+			<pattern>%date{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+    </appender>
 
 	<!-- project default level -->
 	<logger name="com.zzcm.fourgad" level="INFO" />
@@ -22,8 +28,9 @@
 	<!--log4jdbc -->
 	<logger name="jdbc.sqltiming" level="INFO"/>
 
-	<root level="WARN">
+	<root level="INFO">
 		<appender-ref ref="console" />
 		<appender-ref ref="rollingFile" />
+		<appender-ref ref="zzcmKeeLog" />
 	</root>
 </configuration>

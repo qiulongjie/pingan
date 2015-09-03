@@ -45,7 +45,7 @@
 		   <input id="code" name="code" type="hidden" value="${code }" />
 		   <input name="a" type="hidden" value="${a }" />
 		   <input name="failure_path" type="hidden" value="pingNew2" />
-		   <input name="ok_p" type="hidden" value="ping_ios_ok" />
+		   <input id="okp" name="ok_p" type="hidden" value="ping_ios_ok" />
         	<div class="inputbox">
                   <div class="inp"><input value="${uname }" id="txtName" name="uname" type="text" class="input1" placeholder="请填写您的真实姓名"/></div>
           		  <div class="inpbg"><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ping_ios/input1.jpg" width="100%" /></div>
@@ -100,6 +100,9 @@ $(function() {
 				}
 			}
 		}
+	}
+	if(a == 'A6664107'){
+		$('#okp').val('pingNew2_ok64107');
 	}
 	
 	 $("#vcode").focus(function(){

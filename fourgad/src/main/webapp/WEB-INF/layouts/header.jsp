@@ -27,6 +27,7 @@
                     <li><a href="${ctx}/count/channelFeeList">渠道结算数据</a></li>
                     <li><a href="${ctx}/count/ddhDataList">大都会数据</a></li>
                     <li><a href="${ctx}/count/ordDetailList">订单详情</a></li>
+                    <li><a href="${ctx}/count/okClickCountList">红包点击统计</a></li>
 					<li><a href="${ctx}/profile">修改密码</a></li>
 					<li><a href="${ctx}/logout">退出</a></li>
 				</ul>

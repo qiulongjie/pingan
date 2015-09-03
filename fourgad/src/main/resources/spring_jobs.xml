@@ -35,10 +35,11 @@
         <bean id="startQuertz" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
             <property name="triggers">
                 <list>
-<!--                     <ref bean="doTime"/> -->
-<!--                     <ref bean="doTime_antiCheating"/> -->
-<!--                     <ref bean="doTime_antiCheatingUpdate"/> -->
-<!--                     <ref bean="doTime_ddhJob"/> -->
+                         <!-- <ref bean="doTime"/> 
+                         <ref bean="doTime_antiCheating"/>
+                         <ref bean="doTime_antiCheatingUpdate"/> 
+                         <ref bean="doTime_ddhJob"/> -->
+                         <ref bean="doTime_pinganJob"/>
                 </list>
             </property>
         </bean>
@@ -114,4 +115,30 @@
                 <value>0 0/10 * * * ?</value>
             </property>
         </bean>
+        
+        <!-- pingan 接口同步  start -->
+        <bean id="pinganJob" class="com.zzcm.fourgad.job.PinganJob"></bean>
+        <!-- 定义调用对象和调用对象的方法 -->
+        <bean id="pinganJobtask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+            <!-- 调用的类 -->
+            <property name="targetObject">
+                <ref bean="pinganJob"/>
+            </property>
+            <!-- 调用类中的方法 -->
+            <property name="targetMethod">
+                <value>work</value>
+            </property>
+        </bean>
+        <!-- 定义触发时间 -->
+        <bean id="doTime_pinganJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+            <property name="jobDetail">
+                <ref bean="pinganJobtask"/>
+            </property>
+            <!-- cron表达式 -->
+            <!-- 秒，分钟，小时，日，月，星期 -->
+            <property name="cronExpression">
+                <value>0 0/1 * * * ?</value>
+            </property>
+        </bean>
+        <!-- pingan 接口同步  end -->
 </beans>

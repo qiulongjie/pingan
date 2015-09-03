@@ -25,7 +25,7 @@
 
 <form action="${ctx}/ping/submitGet" name="form1" method="get">
 	
-	<div class="popupBoxBg slidePopupBox" style="display: none;">
+	<!-- <div class="popupBoxBg slidePopupBox" style="display: none;">
         <div class="popupBoxShow">
             <p>
             您获赠<b>25万元</b>平安意外险，<br>
@@ -33,7 +33,7 @@
             </p>
         </div>
         <div class="fade"></div>
-    </div>
+    </div> -->
 <div  id="submitFormDiv2" style="display:none;">
 	<div class="blackbg"></div>
 	<div class="tanchuang" >
@@ -60,6 +60,7 @@
         <div class="topWrapper">
             <div class="banner">
                 <img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/pingan_bz/banner.png" alt="">
+               <!--  <img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/lty_d_zy/banner_bz_zy.jpg" alt=""> -->
             </div>
             <div class="boxBg">
                 <div class="defaultInputBox">
@@ -154,12 +155,16 @@
             <div class="activeNote">
                 <h3>领取规则:</h3>
                 <ul>
-                    <li>1、赠险领取年龄为25-50周岁，每人限领取一份，多次领取无效；</li>
+                    <!-- <li>1、赠险领取年龄为25-50周岁，每人限领取一份，多次领取无效；</li>
                     <li>2、请查阅<a href="http://s.520invest.com/common/mv2/explain.html" target="_blank">《平安免费赠险说明》</a>（含投保须知、责任免除、如何理赔等）；</li>
-                    <li>3、您可通过中国平安网站或客服电话95511转6转1进行保单查询。</li>	
+                    <li>2、您可通过中国平安网站或客服电话95511转6转1进行保单查询。</li>	 -->
+                    <li>1.赠险领取年龄为25-50周岁，每人限领取一份，多次领取无效。</li>
+<li>2.本保险仅提供电子保单，仅限赠送。保单生效后客户会在三日内自动收到短信通知，您可通过中国平安网站或客服电话95511转6转1进行保单查询。</li>
+<li>3.本保险适用条款为《平安交通工具意外伤害保险条款》，被保险人航空、火车、地铁和轮船意外伤害事故导致的意外伤害身故、残疾责任，最高保障金额为25万，保期60天，详细内容请登陆www.pingan.com网站查询。</li>
+<li>4.若客户未能成功领取本项目平安保险，敬请留意活动提示下方其他投保公司电话回访赠险事宜。</li>
                 </ul>
             </div>
-            
+            <img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/pingan_bz/banner_b.jpg" alt="">
             <div id="footer" class="footer">
 		       	<p>
 		         	Copyright 2012-2014 520invest.com All Rights Reserved.<br>粤ICP备15018868号-1 <a href="privacy.html" target="_blank">隐私条款</a>

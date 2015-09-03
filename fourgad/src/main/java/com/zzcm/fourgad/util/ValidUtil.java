@@ -10,6 +10,15 @@ import java.util.regex.Pattern;
 public class ValidUtil {
 	
 	/** 年龄是否符合要求 */ 
+	public static boolean isValidBirthday(String birthday,int minAge,int maxAge) {
+		int age = getAgeByBirthday(birthday);
+		if( age >= minAge && age <= maxAge){
+			return true;
+		}
+		return false;
+	}
+	
+	/** 年龄是否符合要求 */ 
 	public static boolean isValidBirthday(String birthday) {
 		int age = getAgeByBirthday(birthday);
 		if( age >= 25 && age <= 50){

@@ -16,8 +16,8 @@
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/jquery.cookie.js"></script>
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/jquerysession.js"></script>
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/baidu_count.js"></script>
-<!-- <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/ltyGongGe.js"></script> -->
-<script type="text/javascript" src="${ctx }/static/js/ltyGongGe.js"></script>
+<script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/ltyGongGe.js"></script>
+<!-- <script type="text/javascript" src="${ctx }/static/js/ltyGongGe.js"></script> -->
 </head>
 
 <body>
@@ -157,8 +157,7 @@
 03.请中奖用户正确填写资料并核对中奖信息，以便工作
 人员给您核发奖品。<br/>
 04.本次活动为答谢新老用户特设，所有奖品均为赠送，
-因此不会向用户收取任何费用（包括邮费） 。<br/>
-05.此页面由第三方掌众信息提供，活动最终解释权归掌众信息，如有疑问请致电客服热线：0755-3300507
+因此不会向用户收取任何费用（包括邮费） 。
 		</p>
 		</div>
 		<img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ltyNew1/indexbottom.jpg" width="100%" />

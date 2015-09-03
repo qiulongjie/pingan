@@ -10,7 +10,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -27,11 +28,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.zzcm.fourgad.entity.AddrBean;
 import com.zzcm.fourgad.entity.OrdLogs;
+import com.zzcm.fourgad.web.ad.pingController;
 
 @Component
 @Transactional
 public class AdService {
-	private Logger logger = Logger.getLogger(this.getClass());
+	private static Logger logger = LoggerFactory.getLogger(pingController.class);
 	@Autowired
 	private IPService iPService;
 	@Autowired
@@ -63,6 +65,29 @@ public class AdService {
 	
 	public void AddOrdLogs(String uname,String birthday,String ddlSex,String phone,String ipaddr,String prov,String vtime,String pubcode,String pcontent){
 		String sql = "insert into ad_ord_log (uname,birthday,ddlSex,phone,ipaddr,prov,vtime,pubcode,pcontent) values (?,?,?,?,?,?,?,?,?)";
+		Object o [] = {uname,birthday,ddlSex,phone,ipaddr,prov,vtime,pubcode,pcontent};
+		jdbcTemplate.update(sql,o);
+	}
+	
+	public void AddOrdLogs(String uname,String birthday,String ddlSex,String phone,String ipaddr,String prov,String vtime,String pubcode,String pcontent,Integer flag){
+		String sql = "insert into ad_ord_log (uname,birthday,ddlSex,phone,ipaddr,prov,vtime,pubcode,pcontent,flag) values (?,?,?,?,?,?,?,?,?,?)";
+		Object o [] = {uname,birthday,ddlSex,phone,ipaddr,prov,vtime,pubcode,pcontent,flag};
+		jdbcTemplate.update(sql,o);
+	}
+	
+	public void AddOrdLogs(String uname,String birthday,String ddlSex,String phone,
+			               String ipaddr,String prov,String vtime,String pubcode,
+			               String pcontent,Integer flag,Integer ads,String province,String city){
+		String sql = "insert into ad_ord_log (uname,birthday,ddlSex,phone,ipaddr,prov,vtime,pubcode,pcontent,flag,ads,province,city) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		Object o [] = {uname,birthday,ddlSex,phone,ipaddr,prov,vtime,pubcode,pcontent,flag,ads,province,city};
+		jdbcTemplate.update(sql,o);
+	}
+	
+	/**
+	 * 使用程序push过来的订单 测试用的 
+	 */
+	public void AddOrdLogsPush(String uname,String birthday,String ddlSex,String phone,String ipaddr,String prov,String vtime,String pubcode,String pcontent){
+		String sql = "insert into ad_ord_log_push (uname,birthday,ddlSex,phone,ipaddr,prov,vtime,pubcode,pcontent) values (?,?,?,?,?,?,?,?,?)";
 		Object o [] = {uname,birthday,ddlSex,phone,ipaddr,prov,vtime,pubcode,pcontent};
 		jdbcTemplate.update(sql,o);
 	}
@@ -763,6 +788,34 @@ public class AdService {
 	public void addDaiLogs(String cid, String ipaddr, String vtime, String ua) {
 		String sql = "insert into ad_dai_log (cid,ipaddr,vtime,ua) values (?,?,?,?)";
 		jdbcTemplate.update(sql,new Object[]{cid,ipaddr,vtime,ua});
+	}
+
+	/**
+	 * 判断推送订单数据是否合法
+	 * @param channel
+	 * @param ipaddr
+	 * @return
+	 */
+	public boolean isPassForPushOrd(String channel, String ipaddr) {
+		String sql = "select id from ad_ord_push_rule where channel =? and ipaddr = ? and flag=1";
+		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, new Object[]{channel,ipaddr});
+		if( list != null && list.size() > 0 ){
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 添加在ok页面中点击红包或者下载apk包的记录
+	 * @author qiulongjie
+	 * @param channel
+	 * @param clickType
+	 * @param ipaddr
+	 * @param vtime
+	 */
+	public void addOKClickLog(String channel, String clickType, String ipaddr, String vtime) {
+		String sql = "insert into ad_ok_click_log(channel,click_type,ipaddr,vtime) values(?,?,?,?)";
+		jdbcTemplate.update(sql,new Object[]{channel,clickType,ipaddr,vtime});
 	}
 
 }

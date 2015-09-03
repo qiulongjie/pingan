@@ -173,8 +173,8 @@ a.sub_btn:hover{ background:#e95b00;}
                 <h3>领取规则:</h3>
                 <ul>
                     <li>1、赠险领取年龄为25-50周岁，每人限领取一份，多次领取无效；</li>
-                    <li>2、请查阅<a href="http://s.520invest.com/common/mv2/explain.html" target="_blank">《平安免费赠险说明》</a>（含投保须知、责任免除、如何理赔等）；</li>
-                    <li>3、您可通过中国平安网站或客服电话95511转6转1进行保单查询。</li>	
+                    <!-- <li>2、请查阅<a href="http://s.520invest.com/common/mv2/explain.html" target="_blank">《平安免费赠险说明》</a>（含投保须知、责任免除、如何理赔等）；</li>
+                     --><li>2、您可通过中国平安网站或客服电话95511转6转1进行保单查询。</li>	
                 </ul>
             </div>
             

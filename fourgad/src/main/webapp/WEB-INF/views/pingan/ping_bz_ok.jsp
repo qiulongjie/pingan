@@ -22,6 +22,7 @@
         <div class="topWrapper">
             <div class="banner">
                 <img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/pingan_bz/banner.png" alt="">
+                <!-- <img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/lty_d_zy/banner_bz_zy.jpg" alt=""> -->
             </div>
             <div class="boxBg" style="padding-bottom:300px;">
                 <div class="defaultInputBox2">

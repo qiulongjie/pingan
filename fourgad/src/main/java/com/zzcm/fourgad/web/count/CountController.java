@@ -381,8 +381,29 @@ public class CountController {
 		String pageNum = getParameter(request,"start","0");
 		String draw = getParameter(request,"draw","1");
 		String channel = getParameter(request,"channel","");
-		String vtime = getParameter(request,"vtime","");
-		String data = countService.getOrdDetailData(channel,vtime,pageSize,pageNum,draw);
+		String begin_vtime = getParameter(request,"begin_vtime","");
+		String end_vtime = getParameter(request,"end_vtime","");
+		String data = countService.getOrdDetailData(channel,begin_vtime,end_vtime,pageSize,pageNum,draw);
+		return data;
+	}
+	
+	/**
+	 * 统计ok点击
+	 * @author qiulongjie
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "getOKClickCountData",method = RequestMethod.POST)
+	@ResponseBody
+	public String getOKClickCountData(HttpServletRequest request) throws Exception {
+		String pageSize = getParameter(request,"length","10");
+		String pageNum = getParameter(request,"start","0");
+		String draw = getParameter(request,"draw","1");
+		String channel = getParameter(request,"channel","");
+		String begin_vtime = getParameter(request,"begin_vtime","");
+		String end_vtime = getParameter(request,"end_vtime","");
+		String data = countService.getOKClickCountData(channel,begin_vtime,end_vtime,pageSize,pageNum,draw);
 		return data;
 	}
 	
@@ -397,17 +418,23 @@ public class CountController {
 	@ResponseBody
 	public String downloadOrdDetailData(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		String channel = getParameter(request,"chn","");
-		String vtime = getParameter(request,"vt","");
-		
+		String begin_vtime = getParameter(request,"vt","");
+		String end_vtime = getParameter(request,"vt2","");
+		String fileType = getParameter(request,"t","");
 		// 生成文件
-		String filePath = countService.createCSVforOrd(channel,vtime);
+		String filePath = null;
+		if( "csv".equals(fileType) ){
+			filePath = countService.createCSVforOrd(channel,begin_vtime,end_vtime);
+		}else{
+			filePath = countService.createExcelforOrd(channel,begin_vtime,end_vtime);
+		}
 		File file = new File(filePath);
 		InputStream in = new FileInputStream(file);
 
 		String fileName = filePath.substring(filePath.lastIndexOf("/")+1);
 		// 下载
 		if (in != null) {
-			// response.setCharacterEncoding("UTF-8");
+			response.setCharacterEncoding("UTF-8");
 			// 写数据到客户端 "application/octet-stream" application/vnd.ms-excel
 			response.setContentType("application/octet-stream");
 			response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");

@@ -131,7 +131,7 @@
     	<!-- TIMER -->
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>		
+			<artifactId>spring-context-support</artifactId>
 		</dependency>
 		
 		<dependency>
@@ -206,7 +206,7 @@
    			<version>2.1</version>
   		</dependency>
 
-		<!-- LOGGING begin -->
+		<!-- LOGGING begin logback-->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -230,11 +230,11 @@
 		<!-- 代码直接调用common-logging会被桥接到slf4j -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
+			<artifactId>jcl-over-slf4j</artifactId> 
 			<version>${slf4j.version}</version>
 			<scope>runtime</scope>
 		</dependency>
-		<!-- 代码直接调用java.util.logging会被桥接到slf4j -->
+		<!-- 代码直接调用java.util.logging会被桥接到slf4j --> 
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jul-to-slf4j</artifactId>
@@ -248,6 +248,21 @@
 			<version>1.2</version>
 			<scope>runtime</scope>
 		</dependency>
+		<!-- LOGGING end -->
+	<!-- 分界线 -->	
+		<!-- LOGGING begin log4j-->
+		<!-- <dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.6.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.googlecode.log4jdbc</groupId>
+			<artifactId>log4jdbc</artifactId>
+			<version>1.2</version>
+			<scope>runtime</scope>
+		</dependency> -->
 		<!-- LOGGING end -->
 
 		<!-- GENERAL UTILS begin -->
@@ -399,6 +414,31 @@
 		</dependency>
 		<!-- axis end -->
 		
+		<!-- 主机监控  start -->
+		<dependency>
+            <groupId>com.zzcm.monitor</groupId>
+            <artifactId>zzcmookeeper</artifactId>
+            <version>1.0.0</version>
+            <exclusions>
+			  <exclusion>
+			      <groupId>*</groupId>
+			      <artifactId>*</artifactId>
+			    </exclusion>
+			</exclusions>
+        </dependency>
+        
+         <dependency>
+	        <groupId>org.apache.zookeeper</groupId>
+	        <artifactId>zookeeper</artifactId>
+	        <version>3.4.6</version>
+	    </dependency>
+	    
+	    <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.4</version>
+        </dependency>
+		<!-- 主机监控  end -->
 	</dependencies>
 
 	<dependencyManagement>

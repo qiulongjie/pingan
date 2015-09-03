@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zzcm.fourgad.entity.DataBean;
+import com.zzcm.fourgad.util.ExcelUtil;
 import com.zzcm.fourgad.util.StringUtil;
 
 
@@ -804,7 +805,54 @@ public class CountService {
 		
 		return getJsonData(pageNum, pageSize, draw, sb, sbCount);
 	}
+	
+	/**
+	 * 统计ok点击
+	 * @author qiulongjie
+	 * @param channel
+	 * @param begin_vtime
+	 * @param end_vtime
+	 * @param pageSize
+	 * @param pageNum
+	 * @param draw
+	 * @return
+	 */
+	public String getOKClickCountData(String channel, String begin_vtime, String end_vtime, String pageSize,
+			String pageNum, String draw) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("select left(vtime,10) date,channel ,click_type,count(1) cnt from ad_ok_click_log where 1=1 ");
+		
+		if(begin_vtime != null && begin_vtime.trim().length() > 0 ){
+			sb.append(" and vtime >= '"+begin_vtime.trim() +" 00:00:00'");
+		}
+		if(end_vtime != null && end_vtime.trim().length() > 0 ){
+			sb.append(" and vtime <= '"+end_vtime.trim()+" 23:59:59'");
+		}
+		if(channel != null && channel.trim().length() > 0){
+			sb.append(" and channel = '" + channel.trim() + "'");
+		}
+		sb.append(" group by left(vtime,10),channel ,click_type ");
+		sb.append(" limit ?,?  ");
+		 
+		StringBuffer sbCount = new StringBuffer();
+		sbCount.append("select count(1) cnt from ( select 1 cnt from ad_ok_click_log where 1=1 ");
+		if(begin_vtime != null && begin_vtime.trim().length() > 0 ){
+			sbCount.append(" and vtime >= '"+begin_vtime.trim() +" 00:00:00'");
+		}
+		if(end_vtime != null && end_vtime.trim().length() > 0 ){
+			sbCount.append(" and vtime <= '"+end_vtime.trim()+" 23:59:59'");
+		}
+		if(channel != null && channel.trim().length() > 0){
+			sbCount.append(" and channel = '" + channel.trim() + "'");
+		}
+		sbCount.append(" group by left(vtime,10),channel ,click_type ");
+		sbCount.append(" ) a ");
+		
+		return getJsonData(pageNum, pageSize, draw, sb, sbCount);
+	}
 
+	// ************************** 订单详细信息   start ********************
+	// ************************** 订单详细信息   start ********************
 	/**
 	 * 获取订单详细信息
 	 * @param channel
@@ -814,12 +862,15 @@ public class CountService {
 	 * @param draw
 	 * @return
 	 */
-	public String getOrdDetailData(String channel, String vtime, String pageSize, String pageNum, String draw) {
+	public String getOrdDetailData(String channel, String begin_vtime, String end_vtime, String pageSize, String pageNum, String draw) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("select * from ad_ord_log where 1=1 ");
 		
-		if(vtime != null && vtime.trim().length() > 0 ){
-			sb.append(" and vtime >= '"+vtime.trim() +" 00:00:00' and vtime <= '"+vtime.trim()+" 23:59:59'");
+		if(begin_vtime != null && begin_vtime.trim().length() > 0 ){
+			sb.append(" and vtime >= '"+begin_vtime.trim() +" 00:00:00'");
+		}
+		if(end_vtime != null && end_vtime.trim().length() > 0 ){
+			sb.append(" and vtime <= '"+end_vtime.trim()+" 23:59:59'");
 		}
 		if(channel != null && channel.trim().length() > 0){
 			sb.append(" and pubcode = '" + channel.trim() + "'");
@@ -828,8 +879,11 @@ public class CountService {
 		 
 		StringBuffer sbCount = new StringBuffer();
 		sbCount.append("select count(1) cnt from ad_ord_log where 1=1 ");
-		if(vtime != null && vtime.trim().length() > 0 ){
-			sbCount.append(" and vtime >= '"+vtime.trim() +" 00:00:00' and vtime <= '"+vtime.trim()+" 23:59:59'");
+		if(begin_vtime != null && begin_vtime.trim().length() > 0 ){
+			sbCount.append(" and vtime >= '"+begin_vtime.trim() +" 00:00:00'");
+		}
+		if(end_vtime != null && end_vtime.trim().length() > 0 ){
+			sbCount.append(" and vtime <= '"+end_vtime.trim()+" 23:59:59'");
 		}
 		if(channel != null && channel.trim().length() > 0){
 			sbCount.append(" and pubcode = '" + channel.trim() + "'");
@@ -841,14 +895,18 @@ public class CountService {
 	/**
 	 * 生成订单数据csv文件
 	 * @param channel
-	 * @param vtime
+	 * @param begin_vtime
+	 * @param end_vtime
 	 * @return
 	 */
-	public String createCSVforOrd(String channel, String vtime) {
+	public String createCSVforOrd(String channel, String begin_vtime, String end_vtime) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("select * from ad_ord_log where 1=1 ");
-		if(vtime != null && vtime.trim().length() > 0 ){
-			sb.append(" and vtime >= '"+vtime.trim() +" 00:00:00' and vtime <= '"+vtime.trim()+" 23:59:59'");
+		if(begin_vtime != null && begin_vtime.trim().length() > 0 ){
+			sb.append(" and vtime >= '"+begin_vtime.trim() +" 00:00:00'");
+		}
+		if(end_vtime != null && end_vtime.trim().length() > 0 ){
+			sb.append(" and vtime <= '"+end_vtime.trim()+" 23:59:59'");
 		}
 		if(channel != null && channel.trim().length() > 0){
 			sb.append(" and pubcode = '" + channel.trim() + "'");
@@ -857,7 +915,7 @@ public class CountService {
 		int begin = 0;
 		int len = 500;
 		// 文件名称
-		String fileName = System.currentTimeMillis()+"_"+(channel == null || channel.trim().length() <= 0 ? "all":channel)+"_"+(vtime == null || vtime.trim().length() <= 0 ? "all":vtime)+".csv";
+		String fileName = System.currentTimeMillis()+"_"+(channel == null || channel.trim().length() <= 0 ? "all":channel)+"_"+(begin_vtime == null || begin_vtime.trim().length() <= 0 ? "all":begin_vtime)+".csv";
 		// 文件输出位置 /WEB_INF/export_files/
 		String filePath = this.getClass().getClassLoader().getResource("/").getPath();
 		filePath = filePath.substring(0,filePath.lastIndexOf("classes/")) + "export_files/" + fileName;
@@ -871,9 +929,9 @@ public class CountService {
 			outStream = new FileOutputStream(file);
 			// 准备写数据了 
 			long beginTime = System.currentTimeMillis();
-			System.out.println("开始写数据--"+channel+"--"+vtime+"--"+beginTime);
+			System.out.println("开始写数据--"+channel+"--"+begin_vtime+"--"+beginTime);
 			// 写标题
-			outStream.write(ordTitle.getBytes("UTF-8"));
+			outStream.write(ORD_TITLE.getBytes("UTF-8"));
 			outStream.write("\n\t".getBytes("UTF-8"));
 			//获取数据
 			List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), new Object[]{begin,len});
@@ -905,7 +963,7 @@ public class CountService {
 				list = jdbcTemplate.queryForList(sb.toString(), new Object[]{begin,len});
 			}
 			long endTime = System.currentTimeMillis();
-			System.out.println("写完成--"+channel+"--"+vtime+"--耗时："+(endTime-beginTime)+"毫秒");
+			System.out.println("写完成--"+channel+"--"+begin_vtime+"--耗时："+(endTime-beginTime)+"毫秒");
 			System.out.println("count="+count);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -921,7 +979,108 @@ public class CountService {
 		return filePath;
 	}
 	
-	/** 订单详情导出文件的标题 */
-	private static final String ordTitle = "姓名,生日,性别,号码,IP,时间,渠道,同步状态,同步信息";
+	/**
+	 * 生成订单数据excel文件
+	 * @param channel
+	 * @param begin_vtime
+	 * @param end_vtime
+	 * @return
+	 */
+	public String createExcelforOrd(String channel, String begin_vtime, String end_vtime) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("select * from ad_ord_log where 1=1 ");
+		if(begin_vtime != null && begin_vtime.trim().length() > 0 ){
+			sb.append(" and vtime >= '"+begin_vtime.trim() +" 00:00:00'");
+		}
+		if(end_vtime != null && end_vtime.trim().length() > 0 ){
+			sb.append(" and vtime <= '"+end_vtime.trim()+" 23:59:59'");
+		}
+		if(channel != null && channel.trim().length() > 0){
+			sb.append(" and pubcode = '" + channel.trim() + "'");
+		}
+		sb.append(" limit ?,? ");
+		
+		// 文件名称
+		String fileName = System.currentTimeMillis()+"_"+(channel == null || channel.trim().length() <= 0 ? "all":channel)+"_"+(begin_vtime == null || begin_vtime.trim().length() <= 0 ? "all":begin_vtime)+".xls";
+		// 文件输出位置 /WEB_INF/export_files/
+		String filePath = this.getClass().getClassLoader().getResource("/").getPath();
+		filePath = filePath.substring(0,filePath.lastIndexOf("classes/")) + "export_files/" + fileName;
+		System.out.println(filePath);
+		OutputStream outStream = null;
+		try {
+			File file = new File(filePath);
+			if(!file.getParentFile().exists()){
+				file.getParentFile().mkdirs();
+			}
+			outStream = new FileOutputStream(file);
+			// 准备写数据了 
+			long beginTime = System.currentTimeMillis();
+			System.out.println("开始写数据--"+channel+"--"+begin_vtime+"--"+beginTime);
+			// 写Excel头信息
+			outStream.write(ExcelUtil.getHeader().getBytes("UTF-8"));
+			// Excel sheet
+			outStream.write(ExcelUtil.beginSheet("sheet1", COLUMN_WIDTHS).getBytes("UTF-8"));
+			// Excel 标题
+			outStream.write(ExcelUtil.createRow(ORD_TITLE_ARRAY).getBytes("UTF-8"));
+			
+			//获取数据
+			int begin = 0;
+			List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), new Object[]{begin,LIST_MAX_SIZE});
+			int count = 0;
+			while( list != null && list.size() > 0 ){
+				for( Map<String, Object> map : list ){
+					// 写数据到文件
+					outStream.write(ExcelUtil.createRow(ORD_ROW_KEY_ARRAY,map).getBytes("UTF-8"));
+					count++;
+					if( count % SHEET_MAX_ROWS == 0){ // 新建sheet页
+						// 写Excel 结束sheet
+						outStream.write(ExcelUtil.endSheet(false).getBytes("UTF-8"));
+						// Excel sheet
+						outStream.write(ExcelUtil.beginSheet("sheet"+( count / SHEET_MAX_ROWS + 1 ), COLUMN_WIDTHS).getBytes("UTF-8"));
+						// Excel 标题
+						outStream.write(ExcelUtil.createRow(ORD_TITLE_ARRAY).getBytes("UTF-8"));
+					}
+				}
+				outStream.flush();
+				// 重新获取数据
+				begin = begin + LIST_MAX_SIZE;
+				list.clear();
+				list = null;
+				list = jdbcTemplate.queryForList(sb.toString(), new Object[]{begin,LIST_MAX_SIZE});
+			}
+			// 写Excel 结束sheet
+			outStream.write(ExcelUtil.endSheet(true).getBytes("UTF-8"));
+			// Excel尾信息
+			outStream.write(ExcelUtil.getFooter().getBytes("UTF-8"));
+			long endTime = System.currentTimeMillis();
+			System.out.println("写完成--总行数="+count+"--"+channel+"--"+begin_vtime+"--耗时："+(endTime-beginTime)+"毫秒");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			if( outStream != null ){
+				try {
+					outStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return filePath;
+	}
 	
+	/** 订单详情导出文件的标题 */
+	private static final String ORD_TITLE = "姓名,生日,性别,号码,IP,时间,渠道,同步状态,同步信息";
+	/** 订单详情导出文件的标题 */
+	private static final String[] ORD_TITLE_ARRAY = {"姓名","生日","性别","号码","IP","时间","渠道","同步状态","同步信息"};
+	/** 订单详情导出文件的每列的key值 */
+	private static final String[] ORD_ROW_KEY_ARRAY = {"uname","birthday","ddlSex","phone","ipaddr","vtime","pubcode","flag","vstr1"};
+	/** 订单sheet页每行的宽度 */
+	private static final int[] COLUMN_WIDTHS= {80,80,80,80,100,120,80,80,200};
+	/** list集合保存最大的行数 */
+	private static final int LIST_MAX_SIZE = 200;
+	/** sheet页最大的行数 */
+	private static final int SHEET_MAX_ROWS = 10000;
+
+	// ************************** 订单详细信息   END ********************
+	// ************************** 订单详细信息   END ********************
 }

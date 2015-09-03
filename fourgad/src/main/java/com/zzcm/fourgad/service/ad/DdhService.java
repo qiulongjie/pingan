@@ -124,7 +124,7 @@ public class DdhService {
 	 * @throws Exception 
 	 */
 	public void synData(int recordCount) throws Exception {
-		String sql = "select * from ad_record_ddh where flag is null limit 0,?";
+		String sql = "select * from ad_record_ddh where flag is null or message like '%B2C系统处理过程中发生异常%' limit 0,?";
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql,new Object[]{recordCount});
 		for( Map<String, Object> map : list ){
 			Record record = new Record("ZhangYue");

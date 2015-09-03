@@ -2,6 +2,8 @@ package com.zzcm.fourgad.web.ad;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,8 @@ import com.zzcm.fourgad.util.WebUtil;
 @Controller
 @RequestMapping(value = "/pa1")
 public class PaController1 {
+	private static Logger logger = LoggerFactory.getLogger(pingController.class);
+	
 	@Autowired
 	private AdService adService;
 	
@@ -24,6 +28,10 @@ public class PaController1 {
 		String channel = request.getParameter("a");
 		if(channel==null || channel.trim().equals("")){
 			channel="A7376102";
+		}
+		if( channel.length() > 20 ){
+			logger.warn("渠道长度超过20字符 对此渠道进行截取 channel="+channel);
+			channel = channel.substring(0,20);
 		}
 		request.setAttribute("a", channel);
 			
