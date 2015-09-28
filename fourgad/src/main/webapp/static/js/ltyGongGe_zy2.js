@@ -126,7 +126,7 @@ var lottery={
 					showSorry();
 					return false;
 				}
-				if($.cookie("ltyChoujiangA2246208")){//用户在pa/lty_d_tImg7?a=A2246208已经抽过奖
+				if($.cookie("ltyChoujiangA2246208") && a == 'A2246208'){//用户在pa/lty_d_tImg7?a=A2246208已经抽过奖
 					
 					if($.cookie("ltyChoujiang"+a)){
 						if($.cookie("ltyChoujiang"+a) == '1'){//用户在这里已经抽过奖

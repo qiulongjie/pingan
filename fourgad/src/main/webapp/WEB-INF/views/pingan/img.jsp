@@ -12,6 +12,7 @@ response.setDateHeader("Expires", 0);
 out.clear();
 out = pageContext.pushBody();
 RandImgCreater rc = new RandImgCreater(response);
+rc.setBgColor(255, 255, 255);
 String rand = rc.createRandImage();
 session.setAttribute("verifyCode",rand);
 %>

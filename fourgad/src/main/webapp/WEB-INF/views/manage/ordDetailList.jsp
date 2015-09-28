@@ -20,6 +20,19 @@
 	</div>
 	<br/>
 	<div class="row">
+	      <div class="span3">
+	      </div>
+	      <div class="span3">
+	      </div>
+	      <div class="span3">
+	      </div>
+	      <div class="span3">
+				<input id="query_data" type="button" value="&nbsp;&nbsp;查&nbsp;&nbsp;询&nbsp;&nbsp;" class="btn btn-primary" />
+				<input id="output_data" type="button" value="&nbsp;&nbsp;导&nbsp;&nbsp;出&nbsp;&nbsp;" class="btn btn-default" />
+	      </div>
+	 </div>
+	 <br/>
+	<div class="row">
 	 <form class="form-search" action="#">
 		  <div class="span3">
 			  <div class="input-group">
@@ -42,12 +55,16 @@
 	      </div>
 	      
 		  <div class="span3">
-				<input id="query_data" type="button" value="&nbsp;&nbsp;查&nbsp;&nbsp;询&nbsp;&nbsp;" class="btn btn-primary" />
-				<input id="output_data" type="button" value="&nbsp;&nbsp;导&nbsp;&nbsp;出&nbsp;&nbsp;" class="btn btn-default" />
+			
+				<label>手机号码：</label> 
+				<input type="text" id="phone" name="phone" class="input-medium" /> 
+		   
 	      </div>
+	      
 	  </form>
 	 </div>
 	 <br/>
+	 
 	 <table id="contentTable" class="table table-striped "><!-- table-bordered table-condensed -->
 		<thead>
 		    <tr>
@@ -90,6 +107,7 @@
 	                d.begin_vtime = $('#begin_vtime').val();
 	                d.end_vtime = $('#end_vtime').val();
 	                d.channel = $('#channel').val();
+	                d.phone = $('#phone').val();
 	            }
 	        },
 	        "columns": [

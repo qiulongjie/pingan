@@ -35,11 +35,14 @@
         <bean id="startQuertz" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
             <property name="triggers">
                 <list>
-                         <!-- <ref bean="doTime"/> 
+                         <ref bean="doTime"/>
                          <ref bean="doTime_antiCheating"/>
                          <ref bean="doTime_antiCheatingUpdate"/> 
-                         <ref bean="doTime_ddhJob"/> -->
+                         <ref bean="doTime_ddhJob"/>
                          <ref bean="doTime_pinganJob"/>
+                         <ref bean="doTime_liqiJob"/>
+                         <ref bean="doTime_newMediaJob"/>
+                         <ref bean="doTime_updateAddrJob"/>
                 </list>
             </property>
         </bean>
@@ -112,11 +115,11 @@
             <!-- cron表达式 -->
             <!-- 秒，分钟，小时，日，月，星期 -->
             <property name="cronExpression">
-                <value>0 0/10 * * * ?</value>
+                <value>0 0/3 * * * ?</value>
             </property>
         </bean>
         
-        <!-- pingan 接口同步  start -->
+        <!-- *******  深圳互娱 接口同步  start ******* -->
         <bean id="pinganJob" class="com.zzcm.fourgad.job.PinganJob"></bean>
         <!-- 定义调用对象和调用对象的方法 -->
         <bean id="pinganJobtask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -137,8 +140,86 @@
             <!-- cron表达式 -->
             <!-- 秒，分钟，小时，日，月，星期 -->
             <property name="cronExpression">
+                <value>0 0/2 * * * ?</value>
+            </property>
+        </bean>
+        <!-- ******* 深圳互娱 接口同步  end ******* -->
+        
+        <!-- ******* 立其 接口同步  start ****** -->
+        <bean id="liqiJob" class="com.zzcm.fourgad.job.LiqiJob"></bean>
+        <!-- 定义调用对象和调用对象的方法 -->
+        <bean id="liqiJobtask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+            <!-- 调用的类 -->
+            <property name="targetObject">
+                <ref bean="liqiJob"/>
+            </property>
+            <!-- 调用类中的方法 -->
+            <property name="targetMethod">
+                <value>work</value>
+            </property>
+        </bean>
+        <!-- 定义触发时间 -->
+        <bean id="doTime_liqiJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+            <property name="jobDetail">
+                <ref bean="liqiJobtask"/>
+            </property>
+            <!-- cron表达式 -->
+            <!-- 秒，分钟，小时，日，月，星期 -->
+            <property name="cronExpression">
+                <value>0 0/9 * * * ?</value>
+            </property>
+        </bean>
+        <!-- ******* 立其  接口同步  end ******* -->
+        
+         <!-- 360新媒体 接口同步  start -->
+        <bean id="newMediaJob" class="com.zzcm.fourgad.job.NewMediaJob"></bean>
+        <!-- 定义调用对象和调用对象的方法 -->
+        <bean id="newMediaJobtask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+            <!-- 调用的类 -->
+            <property name="targetObject">
+                <ref bean="newMediaJob"/>
+            </property>
+            <!-- 调用类中的方法 -->
+            <property name="targetMethod">
+                <value>work</value>
+            </property>
+        </bean>
+        <!-- 定义触发时间 -->
+        <bean id="doTime_newMediaJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+            <property name="jobDetail">
+                <ref bean="newMediaJobtask"/>
+            </property>
+            <!-- cron表达式 -->
+            <!-- 秒，分钟，小时，日，月，星期 -->
+            <property name="cronExpression">
                 <value>0 0/1 * * * ?</value>
             </property>
         </bean>
-        <!-- pingan 接口同步  end -->
+        <!-- 360新媒体 接口同步  end -->
+        
+         <!-- 根据手机号更新地址任务  start -->
+        <bean id="updateAddrJob" class="com.zzcm.fourgad.job.UpdateAddrJob"></bean>
+        <!-- 定义调用对象和调用对象的方法 -->
+        <bean id="updateAddrJobtask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+            <!-- 调用的类 -->
+            <property name="targetObject">
+                <ref bean="updateAddrJob"/>
+            </property>
+            <!-- 调用类中的方法 -->
+            <property name="targetMethod">
+                <value>work</value>
+            </property>
+        </bean>
+        <!-- 定义触发时间 -->
+        <bean id="doTime_updateAddrJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+            <property name="jobDetail">
+                <ref bean="updateAddrJobtask"/>
+            </property>
+            <!-- cron表达式 -->
+            <!-- 秒，分钟，小时，日，月，星期 -->
+            <property name="cronExpression">
+                <value>0 0/1 * * * ?</value>
+            </property>
+        </bean>
+        <!-- 根据手机号更新地址任务  end -->
 </beans>

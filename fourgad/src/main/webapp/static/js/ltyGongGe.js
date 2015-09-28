@@ -10,7 +10,21 @@ function scroll(obj) {
 		obj.scrollLeft = 0; 
 	} 
 } 
-var _timer = setInterval("scroll(document.getElementById('scrollobj'))", 20); 
+function getQueryString(name) { 
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+	var r = window.location.search.substr(1).match(reg); 
+	if (r != null) {
+		return unescape(r[2]); 
+	}
+	return null; 
+} 
+var aa = getQueryString('a');
+if(aa==='A8781097'){
+	
+}else{
+	var _timer = setInterval("scroll(document.getElementById('scrollobj'))", 20); 
+}
+
 $(function() {
 	function getQueryString(name) { 
 		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
@@ -185,11 +199,12 @@ var lottery={
 			success : function(data) {
 				if(data.error != '' && data.error != undefined){
 				}else{
-					if(data.is_outlink === 1 || data.is_outlink === '1'){
+					/*if(data.is_outlink === 1 || data.is_outlink === '1'){
 						$('#save_1').attr('href',data.link_url);
 					}else{
 						$('#save_1').attr('href',web_path+data.link_url+'?a='+a);
-					}
+					}*/
+					$('#save_1').attr('href',web_path+data.link_url+'?a='+a);
 					/*$('.tanchuang_input2').html(data.title_info);*/
 					
 				    /*$.session.set('ok_title', data.ok_title);
@@ -252,7 +267,7 @@ var lottery={
         var pos = curWwwPath.indexOf(pathName);
         var localhostPaht = curWwwPath.substring(0, pos);
         var projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
-        return (localhostPaht + projectName);//本地测试改为这个
-        //return localhostPaht;
+        //return (localhostPaht + projectName);//本地测试改为这个
+        return localhostPaht;
     }
 })

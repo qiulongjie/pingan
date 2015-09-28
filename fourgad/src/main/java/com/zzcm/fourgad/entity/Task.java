@@ -20,7 +20,12 @@ public class Task extends IdEntity {
 
 	private String title;
 	private String description;
+	private String taskKey;
+	private Integer status = 0;
 	private User user;
+	private Integer dayMaxNum;
+	private Integer dayTransMax;
+	private String ordSql;
 
 	// JSR303 BeanValidator的校验规则
 	@NotBlank
@@ -49,6 +54,46 @@ public class Task extends IdEntity {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public String getTaskKey() {
+		return taskKey;
+	}
+
+	public void setTaskKey(String taskKey) {
+		this.taskKey = taskKey;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public Integer getDayMaxNum() {
+		return dayMaxNum;
+	}
+
+	public void setDayMaxNum(Integer dayMaxNum) {
+		this.dayMaxNum = dayMaxNum;
+	}
+
+	public Integer getDayTransMax() {
+		return dayTransMax;
+	}
+
+	public void setDayTransMax(Integer dayTransMax) {
+		this.dayTransMax = dayTransMax;
+	}
+
+	public String getOrdSql() {
+		return ordSql;
+	}
+
+	public void setOrdSql(String ordSql) {
+		this.ordSql = ordSql;
 	}
 
 	@Override

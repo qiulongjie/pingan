@@ -4,75 +4,86 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zzcm.fourgad.service.ad.AntiCheatingService;
+import com.zzcm.fourgad.service.task.TaskService;
 import com.zzcm.fourgad.util.DateUtil;
 import com.zzcm.fourgad.util.StringUtil;
 
 
 public class AntiCheatingJob2
 {
-    private Logger logger = Logger.getLogger(this.getClass());
-    
+    //private Logger logger = Logger.getLogger(this.getClass());
+    private static Logger logger = LoggerFactory.getLogger(AntiCheatingJob2.class);
     
     @Autowired
     private AntiCheatingService antiCheatingService;
     
     private static boolean isRunning = false;
     
+    /** 任务开关 */
+	private static final String TASK_KEY = "AntiCheatingJob2";
+	@Autowired
+	private TaskService taskService;
+    
     public void work()
     {
-        if(!isRunning)
-        {
-            logger.info("反作弊分析统计数据统计开始..............");
-            Date startDate = new Date();
-            
-            isRunning = true;
-            boolean analysisFlag = true;
-            
-            while(analysisFlag)
-            {
-                //获得上次分析任务的时间
-                String jobDateBefore = antiCheatingService.getJobDate();
-                //得到下个分析任务的时间
-                String jobDate = DateUtil.getNextDayDate(jobDateBefore,DateUtil.YYYY_MM_DD);
-                
-                if(!StringUtil.isEmpty(jobDate))
-                {
-                    //判断任务时间,如果任务时间在今天之前,则执行,否则不执行
-                    boolean isAfter = DateUtil.isAfter(jobDate,DateUtil.YYYY_MM_DD);
-                    if(isAfter)
-                    {
-                        List<String> pubCodeList= antiCheatingService.getPubDateForJob(jobDate);
-                        if(pubCodeList!=null && pubCodeList.size()>0)
-                        {
-                            for(String pubCode : pubCodeList)
-                            {
-                                count(pubCode,jobDate);
-                            }
-                        }
-                        updateJobDate(jobDate);
-                    }
-                    else
-                    {
-                        analysisFlag = false;
-                    }
-                }
-                //analysisFlag = false;
-            }
-            
-            isRunning = false;
-            
-            logger.info("反作弊分析统计数据统计结束..............");
-            Date endDate = new Date();
-            logger.info("总耗时:"+(endDate.getTime()-startDate.getTime())+"毫秒");
-        }
-        else
-        {
-            logger.info("反作弊分析统计数据统计正在进行中,不开启新任务!");
-        }
+    	if(taskService.getTaskWork(TASK_KEY)){
+    		if(!isRunning)
+    		{
+    			logger.info("反作弊分析统计数据统计开始..............");
+    			Date startDate = new Date();
+    			
+    			isRunning = true;
+    			boolean analysisFlag = true;
+    			
+    			while(analysisFlag)
+    			{
+    				//获得上次分析任务的时间
+    				String jobDateBefore = antiCheatingService.getJobDate();
+    				//得到下个分析任务的时间
+    				String jobDate = DateUtil.getNextDayDate(jobDateBefore,DateUtil.YYYY_MM_DD);
+    				
+    				if(!StringUtil.isEmpty(jobDate))
+    				{
+    					//判断任务时间,如果任务时间在今天之前,则执行,否则不执行
+    					boolean isAfter = DateUtil.isAfter(jobDate,DateUtil.YYYY_MM_DD);
+    					if(isAfter)
+    					{
+    						List<String> pubCodeList= antiCheatingService.getPubDateForJob(jobDate);
+    						if(pubCodeList!=null && pubCodeList.size()>0)
+    						{
+    							for(String pubCode : pubCodeList)
+    							{
+    								count(pubCode,jobDate);
+    							}
+    						}
+    						updateJobDate(jobDate);
+    					}
+    					else
+    					{
+    						analysisFlag = false;
+    					}
+    				}
+    				//analysisFlag = false;
+    			}
+    			
+    			isRunning = false;
+    			
+    			logger.info("反作弊分析统计数据统计结束..............");
+    			Date endDate = new Date();
+    			logger.info("总耗时:"+(endDate.getTime()-startDate.getTime())+"毫秒");
+    		}
+    		else
+    		{
+    			logger.info("反作弊分析统计数据统计正在进行中,不开启新任务!");
+    		}
+    	}else{
+			logger.info("**job stop**task_key="+TASK_KEY);
+		}
     }
     
     private void count(String pubCode,String jobDate)

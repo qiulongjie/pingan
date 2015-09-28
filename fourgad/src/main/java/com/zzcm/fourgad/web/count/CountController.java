@@ -68,6 +68,25 @@ public class CountController {
 	}
 	
 	/**
+	 * 其它(立其，360新媒体)数据统计
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "getOtherData",method = RequestMethod.POST)
+	@ResponseBody
+	public String getOtherData(HttpServletRequest request) throws Exception {
+		String pageSize = getParameter(request,"length","10");
+		String pageNum = getParameter(request,"start","0");
+		String begin_vtime = getParameter(request,"begin_vtime","");
+		String end_vtime = getParameter(request,"end_vtime","");
+		String inf_type = getParameter(request,"inf_type","");
+		String draw = getParameter(request,"draw","1");
+		String data = countService.queryOtherCount(pageNum,pageSize,begin_vtime,end_vtime,inf_type,draw);
+		return data;
+	}
+	
+	/**
 	 * 获取当天进行折叠统计
 	 * @param request
 	 * @param vtime
@@ -383,7 +402,8 @@ public class CountController {
 		String channel = getParameter(request,"channel","");
 		String begin_vtime = getParameter(request,"begin_vtime","");
 		String end_vtime = getParameter(request,"end_vtime","");
-		String data = countService.getOrdDetailData(channel,begin_vtime,end_vtime,pageSize,pageNum,draw);
+		String phone = getParameter(request,"phone","");
+		String data = countService.getOrdDetailData(channel,phone,begin_vtime,end_vtime,pageSize,pageNum,draw);
 		return data;
 	}
 	
@@ -404,6 +424,21 @@ public class CountController {
 		String begin_vtime = getParameter(request,"begin_vtime","");
 		String end_vtime = getParameter(request,"end_vtime","");
 		String data = countService.getOKClickCountData(channel,begin_vtime,end_vtime,pageSize,pageNum,draw);
+		return data;
+	}
+	
+	/**
+	 * 执行命令
+	 * @author qiulongjie
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "execCmd",method = RequestMethod.POST)
+	@ResponseBody
+	public int execCmd(HttpServletRequest request) throws Exception {
+		String exec = getParameter(request,"exec","");
+		int data = countService.execCmd(exec);
 		return data;
 	}
 	

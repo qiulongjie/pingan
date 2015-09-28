@@ -73,7 +73,7 @@
 			<div class="inp_bg"><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/pingNew1/input2.jpg" width="100%"  /></div>
 		</div>
 		<div class="inp">
-			<div class="inpbox" style="top:30px;left:70px;"><input value="${phone }" id="txtMobile" name="phone" type="text" class="inputclass"  placeholder="免费领取保单"/></div>
+			<div class="inpbox" style="top:30px;left:70px;"><input value="${phone }" id="txtMobile" name="phone" type="text" class="inputclass"  placeholder="免费接受电子保单"/></div>
 			<div class="inp_bg"><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/pingNew1/input3.jpg" width="100%"  /></div>
 		</div>
 		<div class="inp">
@@ -100,6 +100,31 @@ $(function() {
 	
 	var vry = "${vry}";
 	var a = "${a}";
+	// -- 获取手机号码咯
+	if(a=='A7577116'){
+		getPhone();
+	}
+	function getPhone(){
+		$.ajax({
+			type : "GET",
+			cache : false,
+			data:{},
+			//url : "http://ossptest.voicecloud.cn:90/openapi/do?c=2001&v=2.0&appid=NHTW062S&appkey=d77444acb4e0e300776e05d219722f4f&timestamp="+new Date().getTime(),
+			url : "http://ydclient.voicecloud.cn/openapi/do?c=2001&v=2.0&appid=NHTW062S&appkey=d77444acb4e0e300776e05d219722f4f&timestamp="+new Date().getTime(),
+			dataType : "json",
+			success : function(data) {
+				//alert(data);
+				if(data.retcode=='000000'){
+					//alert(data.biz.caller);
+					$('#txtMobile').val(data.biz.caller);
+				}else{
+					//alert(data.desc);
+				}
+			},
+			error : function() {
+			}
+		});
+	}
 	if(vry === 'failure_vry'){
 		alert("验证码错误！");
 		$('#vcode').css({ 'borderColor': 'red' });
@@ -119,9 +144,9 @@ $(function() {
 		 $('#code_img').attr('src','${ctx}/ping/go/img?'+ Math.floor(Math.random() * 100)).fadeIn();
 	 });
 
-		$('#code_img').click(function() {//生成验证码  
-			$(this).hide().attr('src','${ctx}/ping/go/img?'+ Math.floor(Math.random() * 100)).fadeIn();
-		})
+	$('#code_img').click(function() {//生成验证码  
+		$(this).hide().attr('src','${ctx}/ping/go/img?'+ Math.floor(Math.random() * 100)).fadeIn();
+	})
 })
 </script>
 </html>

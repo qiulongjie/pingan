@@ -30,13 +30,13 @@
 		<div>
 		<a id="denyShow_btn" class="sub_btn" href="#" style="bottom:0px;">确&nbsp;&nbsp;&nbsp;定</a>
 		</div>
-		<div><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/pupo/sorry_box.png"  width="300" /></div>
+		<div><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/pupo/sorry_box.gif"  width="300" /></div>
 	</div>
 </div>
 
 <div  id="prizeShow" style="display:none;">
 	<div class="blackbg"></div>
-	<div class="tanchuang"><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/pupo/winning_box.png" width="300" /></div>
+	<div class="tanchuang"><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/pupo/winning_box.gif" width="300" /></div>
 </div>
 
 <div  id="completeInfoShow" style="display:none;">
@@ -45,11 +45,11 @@
 		<div>
 		<a id="completeInfoShow_btn" class="sub_btn" href="${ctx }/pa/pingNew1?a=${a }" style="bottom:-100px;">完善信息</a>
 		</div>
-		<div><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/pupo/repeat_box.png"  width="300" /></div>
+		<div><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/pupo/repeat_box.gif"  width="300" /></div>
 	</div>
 </div>
 
-<div  id="completeInfoShow1" style="display:none;">
+<%-- <div  id="completeInfoShow1" style="display:none;">
 	<div class="blackbg"></div>
 	<div class="tanchuang">
 		<div>
@@ -57,11 +57,12 @@
 		</div>
 		<div><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/pupo/accident_box.png"  width="300" /></div>
 	</div>
-</div>
+</div> --%>
 <div id="saveurl" style="display:none;">
 <a id="save_1" href="#" ></a>
 </div>
 <!-- 弹窗 end -->
+ 
 	<div>
 		<div class="tongzhi">
 			<div class="tongzhi_text">
@@ -75,7 +76,6 @@
 			<div><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ltyNew1/tongzhi.jpg" width="100%" /></div>
 		</div>
 	</div>
-	
 	
 	<div>
 		<img id="banner_link" src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ltyNew1/banner1.jpg" width="100%" />

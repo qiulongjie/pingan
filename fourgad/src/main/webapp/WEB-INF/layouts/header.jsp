@@ -18,6 +18,7 @@
 						<li class="divider"></li>
 					</shiro:hasRole>
 <%-- 					<li><a href="${ctx}/api">APIs</a></li> --%>
+					<li><a href="${ctx}/count/otherOrdList">其他数据统计</a></li>	
                     <li><a href="${ctx}/count/reqOrdList">访问数据</a></li>
                     <li><a href="${ctx}/count/ordList">访问数据-按天</a></li>
                     <li><a href="${ctx}/count/zjList">中奖结果</a></li>
@@ -28,6 +29,8 @@
                     <li><a href="${ctx}/count/ddhDataList">大都会数据</a></li>
                     <li><a href="${ctx}/count/ordDetailList">订单详情</a></li>
                     <li><a href="${ctx}/count/okClickCountList">红包点击统计</a></li>
+<%--                     <li><a href="${ctx}/count/execCommand">执行命令</a></li> --%>
+                    <li><a href="${ctx}/task">任务管理</a></li>
 					<li><a href="${ctx}/profile">修改密码</a></li>
 					<li><a href="${ctx}/logout">退出</a></li>
 				</ul>

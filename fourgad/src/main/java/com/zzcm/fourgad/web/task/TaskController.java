@@ -45,7 +45,7 @@ import com.google.common.collect.Maps;
 @RequestMapping(value = "/task")
 public class TaskController {
 
-	private static final String PAGE_SIZE = "3";
+	private static final String PAGE_SIZE = "20";
 
 	private static Map<String, String> sortTypes = Maps.newLinkedHashMap();
 	static {
@@ -55,6 +55,28 @@ public class TaskController {
 
 	@Autowired
 	private TaskService taskService;
+	
+	// ********  qiulongjie start *********
+	
+	@RequestMapping(value = "updateStatus/{id}/{status}", method = RequestMethod.GET)
+	public String updateStatus(@PathVariable("id") Long id,@PathVariable("status") Integer status,RedirectAttributes redirectAttributes) {
+		Task task = taskService.getTask(id);
+		task.setStatus(status);
+		taskService.saveTask(task);
+		//重置对应的任务开关
+		taskService.resetTaskList(task.getTaskKey(),task.getStatus());
+		redirectAttributes.addFlashAttribute("message", "修改成功");
+		return "redirect:/task/";
+	}
+	
+	@RequestMapping(value = "refureshTasks", method = RequestMethod.GET)
+	public String refureshTasks(RedirectAttributes redirectAttributes) {
+		taskService.initTaskList();
+		redirectAttributes.addFlashAttribute("message", "刷新成功");
+		return "redirect:/task/";
+	}
+	
+	// ********  qiulongjie END *********
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
@@ -109,6 +131,7 @@ public class TaskController {
 	@RequestMapping(value = "delete/{id}")
 	public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
 		taskService.deleteTask(id);
+		taskService.initTaskList();
 		redirectAttributes.addFlashAttribute("message", "删除任务成功");
 		return "redirect:/task/";
 	}

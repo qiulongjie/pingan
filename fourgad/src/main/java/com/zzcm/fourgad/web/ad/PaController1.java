@@ -18,21 +18,24 @@ import com.zzcm.fourgad.util.WebUtil;
 @Controller
 @RequestMapping(value = "/pa1")
 public class PaController1 {
-	private static Logger logger = LoggerFactory.getLogger(pingController.class);
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	private AdService adService;
 	
 	@RequestMapping(value = "{path}",method = RequestMethod.GET)
 	public String input(@PathVariable("path") String path,HttpServletRequest request,@RequestHeader("user-agent") String ua) {
+		path = path.toLowerCase();
+		
 		String channel = request.getParameter("a");
 		if(channel==null || channel.trim().equals("")){
 			channel="A7376102";
 		}
 		if( channel.length() > 20 ){
-			logger.warn("渠道长度超过20字符 对此渠道进行截取 channel="+channel);
+			logger.warn("渠道长度超过20字符 对此渠道进行截取channel="+channel+",ua="+ua+",url="+request.getRequestURL().toString()+"?"+request.getQueryString());
 			channel = channel.substring(0,20);
 		}
+		channel = channel.replace("a", "A");
 		request.setAttribute("a", channel);
 			
 		if(ua!=null&&ua.length()>40){
@@ -64,6 +67,7 @@ public class PaController1 {
 	
 	@RequestMapping(value="go/{path}")
 	public String go(@PathVariable("path") String path,HttpServletRequest request) {
+		path = path.toLowerCase();
 		return "pingan/"+path;
 	}
 	

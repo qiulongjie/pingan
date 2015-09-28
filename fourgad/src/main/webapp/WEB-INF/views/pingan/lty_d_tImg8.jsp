@@ -121,7 +121,7 @@
       <p style="margin-bottom:8px;">(4)本次活动为答谢新老用户特设，所有奖品均为赠送，
 因此不会向用户收取任何费用（包括邮费） </p>
       <p style="">（5）此页面由第三方掌众信息提供，活动最终解释权归掌众信息，如有疑问请致电客服热线：0755-3300507 </p>
-
+</div>
 
 </body>
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/lty_d_tImg8.js"></script>

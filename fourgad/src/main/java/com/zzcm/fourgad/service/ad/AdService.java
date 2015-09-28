@@ -28,26 +28,32 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.zzcm.fourgad.entity.AddrBean;
 import com.zzcm.fourgad.entity.OrdLogs;
-import com.zzcm.fourgad.web.ad.pingController;
+import com.zzcm.fourgad.util.DateUtil;
 
 @Component
 @Transactional
 public class AdService {
-	private static Logger logger = LoggerFactory.getLogger(pingController.class);
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private IPService iPService;
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
 	public void AddReqLogs(String channel,String ipaddr,String prov,String vtime,String ua ){
-		String sql = "insert into ad_req_log (channel,ipaddr,prov,vtime,ua) values (?,?,?,?,?)";
-		Object o [] = {channel,ipaddr,prov,vtime,ua};
+		//String sql = "insert into ad_req_log (channel,ipaddr,prov,vtime,ua) values (?,?,?,?,?)";
+		// 分区表 
+		String vmonth = vtime.substring(0, 8).replaceAll("-", "");
+		String sql = "insert into ad_req_log_partition (channel,ipaddr,prov,vtime,ua,vmonth) values (?,?,?,?,?,?)";
+		Object o [] = {channel,ipaddr,prov,vtime,ua,Integer.valueOf(vmonth)};
 		jdbcTemplate.update(sql,o);
 	}
 	
     public void AddReqLogs(String channel, String ipaddr, String prov, String vtime, String ua, String vstr1) {
-    	String sql = "insert into ad_req_log (channel,ipaddr,prov,vtime,ua,vstr1) values (?,?,?,?,?,?)";
-		Object o [] = {channel,ipaddr,prov,vtime,ua,vstr1};
+    	//String sql = "insert into ad_req_log (channel,ipaddr,prov,vtime,ua,vstr1) values (?,?,?,?,?,?)";
+    	// 分区表
+    	String vmonth = vtime.substring(0, 8).replaceAll("-", "");
+    	String sql = "insert into ad_req_log_partition (channel,ipaddr,prov,vtime,ua,vstr1,vmonth) values (?,?,?,?,?,?,?)";
+		Object o [] = {channel,ipaddr,prov,vtime,ua,vstr1,Integer.valueOf(vmonth)};
 		jdbcTemplate.update(sql,o);
 	}
 	
@@ -97,10 +103,40 @@ public class AdService {
 		Object o [] = {flag,msg,id};
 		jdbcTemplate.update(sql,o);
 	}
+	public void updOrdLogsPush(Long id,int flag,String msg){
+		String sql = "update ad_ord_log_push set flag = ?,vstr1 = ? where id = ?";
+		Object o [] = {flag,msg,id};
+		jdbcTemplate.update(sql,o);
+	}
+	
+	public void updOrdLogsPush(Long id,int flag,String msg,String prov){
+		String sql = "update ad_ord_log_push set flag = ?,vstr1 = ?,prov = ? where id = ?";
+		Object o [] = {flag,msg,prov,id};
+		jdbcTemplate.update(sql,o);
+	}
+	public void updOrdLogs(Long id,int flag,String msg,String prov){
+		String sql = "update ad_ord_log set flag = ?,vstr1 = ?,prov = ? where id = ?";
+		Object o [] = {flag,msg,prov,id};
+		jdbcTemplate.update(sql,o);
+	}
 	
 	public List<Map<String,Object>> getOrdsByFlag(int flag,int num){
-		String sql = "select * from ad_ord_log where flag = ? and pubcode not in (select channel from ad_channel_info a where a.disable_flag = 1) limit 0,?";
-		Object o [] = {flag,num};
+		String sql = "select * from ad_ord_log where flag = ? and vtime>=? and vtime <=? and pubcode not in (select channel from ad_channel_info a where a.disable_flag = 1) limit 0,?";
+		Object o [] = {flag,DateUtil.getTodayDate()+" 00:00:00", DateUtil.getTodayDate()+" 23:59:59",num};
+		return jdbcTemplate.queryForList(sql,o);
+	}
+	
+	/**
+	 * 根据ads(接口类型),flag(订单标识)获取订单
+	 * @param flag
+	 * @param num
+	 * @return
+	 */
+	public List<Map<String,Object>> getOrdsByFlagAds(int flag, int ads,int num){
+		String sql = "select id, uname, birthday, phone, pubcode, case when ddlSex='男' then 1 else 0 end ddlSex"
+				+ " from ad_ord_log where flag = ? and ads = ? and vtime>=? and vtime <=? "
+				+ "and pubcode not in (select channel from ad_channel_info a where a.disable_flag = 1) limit 0,?";
+		Object o [] = {flag, ads, DateUtil.getTodayDate()+" 00:00:00", DateUtil.getTodayDate()+" 23:59:59",num};
 		return jdbcTemplate.queryForList(sql,o);
 	}
 
@@ -152,18 +188,16 @@ public class AdService {
 		
 		// 判断当前是否符合条件
 		// 查询该时间范围的有效订单数flag=1
-		String eft_cnt_sql = " select pubcode a,sum(case when flag=1 then 1 else 0 end) eft_cnt "+
+		String eft_cnt_sql = " select count(1) eft_cnt "+
 							" from ad_ord_log "+
-							" where 1=1 "+
+							" where flag=1 "+
 							" and vtime >= ? and vtime <= ? "+
 							" and pubcode = ? ";
 		List<Map<String,Object>> eftCnt = jdbcTemplate.queryForList(eft_cnt_sql,new Object[]{startTime+" 00:00:00",endTime+" 23:59:59",channel});
 		//有效订单数
 		int eftCntNum = 0;
 		if(eftCnt != null && eftCnt.size() > 0 ){
-			if( eftCnt.get(0).get("eft_cnt") != null ){
-				eftCntNum = Integer.valueOf(String.valueOf(eftCnt.get(0).get("eft_cnt")));
-			}
+			eftCntNum = Integer.valueOf(String.valueOf(eftCnt.get(0).get("eft_cnt")));
 		}
 		eftCntNum++;
 		
@@ -247,18 +281,16 @@ public class AdService {
 		
 		// 判断当前是否符合条件
 		// 查询该时间范围的有效订单数flag=1
-		String eft_cnt_sql = " select pubcode a,sum(case when flag=1 then 1 else 0 end) eft_cnt "+
+		String eft_cnt_sql = " select count(1) eft_cnt "+
 							" from ad_ord_log "+
-							" where 1=1 "+
+							" where flag=1 "+
 							" and vtime >= ? and vtime <= ? "+
 							" and pubcode = ? ";
 		List<Map<String,Object>> eftCnt = jdbcTemplate.queryForList(eft_cnt_sql,new Object[]{startTime+" 00:00:00",endTime+" 23:59:59",channel});
 		//有效订单数
 		int eftCntNum = 0;
 		if(eftCnt != null && eftCnt.size() > 0 ){
-			if( eftCnt.get(0).get("eft_cnt") != null ){
-				eftCntNum = Integer.valueOf(String.valueOf(eftCnt.get(0).get("eft_cnt")));
-			}
+			eftCntNum = Integer.valueOf(String.valueOf(eftCnt.get(0).get("eft_cnt")));
 		}
 		eftCntNum++;
 		
@@ -268,6 +300,7 @@ public class AdService {
 			
 			// 有中奖信息
 			resultMap = condition2.get(0);
+			
 			String updateSql = " update ad_lty_info set allow_num = allow_num-1 where id = ? ";
 			jdbcTemplate.update(updateSql, new Object[]{resultMap.get("id")});
 			
@@ -374,18 +407,16 @@ public class AdService {
 		
 		// 判断当前是否符合条件
 		// 查询该时间范围的有效订单数flag=1
-		String eft_cnt_sql = " select pubcode a,sum(case when flag=1 then 1 else 0 end) eft_cnt "+
+		String eft_cnt_sql = " select count(1) eft_cnt "+
 				" from ad_ord_log "+
-				" where 1=1 "+
+				" where flag=1 "+
 				" and vtime >= ? and vtime <= ? "+
 				" and pubcode = ? ";
 		List<Map<String,Object>> eftCnt = jdbcTemplate.queryForList(eft_cnt_sql,new Object[]{startTime+" 00:00:00",endTime+" 23:59:59",channel});
 		//有效订单数
 		int eftCntNum = 0;
 		if(eftCnt != null && eftCnt.size() > 0 ){
-			if( eftCnt.get(0).get("eft_cnt") != null ){
-				eftCntNum = Integer.valueOf(String.valueOf(eftCnt.get(0).get("eft_cnt")));
-			}
+			eftCntNum = Integer.valueOf(String.valueOf(eftCnt.get(0).get("eft_cnt")));
 		}
 		eftCntNum++;
 		
@@ -711,18 +742,16 @@ public class AdService {
 		// 查询该时间范围的有效订单数flag=1
 		Date date=new Date();//取时间				
 		String currTime = new SimpleDateFormat("yyyy-MM-dd").format(date);
-		String eft_cnt_sql = " select pubcode a,sum(case when flag=1 then 1 else 0 end) eft_cnt "+
+		String eft_cnt_sql = " select count(1) eft_cnt "+
 							" from ad_ord_log "+
-							" where 1=1 "+
+							" where flag=1 "+
 							" and vtime <= ? "+
 							" and pubcode = ? ";
 		List<Map<String,Object>> eftCnt = jdbcTemplate.queryForList(eft_cnt_sql,new Object[]{currTime+" 23:59:59",channel});
 		//有效订单数
 		int eftCntNum = 0;
 		if(eftCnt != null && eftCnt.size() > 0 ){
-			if( eftCnt.get(0).get("eft_cnt") != null ){
-				eftCntNum = Integer.valueOf(String.valueOf(eftCnt.get(0).get("eft_cnt")));
-			}
+			eftCntNum = Integer.valueOf(String.valueOf(eftCnt.get(0).get("eft_cnt")));
 		}
 		eftCntNum++;
 		
@@ -818,4 +847,34 @@ public class AdService {
 		jdbcTemplate.update(sql,new Object[]{channel,clickType,ipaddr,vtime});
 	}
 
+	/**
+	 * 获取当天有效订单数
+	 * @param date 日期
+	 * @return
+	 *//*
+	public Integer getDayEftOrdNum(String date){
+		String eft_cnt_sql = " select count(1) eft_cnt "+
+				" from ad_ord_log a "+
+				" where flag=1 and a.vtime>='" + date+" 00:00:00'"+" and vtime<='"+date+" 23:59:59'";
+		List<Map<String,Object>> eftCnt = jdbcTemplate.queryForList(eft_cnt_sql,new Object[]{});
+		if (eftCnt != null && eftCnt.size() > 0) {
+			if (eftCnt.get(0).get("eft_cnt") != null) {
+				return Integer.valueOf(eftCnt.get(0).get("eft_cnt").toString());
+			}
+		}
+		return 0;
+	}*/
+	
+	/**
+	 * 获取当天订单数(有效订单，传输订单等)
+	 * @param date 日期
+	 * @return
+	 */
+	public Integer getDayOrdNum(String startdate, String enddate, String sql){
+		Integer count = jdbcTemplate.queryForObject(sql,new Object[]{startdate, enddate}, Integer.class);
+		if (count != null) {
+			return count;
+		}
+		return 0;
+	}
 }

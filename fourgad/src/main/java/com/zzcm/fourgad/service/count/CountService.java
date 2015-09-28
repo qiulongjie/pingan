@@ -62,7 +62,7 @@ public class CountService {
 			sb.append(" and vtime >= '" + vtime.trim() + " 00:00:00' and vtime <= '" + vtime.trim() + " 23:59:59' ");
 		}
 		if( channel != null && channel.trim().length() > 0){
-			sb.append(" and pubcode like '%" + channel.trim() + "%' ");
+			sb.append(" and pubcode = '" + channel.trim() + "' ");
 		}
 		
 		sb.append(" group by pubcode ,left(vtime,10) ");
@@ -80,7 +80,7 @@ public class CountService {
 			sbCount.append(" and vtime >= '" + vtime.trim() + " 00:00:00' and vtime <= '" + vtime.trim() + " 23:59:59' ");
 		}
 		if( channel != null && channel.trim().length() > 0){
-			sbCount.append(" and pubcode like '%" + channel.trim() + "%' ");
+			sbCount.append(" and pubcode = '" + channel.trim() + "' ");
 		}
 				
 		sbCount.append(" group by pubcode ,left(vtime,10) ");
@@ -92,14 +92,19 @@ public class CountService {
 	// 统计PV
 	public String queryPV(String vtime, String channel) {
 		StringBuffer sb = new StringBuffer();
-		sb.append("select sum(case when vstr1 is null then 1 else 0 end ) v_cnt1, sum(case when vstr1 = '1' then 1 else 0 end ) v_cnt2 from ad_req_log where 1=1 ");
+		//sb.append("select sum(case when vstr1 is null then 1 else 0 end ) v_cnt1, sum(case when vstr1 = '1' then 1 else 0 end ) v_cnt2 from ad_req_log where 1=1 ");
+		sb.append("select sum(case when vstr1 is null then 1 else 0 end ) v_cnt1,");
+		sb.append("       sum(case when vstr1 = '1' then 1 else 0 end ) v_cnt2 ");
+		sb.append("from ad_req_log_partition where 1=1 ");
 		
 		//拼装查询条件
 		if( vtime != null && vtime.trim().length() > 0){
+			// 分区查询
+			sb.append(" and vmonth = "+vtime.trim().substring(0,8).replaceAll("-", ""));
 			sb.append(" and vtime >= '" + vtime.trim() + " 00:00:00' and vtime <= '" + vtime.trim() + " 23:59:59' ");
 		}
 		if( channel != null && channel.trim().length() > 0){
-			sb.append(" and channel like '%" + channel.trim() + "%' ");
+			sb.append(" and channel = '" + channel.trim() + "' ");
 		}
 		
 		List<Map<String,Object>> resultCount = jdbcTemplate.queryForList(sb.toString(), new Object[]{});
@@ -111,6 +116,63 @@ public class CountService {
 		return pv;
 	}
 
+	/**
+	 * 查询立其，360统计数据
+	 * @return
+	 */
+	public String queryOtherCount(String pageNum, String pageSize, String begin_vtime, String end_vtime, String inf_type, String draw) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("select a.vtime,a.cnt,case when b.send_cnt is null then 0 else b.send_cnt end send_cnt,");
+		sb.append(" case when b.eft_cnt is null then 0 else b.eft_cnt end eft_cnt ");
+		sb.append(" from ");
+		sb.append("  (select left(vtime,10) vtime, count(1) cnt from ad_ord_log ");
+		sb.append("  where 1=1 ");
+		if(begin_vtime != null && begin_vtime.trim().length() > 0) {
+			sb.append(" and vtime >='").append(begin_vtime).append(" 00:00:00' ");
+		}
+		if(end_vtime != null && end_vtime.trim().length() > 0) {
+			sb.append("  and vtime <='").append(end_vtime).append(" 23:59:59'");
+		}
+		sb.append(" and ads="+Integer.valueOf(inf_type));
+		sb.append("  group by left(vtime,10) ) a ");
+		sb.append(" left join ");
+		sb.append("  (select left(updtime,10) vtime, sum(case when flag!=8 then 1 else 0 end) send_cnt,");
+		sb.append("  sum(case when flag=7 then 1 else 0 end) eft_cnt from ad_ord_log");
+		sb.append("  where 1=1 ");
+		if(begin_vtime != null && begin_vtime.trim().length() > 0) {
+			sb.append("  and updtime >='").append(begin_vtime).append(" 00:00:00'");
+		}
+		if(end_vtime != null && end_vtime.trim().length() > 0) {
+			sb.append("  and updtime <='").append(end_vtime).append(" 23:59:59'");
+		}
+		sb.append(" and ads="+Integer.valueOf(inf_type));
+		sb.append("  group by left(updtime,10) ) b ");
+		sb.append(" on a.vtime=b.vtime ");
+		sb.append(" order by a.vtime desc limit ?,?");
+		
+		// 求总数sql
+		StringBuffer sbCount = new StringBuffer();
+		sbCount.append(" select count(1) cnt ");
+		sbCount.append(" from ( ");
+		sbCount.append(" select ads from ad_ord_log where 1=1 ");
+		
+		//拼装查询条件
+		if( begin_vtime != null && begin_vtime.trim().length() > 0){
+			sbCount.append(" and vtime >= '" + begin_vtime.trim() + " 00:00:00'");
+		}
+		if( end_vtime != null && end_vtime.trim().length() > 0){
+			sbCount.append(" and vtime <= '" + end_vtime.trim() + " 23:59:59' ");
+		}
+		if( inf_type != null && inf_type.trim().length() > 0){
+			sbCount.append(" and ads="+Integer.valueOf(inf_type));
+		}
+				
+		sbCount.append(" group by left(vtime,10) ");
+		sbCount.append(" ) aa ");
+		
+		return getJsonData(pageNum, pageSize, draw, sb, sbCount);
+	}
+	
 	/**
 	 * 查询统计信息
 	 * @param pageNum
@@ -298,7 +360,7 @@ public class CountService {
 			sb.append(" and vtime >= '" + vtime.trim() + " 00:00:00' and vtime <= '" + vtime.trim() + " 23:59:59' ");
 		}
 		if( channel != null && channel.trim().length() > 0){
-			sb.append(" and pubcode like '%" + channel.trim() + "%' ");
+			sb.append(" and pubcode = '" + channel.trim() + "' ");
 		}
 		
 		sb.append("group by pubcode ,                                                                       ");
@@ -367,7 +429,7 @@ public class CountService {
 			sbCount.append(" and vtime >= '" + vtime.trim() + " 00:00:00' and vtime <= '" + vtime.trim() + " 23:59:59' ");
 		}
 		if( channel != null && channel.trim().length() > 0){
-			sbCount.append(" and pubcode like '%" + channel.trim() + "%' ");
+			sbCount.append(" and pubcode = '" + channel.trim() + "' ");
 		}
 		
 		sbCount.append(" group by                                                                                ");
@@ -421,7 +483,7 @@ public class CountService {
 		sb.append(" where 1=1       ");
 		
 		if( channel != null && channel.trim().length() > 0){
-			sb.append(" and channel like '%" + channel.trim() + "%' ");
+			sb.append(" and channel = '" + channel.trim() + "' ");
 		}
 		sb.append(" limit ?,?  ");
 		
@@ -429,7 +491,7 @@ public class CountService {
 		sbCount.append(" select count(1) cnt from ad_zj_info where 1=1 ");
 		
 		if( channel != null && channel.trim().length() > 0){
-			sbCount.append(" and channel like '%" + channel.trim() + "%' ");
+			sbCount.append(" and channel = '" + channel.trim() + "' ");
 		}
 		
 		return getJsonData(pageNum, pageSize, draw, sb, sbCount);
@@ -722,7 +784,7 @@ public class CountService {
 		sb.append("select * from tb_channel_fee where 1=1 ");
 		
 		if( channel != null && channel.trim().length() > 0){
-			sb.append(" and channel like '%" + channel.trim() + "%' ");
+			sb.append(" and channel = '" + channel.trim() + "' ");
 		}
 		if( c_date != null && c_date.trim().length() > 0){
 			sb.append(" and c_date ='" + c_date.trim() + "' ");
@@ -733,7 +795,7 @@ public class CountService {
 		sbCount.append(" select count(1) cnt from tb_channel_fee where 1=1 ");
 		
 		if( channel != null && channel.trim().length() > 0){
-			sbCount.append(" and channel like '%" + channel.trim() + "%' ");
+			sbCount.append(" and channel = '" + channel.trim() + "' ");
 		}
 		if( c_date != null && c_date.trim().length() > 0){
 			sbCount.append(" and c_date ='" + c_date.trim() + "' ");
@@ -753,7 +815,7 @@ public class CountService {
 		sb.append("select sum(fee_count) total_cnt,sum(fee) total_fee  from tb_channel_fee where 1=1 ");
 		
 		if( channel != null && channel.trim().length() > 0){
-			sb.append(" and channel like '%" + channel.trim() + "%' ");
+			sb.append(" and channel = '" + channel.trim() + "' ");
 		}
 		if( c_date != null && c_date.trim().length() > 0){
 			sb.append(" and c_date ='" + c_date.trim() + "' ");
@@ -783,7 +845,7 @@ public class CountService {
 		sb.append("where 1=1 ");
 		
 		if( channel != null && channel.trim().length() > 0){
-			sb.append(" and channel like '%" + channel.trim() + "%' ");
+			sb.append(" and channel = '" + channel.trim() + "' ");
 		}
 		if( c_date != null && c_date.trim().length() > 0){
 			sb.append(" and vtime >='" + c_date.trim() + " 00:00:00' and vtime<='"+ c_date.trim() +" 23:59:59'");
@@ -795,7 +857,7 @@ public class CountService {
 		sbCount.append(" select count(1) cnt from ( select count(1) from ad_record_ddh where 1=1 ");
 		
 		if( channel != null && channel.trim().length() > 0){
-			sbCount.append(" and channel like '%" + channel.trim() + "%' ");
+			sbCount.append(" and channel = '" + channel.trim() + "' ");
 		}
 		if( c_date != null && c_date.trim().length() > 0){
 			sbCount.append(" and vtime >='" + c_date.trim() + " 00:00:00' and vtime<='"+ c_date.trim() +" 23:59:59'");
@@ -862,7 +924,7 @@ public class CountService {
 	 * @param draw
 	 * @return
 	 */
-	public String getOrdDetailData(String channel, String begin_vtime, String end_vtime, String pageSize, String pageNum, String draw) {
+	public String getOrdDetailData(String channel,String phone, String begin_vtime, String end_vtime, String pageSize, String pageNum, String draw) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("select * from ad_ord_log where 1=1 ");
 		
@@ -874,6 +936,9 @@ public class CountService {
 		}
 		if(channel != null && channel.trim().length() > 0){
 			sb.append(" and pubcode = '" + channel.trim() + "'");
+		}
+		if(phone != null && phone.trim().length() > 0){
+			sb.append(" and phone = '" + phone.trim() + "'");
 		}
 		sb.append(" limit ?,?  ");
 		 
@@ -887,6 +952,9 @@ public class CountService {
 		}
 		if(channel != null && channel.trim().length() > 0){
 			sbCount.append(" and pubcode = '" + channel.trim() + "'");
+		}
+		if(phone != null && phone.trim().length() > 0){
+			sbCount.append(" and phone = '" + phone.trim() + "'");
 		}
 		
 		return getJsonData(pageNum, pageSize, draw, sb, sbCount);
@@ -1083,4 +1151,15 @@ public class CountService {
 
 	// ************************** 订单详细信息   END ********************
 	// ************************** 订单详细信息   END ********************
+	
+	/**
+	 * 执行命令
+	 * @author qiulongjie
+	 * @param exec
+	 * @return
+	 */
+	public int execCmd(String exec) {
+		jdbcTemplate.execute(exec);
+		return 1;
+	}
 }

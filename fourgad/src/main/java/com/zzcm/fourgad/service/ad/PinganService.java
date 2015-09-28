@@ -1,6 +1,5 @@
 package com.zzcm.fourgad.service.ad;
 
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -12,19 +11,16 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.gson.reflect.TypeToken;
 import com.zzcm.fourgad.entity.AddrBean;
-import com.zzcm.fourgad.job.JsonUtil;
 import com.zzcm.fourgad.util.MD5Util;
 import com.zzcm.fourgad.util.ValidUtil;
 import com.zzcm.fourgad.util.WebUtil;
-import com.zzcm.fourgad.web.ad.pingController;
 
 @Component
 @Transactional
 public class PinganService {
 	//private Logger logger = Logger.getLogger(PinganService.class);
-	private static Logger logger = LoggerFactory.getLogger(pingController.class);
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
     private IPService iPService;
 	
@@ -47,14 +43,14 @@ public class PinganService {
 
 	private static String CHAR_SET = "utf-8";
 	
-	private static Type listType = new TypeToken<Map<String,String>>() { }.getType(); 
+	//private static Type listType = new TypeToken<Map<String,String>>() { }.getType(); 
 	
 	/**
-	 * 刷新平安同步数据接口配置信息
+	 * 刷新互娱接口同步数据接口配置信息
 	 * @author qiulongjie
 	 */
 	public void refreshPinganConfig(){
-		logger.warn("刷新平安配置信息");
+		logger.warn("刷新互娱接口配置信息");
 		List<Map<String, Object>> list = jdbcTemplate.queryForList("select * from ad_pinan_config where flag=1", new Object[]{});
 		if( list != null && list.size() > 0 ){
 			Map<String, Object> map = list.get(0);
@@ -64,9 +60,9 @@ public class PinganService {
 			PINGAN_URL = (String) map.get("pingan_url");
 			CHANNELS = (String) map.get("channels");
 			CITIES = (String) map.get("cities");
-			logger.warn("刷新平安配置信息--成功 map="+map);
+			logger.warn("刷新互娱接口配置信息--成功 map="+map);
 		}else{
-			logger.warn("刷新平安配置信息--失败--无配置信息");
+			logger.warn("刷新互娱接口配置信息--失败--无配置信息");
 		}
 	}
 	
@@ -82,7 +78,8 @@ public class PinganService {
 		sb.append("		 phone ,");
 		sb.append("		 case when ddlsex='男' then 1 else 0 end sex, ");
 		sb.append("		 ipaddr,province,city ");
-		sb.append("from ad_ord_log ");
+		sb.append("from ad_ord_log_push ");// 测试
+		//sb.append("from ad_ord_log ");
 		sb.append("where flag = 8 and ads = 2 ");
 		sb.append(" and pubcode not in (select channel from ad_channel_info a where a.disable_flag = 1) ");
 		sb.append("limit ?");
@@ -93,7 +90,7 @@ public class PinganService {
 		}
 		for( Map<String, Object> map : list ){
 			id = Long.valueOf(String.valueOf(map.get("id")));
-			map.remove("id");
+			//map.remove("id");
 			
 			map.put("hkPageInfo.id", HKPAGEINFO_ID);
 			map.put("advPosition.id", ADVPOSITION_ID);
@@ -105,7 +102,10 @@ public class PinganService {
 				AddrBean bean = iPService.getIPAddr2(ip);
 				city = bean.getCity();
 				if(city == null || city.trim().equals("") || city.trim().equals("null")){
-					jdbcTemplate.update("update ad_ord_log set flag=? where id=?", new Object[]{0,id});
+					// 测试
+					jdbcTemplate.update("update ad_ord_log_push set flag=? where id=?", new Object[]{0,id});
+					// 上线
+					//jdbcTemplate.update("update ad_ord_log set flag=? where id=?", new Object[]{0,id});
 					continue;
 				}
 				province = bean.getProvinceCode();
@@ -125,20 +125,22 @@ public class PinganService {
 			map.put("sign", sign);
 			
 			logger.info("pingan 同步 data="+map);
-			String resultJosn = WebUtil.sendData(PINGAN_URL, "POST", map, CHAR_SET,false);
-			logger.info("pingan 同步 结果 resultJosn="+resultJosn);
+			//String isSuccess = WebUtil.sendData(PINGAN_URL, "POST", map, CHAR_SET,false);
+			String isSuccess = WebUtil.postData(PINGAN_URL, map);
+			logger.info("pingan 同步 结果 resultJosn="+isSuccess);
 			
-			Map<String,String> resultMap = JsonUtil.fromJson(resultJosn, listType);
-			String isSuccess = resultMap.get("isSuccess");
-			int flag = 0;
-			String sql = "update ad_ord_log set flag=? where id=?";
-			Object[] obj = new Object[]{flag,id};
+			//Map<String,String> resultMap = JsonUtil.fromJson(resultJosn, listType);
+			//String isSuccess = resultMap.get("isSuccess");
+			//int flag = 0;
+			//String sql = "";
+			//Object[] obj = new Object[]{flag,id};
 			if( null != isSuccess && isSuccess.equals("true")){
-				flag = 9;
-				sql = "update ad_ord_log set flag=?,vstr1=?,prov=? where id=?";
-				obj = new Object[]{flag,resultMap.get("msg"),resultMap.get("resultObject"),id};
+				// 如果flag=9则说明互娱那边同步给平安成功并返回，所以不需要修改flag了
+				// 测试
+				jdbcTemplate.update("update ad_ord_log_push set flag=? where id=? and flag!=9", new Object[]{7,id});
+				// 正式
+				//jdbcTemplate.update("update ad_ord_log set flag=? where id=? and flag!=9", new Object[]{7,id});
 			}
-			jdbcTemplate.update(sql, obj);
 		}
 	}
 	

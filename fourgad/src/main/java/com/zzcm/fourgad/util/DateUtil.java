@@ -13,6 +13,8 @@ public class DateUtil {
     public static final String YYYY_MM_DD = "yyyy-MM-dd";
     /** 日期格式 yyyyMMdd **/
     public static final String YYYYMMDD = "yyyyMMdd";
+    /** 日期格式 yyyyMM **/
+    public static final String YYYYMM = "yyyyMM";
     
 	@SuppressWarnings("static-access")
 	public static String getYestDay(){
@@ -142,8 +144,20 @@ public class DateUtil {
         return (nowDate.after(date));
     }
     
-    public static void main(String args [])
-    {
-        System.out.println(isAfter("2015-06-27",YYYY_MM_DD));
-    }
+    /**
+     * 获取当前月份 YYYYMM
+     * @author qiulongjie
+     * @return
+     */
+	public static String getCurrentMonth() {
+		Date date=new Date();//取时间				
+		SimpleDateFormat formatter = new SimpleDateFormat(YYYYMM);
+		String dateString = formatter.format(date);	 
+		return dateString;
+	}
+	
+	public static void main(String args [])
+	{
+		System.out.println(isAfter("2015-06-27",YYYY_MM_DD));
+	}
 }

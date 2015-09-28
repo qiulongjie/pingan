@@ -4,10 +4,11 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zzcm.fourgad.entity.AddrBean;
@@ -16,13 +17,15 @@ import com.zzcm.fourgad.entity.OrdLogs;
 import com.zzcm.fourgad.service.ad.AdService;
 import com.zzcm.fourgad.service.ad.AntiCheatingService;
 import com.zzcm.fourgad.service.addr.AddrCodeService;
+import com.zzcm.fourgad.service.task.TaskService;
 import com.zzcm.fourgad.util.IAddrService;
 import com.zzcm.fourgad.util.StringUtil;
 
 
 public class AntiCheatingJob
 {
-    private Logger logger = Logger.getLogger(this.getClass());
+    //private Logger logger = Logger.getLogger(this.getClass());
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
     
     @Autowired
     private IAddrService addrService;
@@ -38,44 +41,53 @@ public class AntiCheatingJob
     
     private static boolean isRunning = false;
     
+    /** 任务开关 */
+	private static final String TASK_KEY = "AntiCheatingJob";
+	@Autowired
+	private TaskService taskService;
+    
     public void work()
     {
-        if(!isRunning)
-        {
-            logger.info("反作弊分析开始..............");
-            Date startDate = new Date();
-            
-            isRunning = true;
-            boolean analysisFlag = true;
-            
-            while(analysisFlag)
-            {
-                long maxOrderId = antiCheatingService.getMaxOrderID();
-                List<OrdLogs> list= adService.getOrds(maxOrderId,20);
-                if(list==null || list.size()==0)
-                {
-                    analysisFlag = false;
-                }
-                else
-                {
-                    for(OrdLogs order : list)
-                    {
-                        analysisRecord(order);
-                    }
-                }
-                //analysisFlag = false;
-            }
-            
-            isRunning = false;
-            
-            logger.info("反作弊分析结束..............");
-            Date endDate = new Date();
-            logger.info("总耗时:"+(endDate.getTime()-startDate.getTime())+"毫秒");
-        }
-        else
-        {
-            logger.info("反作弊分析正在进行中,不开启新任务!");
-        }
+    	if(taskService.getTaskWork(TASK_KEY)){
+    		if(!isRunning)
+    		{
+    			logger.info("反作弊分析开始..............");
+    			Date startDate = new Date();
+    			
+    			isRunning = true;
+    			boolean analysisFlag = true;
+    			
+    			while(analysisFlag)
+    			{
+    				long maxOrderId = antiCheatingService.getMaxOrderID();
+    				List<OrdLogs> list= adService.getOrds(maxOrderId,20);
+    				if(list==null || list.size()==0)
+    				{
+    					analysisFlag = false;
+    				}
+    				else
+    				{
+    					for(OrdLogs order : list)
+    					{
+    						analysisRecord(order);
+    					}
+    				}
+    				//analysisFlag = false;
+    			}
+    			
+    			isRunning = false;
+    			
+    			logger.info("反作弊分析结束..............");
+    			Date endDate = new Date();
+    			logger.info("总耗时:"+(endDate.getTime()-startDate.getTime())+"毫秒");
+    		}
+    		else
+    		{
+    			logger.info("反作弊分析正在进行中,不开启新任务!");
+    		}
+    	}else{
+			logger.info("**job stop**task_key="+TASK_KEY);
+		}
     }
     
     private void analysisRecord(OrdLogs order)

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.com.metlife.icare.webservice.YSW2ICareSaveServiceLocator;
@@ -19,7 +20,6 @@ import com.zzcm.fourgad.util.RecordXmlUtil;
 import com.zzcm.fourgad.util.ValidUtil;
 
 @Component
-@Transactional
 public class DdhService {
 	@Autowired
     private IPService iPService;
@@ -27,7 +27,7 @@ public class DdhService {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	/** 活动包含省份  */
+	/** 活动包含省份  北京市、上海市、重庆市、辽宁省、江苏省、浙江省、福建省（除厦门）、广东省、四川省、湖北省、天津市*/
 	private static final String[] INCLUD_PROVINCE = {"北京市","上海市","重庆市","辽宁省","江苏省","浙江省","福建省","广东省","四川省","湖北省","天津市"};
 	/** 不包含的城市 */
 	private static final String[] EXCLUD_CITY = {"厦门"};
@@ -48,42 +48,44 @@ public class DdhService {
 	 * @return
 	 */
 	public Object[] checkDdhSumbit(String uname, String birthday, String ddlSex, String phone, String ipaddr) {
+		AddrBean IPAddr = iPService.getIPAddr2(ipaddr);
+		String city = IPAddr.getCity();
+		String province = IPAddr.getProvinceCode();
+		
 		if(!ValidUtil.isValidName(uname)){
-			return new Object[]{1};
+			return new Object[]{1,province,city};
 		}
 		
 		if(!ValidUtil.isBirthday(birthday)){
-			return new Object[]{2};
+			return new Object[]{2,province,city};
 		}
 		
 		if(!ValidUtil.isValidBirthday(birthday)){
-			return new Object[]{3};
+			return new Object[]{3,province,city};
 		}
 		
 		if(!ValidUtil.isPhoneNumber(phone)){
-			return new Object[]{4};
+			return new Object[]{4,province,city};
 		}
 		
 		if(isExsitPhone(phone)){
-			return new Object[]{5};
+			return new Object[]{5,province,city};
 		}
 		
-		//   判断IP对应的城市是否在包含在活动的城市内
-		AddrBean IPAddr = iPService.getIPAddr2(ipaddr);
-		String city = IPAddr.getCity();
+	    // 判断IP对应的城市是否在包含在活动的城市内
 		for(String c : EXCLUD_CITY){
 			if(c.contains(city)){
-				return new Object[]{6};
+				return new Object[]{6,province,city};
 			}
 		}
-		String province = IPAddr.getProvinceCode();
+		
 		for(String p : INCLUD_PROVINCE){
 			if(p.contains(province)){
 				return new Object[]{0,province,city};
 			}
 		}
 		
-		return new Object[]{6};
+		return new Object[]{6,province,city};
 	}
 	
 	/**
@@ -112,6 +114,7 @@ public class DdhService {
 	 * @param isCheck
 	 * @param result 
 	 */
+	@Transactional
 	public void addRecordDdh(String channel, String uname, String birthday, String ddlSex, String phone, String ipaddr,
 			String vtime, String isCheck, Object[] result) {
 		String sql = "insert into ad_record_ddh(channel,uname,birthday,ddlSex,phone,ipaddr,vtime,is_check,contact_state,contact_city,contact_address) values(?,?,?,?,?,?,?,?,?,?,?)";
@@ -147,6 +150,7 @@ public class DdhService {
 	 * @param holder 
 	 * @param id
 	 */
+	@Transactional(propagation=Propagation.SUPPORTS)
 	public void updateRecord(HolderIdentify holder,Integer id) {
 		String sql = "update ad_record_ddh set flag = ? ,message=?,free_insure_no=? where id = ?";
 		jdbcTemplate.update(sql, new Object[]{holder.Flag,holder.Message,holder.FreeInsureNo,id});

@@ -79,7 +79,8 @@
 	
 	
 	<div>
-		<img id="banner_link" src="http://rs.iadcn.com/pingan/static/zhuanpan/images/zy2_gongge/banner1.jpg" width="100%" />
+<!-- 		<img id="banner_link" src="http://rs.iadcn.com/pingan/static/zhuanpan/images/zy2_gongge/banner1.jpg" width="100%" />
+ -->		<img id="banner_link" src="http://rs.iadcn.com/pingan/static/zhuanpan/images/zy2_gongge/banner2.jpg" width="100%" />
 	</div>
 	
 	

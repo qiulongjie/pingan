@@ -39,9 +39,7 @@ ul,li{ list-style-type:none; margin:0; padding:0;}
 			<p style="margin-bottom:10px;">参与此次活动</p>
 			
 			<p align="center">
-			 <a id="downloadClick" href="http://m.koudailc.com/page/register?isShare=1&source_tag=zhangyue">
-			   <img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/pingNew3/btn.png" width="90%" />
-			 </a>
+			   <img id="downloadClick" src="http://rs.iadcn.com/pingan/static/zhuanpan/images/pingNew3/btn.png" width="90%" />
 			</p>
 			
 			<!-- <p align="center">
@@ -69,6 +67,12 @@ $(function() {
 			error : function() {
 			}
 		});
+		window.location.href='http://m.koudailc.com/page/register?isShare=1&source_tag=zhangyue';
+		/* if(a=='A7577116'){
+			window.location.href='http://www.xiaoniu88.com/partner/landing/w/hqn?channelId=17ca1e7f7e3c52b9&word=ZZ001';
+		}else{
+			window.location.href='http://www.xiaoniu88.com/partner/landing/w/hqn?channelId=17ca1e7f7e3c52b9&word=ZZ002';
+		} */
 	});
 })
 </script>

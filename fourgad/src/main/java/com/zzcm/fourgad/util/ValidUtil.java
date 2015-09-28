@@ -84,7 +84,7 @@ public class ValidUtil {
 		return true;
 	}
 
-	/** 姓名是否合法 2-8位中文字符 */
+	/** 姓名是否合法 2-6位中文字符 */
 	public static boolean isValidName(String uname) {
 		if( uname == null ){
 			return false;
@@ -92,6 +92,17 @@ public class ValidUtil {
 		Pattern pattern = Pattern.compile("([\u4e00-\u9fa5]){2,6}$");
 		Matcher matcher = pattern.matcher(uname);
 		if(matcher.matches()){
+			return true;
+		}
+		return false;
+	}
+	
+	/** 判断性别是否是男或女 */
+	public static boolean isValidSex(String sex) {
+		if( sex == null ){
+			return false;
+		}
+		if( sex.equals("男") || sex.equals("女")){
 			return true;
 		}
 		return false;
@@ -111,6 +122,6 @@ public class ValidUtil {
 	}
 	
     public static void main(String[] args) {
-		System.out.println(isValidName("中阿桑的"));
+		System.out.println(isValidSex("女"));
 	}
 }

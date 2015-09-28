@@ -28,5 +28,11 @@ public class CollectionTest {
 	
 	public static void main(String[] args) {
 		test1();
+		
+		new Timer().scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				System.out.println(1);
+			}
+		}, 0L, 1000L);;
 	}
 }

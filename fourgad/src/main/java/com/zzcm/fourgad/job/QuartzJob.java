@@ -1,57 +1,75 @@
 package com.zzcm.fourgad.job;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zzcm.fourgad.service.ad.AdService;
+import com.zzcm.fourgad.service.task.TaskService;
+import com.zzcm.fourgad.util.WebUtil;
 
-
+/**
+ * 同步数据给荣时代<br/>
+ * http://jixianghutong.com/api/data.ashx
+ * @author shilei
+ * @modify qiulongjie
+ */
 public class QuartzJob {
-	private Logger logger = Logger.getLogger(this.getClass());
+	//private Logger logger = Logger.getLogger(this.getClass());
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	/** 答案生成策略 */
 	private static final int[] ANSWER2_3= {3,3};
 	/** 问卷类型 */
 	private static final String ANSWERTYPE10 = "10";
 	private static final char CHAR_A = 'A';
+	/** json转换类型  */
+	private static final Type listType = new TypeToken<List<RetBean>>() {}.getType(); 
+	/** 同步接口 */
+	private static final String SEND_URL = "http://jixianghutong.com/api/data.ashx";
 	@Autowired
 	private AdService adService;
+	
+	/** 任务开关 */
+	private static final String TASK_KEY = "QuartzJob";
+	@Autowired
+	private TaskService taskService;
+	
+    private static boolean isRunning = false;
+	
 	public void work()
     {
-		System.out.println("====Send====");
-		//billService.SendData();
-		//String url = "http://rongtimes.com/api/data.ashx";
-		String url = "http://jixianghutong.com/api/data.ashx";
-		SendData(url);
-		System.out.println("====End====");
+		if(isRunning){
+			logger.info("==== QuartzJob 正在运行 返回 等待下次执行====");
+			return;
+		}
+		isRunning = true;
+		try {
+			if(taskService.getTaskWork(TASK_KEY)){
+				logger.info("===QuartzJob==Send====");
+				sendData(SEND_URL);
+				logger.info("===QuartzJob==End====");
+			}else{
+				logger.info("**job stop**task_key="+TASK_KEY);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			isRunning = false;
+		}
     }
 	
-	/*
-	 * private String Name;
-	private String Sex;
-	private String Mobile;
-	private String Birthday;
-	private String Ip;
-	private String PubCode;
+	/**
+	 * 同步数据
+	 * @param url
 	 */
-	
-	public void SendData(String url){
+	public void sendData(String url){
 		List<Map<String,Object>> list = adService.getOrdsByFlag(0, 100);
 		for(Map<String,Object> l:list){
 			Long id = new Long(Integer.parseInt(l.get("id").toString()));
@@ -80,71 +98,31 @@ public class QuartzJob {
 			bean.setRemark(pcontent); 
 			Gson gson = new Gson();
 	    	String json = gson.toJson(bean); 
-	    	System.out.println(json);
-	    	String str = postInfo(url,json);
-	    	System.out.println(str);
-	    	Type listType = new TypeToken<List<RetBean>>() {  
-	        }.getType(); 
-	        List<RetBean> rets = JsonUtil.fromJson(str, listType);
-	        if(rets.size()>0){
-	        	RetBean ret = new RetBean();
-	        	ret = rets.get(0);
-		    	if(ret!=null){
-		    		String code = ret.getRetCode();
-		    		String msg = ret.getRetMsg();
-		    		System.out.println("code="+code);
-		    		System.out.println("msg="+msg);
-		    		if(code==null)code = "0";
-		    		if(code.equals("1")){
-		    			adService.updOrdLogs(id,1,msg);
-		    		}else{
-		    			adService.updOrdLogs(id,2,msg);
-		    		}
-		    	}
-	        }
+	    	logger.info(json);
+	    	String str = WebUtil.postJOSN(url,json);
+	    	logger.info(str);
+	    	if( null != str){
+	    		List<RetBean> rets = JsonUtil.fromJson(str, listType);
+	    		if(rets != null && rets.size()>0){
+	    			RetBean ret = rets.get(0);
+	    			if(ret!=null){
+	    				String code = ret.getRetCode();
+	    				String msg = ret.getRetMsg();
+	    				if(code==null){
+	    					code = "0";
+	    				}
+	    				if(code.equals("1")){
+	    					adService.updOrdLogs(id,1,msg);
+	    				}else{
+	    					adService.updOrdLogs(id,2,msg);
+	    				}
+	    			}
+	    		}
+	    	}
+	    	
 		}
 	}
 	
-	public String postInfo(String sendurl, String data) {
-		
-        CloseableHttpClient client = HttpClients.createDefault();
-        HttpPost post = new HttpPost(sendurl);
-        StringEntity myEntity = new StringEntity(data,
-                ContentType.APPLICATION_JSON);// 构造请求数据
-        post.setEntity(myEntity);// 设置请求体
-        String responseContent = null; // 响应内容
-        CloseableHttpResponse response = null;
-        try {
-             response = client.execute(post);
-             if (response.getStatusLine().getStatusCode() == 200) {
-                 HttpEntity entity = response.getEntity();
-                 responseContent = EntityUtils.toString(entity, "UTF-8");
-             }
-         } catch (ClientProtocolException e) {
-        	 logger.error(e.toString());
-             
-         } catch (IOException e) {
-        	 logger.error(e.toString());
-             
-         } finally {
-             try {
-                 if (response != null)
-                     response.close();
- 
-             } catch (IOException e) {
-            	 logger.error(e.toString());		                 
-             } finally {
-                 try {
-                     if (client != null)
-                         client.close();
-                 } catch (IOException e) {
-                	 logger.error(e.toString());		                     
-                 }
-             }
-         }
-         return responseContent;
-     }
-
 	/**
 	 * 生成Remark字段的数据  对应问卷答案
 	 * @param type 问卷类型

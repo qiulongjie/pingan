@@ -49,18 +49,17 @@
   		<maven>3.0.0</maven>
 	</prerequisites>
 
-	<!-- 设定插件仓库, 如有Nexus私服, 取消注释并指向正确的服务器地址. 
+	<!--  设定插件仓库, 如有Nexus私服, 取消注释并指向正确的服务器地址.  -->
 	<pluginRepositories> 
 		<pluginRepository> 
-			<id>nexus</id>
-			<name>Team Nexus Repository</name>
-			<url>http://localhost:8081/nexus/content/groups/public</url> 
+		    <id>nexus</id>
+			<name>nexus</name>
+			<url>http://192.168.0.113:8081/nexus/content/groups/public/</url> 
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-	-->
 
 	<!-- 依赖项定义 -->
 	<dependencies>

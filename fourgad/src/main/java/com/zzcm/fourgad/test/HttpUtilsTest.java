@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Date;
 import java.util.Map;
 
 import com.google.gson.reflect.TypeToken;
@@ -17,11 +18,13 @@ public class HttpUtilsTest {
 		return new String(data);
 	}
 	private static void test1() throws Exception{
-		String req = "channel=A1234&uname=张三&birthday=19890808&phone=13752274675&ddlSex=女";
+		//汤仁霞  15551196899  19751024  渠道 A9925029  赵昆仑 [tel] => 15563399942 [birth] => 19881201   
+
+		String req = "channel=A9925029&uname=赵昆仑&birthday=19881201&phone=15563399942&ddlSex=女";
 		byte[] entity = req.getBytes();
-		//String path = "http://192.168.0.53:8989/fourgad/ping/pushOrd";
+		String path = "http://192.168.0.53:8989/fourgad/ping/pushOrd";
 		//String path = "http://113.31.65.67:8081/ping/pushOrdLog";
-		String path = "http://m.iadcn.com/ping/pushOrdLog";
+		//String path = "http://m.iadcn.com/ping/pushOrdLog";
 		HttpURLConnection conn = (HttpURLConnection) new URL(path).openConnection();
 		conn.setConnectTimeout(5000);
 		conn.setRequestMethod("POST");
@@ -69,8 +72,29 @@ public class HttpUtilsTest {
 		String string = WebUtil.sendData(path, "POST", req, "utf-8");
 		System.out.println(string);
 	}
+	private static void test4() throws Exception{
+		String req = "";
+		String path = "http://ossptest.voicecloud.cn:90/openapi/do?c=2001&v=2.0&appid=NHTW062S&appkey=d77444acb4e0e300776e05d219722f4f&timestamp="+System.currentTimeMillis();
+		byte[] entity = req.getBytes();
+		//String path = "http://113.31.65.67:8081/ping/pushOrdLog";
+		//String path = "http://m.iadcn.com/ping/pushOrdLog";
+		HttpURLConnection conn = (HttpURLConnection) new URL(path).openConnection();
+		conn.setConnectTimeout(5000);
+		conn.setRequestMethod("GET");
+		conn.setDoOutput(true);
+		//conn.setRequestProperty("Content-Type", "text/HTML; charset=utf-8");
+		conn.setRequestProperty("Content-Type", "application/json");
+		conn.setRequestProperty("Content-Length", String.valueOf(entity.length));
+		conn.getOutputStream().write(entity);
+		int code = conn.getResponseCode();
+		System.out.println(code);
+		if(code == 200){
+			String result = parseSOAP(conn.getInputStream());
+			System.out.println(result);
+		}
+	}
 	
 	public static void main(String[] args) throws Exception {
-		test3();
+		test1();
 	}
 }
