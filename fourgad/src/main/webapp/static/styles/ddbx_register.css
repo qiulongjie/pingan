@@ -11,9 +11,12 @@ a{ text-decoration:none;}
 ul,li{ list-style-type:none; margin:0; padding:0;}
 img{ display:block;*display:block;}
 .bg{ position:relative;}
-.list{  position:absolute; left:50%; margin-left:-274px; top:182px; color:#ffffff;width:600px;}
-.list span{ line-height:49px;}
-.inp{ width:300px; height:36px;  border-radius:2px; border:1px solid #00a67d; margin:5px 0;}
-.lingqu_btn{ border:1px solid  #00a67d; border-radius:3px; width:200px; background:#ffffff; height:42px; color:#ff6600; margin-top:10px; font-size:16px; margin-left:66px;  font-weight:bold; cursor:pointer;}
-.tit{ font-size:26px; line-height:52px; background:url(images/pen.png) 0 10px no-repeat; padding-left:40px;}
-.g span{ width:66px;display:block;float:left;line-height:49px;}
+.list{  position:absolute; left:50%; margin-left:-274px; color:#ffffff;width:600px;}
+.list span{ line-height:62px;}
+.inp{ width:300px; height:42px; margin:10px 0; border-radius:2px; border:1px solid #00a67d;}
+.lingqu_btn{ border:1px solid  #00a67d; border-radius:3px; width:200px; background:#ffffff; height:42px; color:#ff6600; margin-top:10px; font-size:16px; margin-left:50px;  font-weight:bold; cursor:pointer;}
+.tit{ font-size:26px; line-height:52px; background:url(../images/ddbx/pen.png) 0 10px no-repeat; padding-left:40px;}
+.yuansu .che{ position:absolute;left:50%;top:130px; z-index:2; margin-left:-563px;}
+.yuansu .fengjing{ position:absolute;left:-507px;top:20px; z-index:2;}
+.yuansu .logo{ position:absolute;right:-406px;px;top:20px; z-index:2;}
+.yuansu .che2{ position:absolute;right:-453px;top:629px; z-index:2;}

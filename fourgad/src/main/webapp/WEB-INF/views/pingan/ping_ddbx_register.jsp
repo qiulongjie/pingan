@@ -40,20 +40,26 @@
 		</div>
 	</div>
 
-	<div class="list">
-		<div class="tit">填写信息免费领取公共交通意外险</div>
-		<div class="g">
-			<form action="${ctx}/ping/submitGet" name="form1" method="get">
+	<div class="list" style="position:relative; z-index:1">
+		<div class="yuansu">
+				<div class="che"><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ddbx/che.png" /></div>
+				<div class="fengjing"><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ddbx/fengjing.png" /></div>
+				<div class="logo"><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ddbx/logo.png" /></div>
+				<div class="che2"><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ddbx/che2.png" /></div>
+		</div>
+			
+		<div style="position:absolute; z-index:3;top:330px; left:67px;">
+			<form action="${ctx}/ping/submitGet" name="form1" method="post">
 				<input name="code" type="hidden" value="${code }" /> 
 				<input name="a" type="hidden" value="${a }" /> 
 				<input name="failure_path" type="hidden" value="ping_ddbx_register" /> 
 				<input name="ok_p" type="hidden" value="ping_ddbx_ok" />
 				<div>
-					<div class="left">
-						<span>姓&nbsp;名：</span> <input name="uname" id="txtName"
-							value="${uname }" type="text" class="inp" placeholder="请填写您的真实姓名" style="width: 200px;" />
+					<div class="left" >
+						<span>姓&nbsp;&nbsp;名：</span> <input name="uname" id="txtName"
+							value="${uname }" type="text" class="inp" placeholder="请填写您的真实姓名" style="width:200px;" />
 					</div>
-					<div class="left">
+					<div class="left" style="line-height:66px;">
 						<input name="ddlSex" type="radio" value="男" id="x" checked /><label for="x">男</label> 
 						<input name="ddlSex" type="radio" value="女" id="c" /><label for="c">女</label>
 					</div>
@@ -61,20 +67,20 @@
 				</div>
 
 				<div>
-					<span>生&nbsp;日：</span> <input value="${birthday }" id="txtBirthday"
+					<span>生&nbsp;&nbsp;日：</span> <input value="${birthday }" id="txtBirthday"
 						name="birthday" type="text" placeholder="例如：19890825" class="inp" />
 				</div>
 
 				<div>
-					<span>手&nbsp;机：</span> <input value="${phone }" id="txtMobile"
+					<span>手&nbsp;&nbsp;机：</span> <input value="${phone }" id="txtMobile"
 						name="phone" type="text" placeholder="免费接受电子保单" class="inp" />
 				</div>
 
 				<div>
-					<span style="float: left;">验证码：</span> <input id="vcode"
+					<span style="float:left;">验证码：</span> <input id="vcode"
 						name="vryCode" type="text" class="inp"
 						style="width: 200px; float: left;" />
-					<div style="width: 100px; height: 36px; background: #000000; float: left; margin-top: 7px; margin-left: 10px;">
+					<div style="width: 100px; height: 42px; background: #000000; float: left; margin-top: 12px; margin-left: 10px;">
 						<img src="${ctx}/ping/go/img" width="100%" height="100%" id="code_img" />
 					</div>
 					<br class="clear" />
@@ -84,35 +90,6 @@
 				<input type="button" value="&nbsp;领取赠险" class="lingqu_btn"
 					onclick="checkForm('s')" />
 			</div>
-		</div>
-	</div>
-	<div style="">
-		<div style="margin-top: 60px;">
-			<img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ddbx/register_1.jpg" width="100%" />
-		</div>
-		<div>
-			<img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ddbx/register_2.jpg" width="100%" />
-		</div>
-		<div>
-			<img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ddbx/register_3.jpg" width="100%" />
-		</div>
-		<div>
-			<img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ddbx/register_4.jpg" width="100%" />
-		</div>
-		<div>
-			<img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ddbx/register_5.jpg" width="100%" />
-		</div>
-		<div>
-			<img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ddbx/register_6.jpg" width="100%" />
-		</div>
-		<div>
-			<img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ddbx/register_7.jpg" width="100%" />
-		</div>
-		<div>
-			<img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ddbx/register_8.jpg" width="100%" />
-		</div>
-		<div>
-			<img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ddbx/register_9.jpg" width="100%" />
 		</div>
 	</div>
 </body>

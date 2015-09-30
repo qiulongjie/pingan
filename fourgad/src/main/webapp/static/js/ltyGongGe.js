@@ -188,6 +188,7 @@ var lottery={
 		}
 	});
 	
+	var angleTemp;
 	function getLottery(){
 		$.ajax({
 			type : "POST",
@@ -205,11 +206,12 @@ var lottery={
 						$('#save_1').attr('href',web_path+data.link_url+'?a='+a);
 					}*/
 					$('#save_1').attr('href',web_path+data.link_url+'?a='+a);
-					/*$('.tanchuang_input2').html(data.title_info);*/
+					angleTemp=data.lty_prize;
 					
-				    /*$.session.set('ok_title', data.ok_title);
+				    $.session.set('ok_title', data.ok_title);
 					$.session.set('ok_info', data.ok_info);
-					$.session.set('banner_link', bannerLink);*/
+					$.session.set('banner_link', bannerLink);
+					$.session.set('lty_angle', data.lty_prize);
 					
 					lottery.prize=parseInt(data.lty_prize);
 					lottery.speed=100;
@@ -233,7 +235,11 @@ var lottery={
 	}
 	
 	function showPrize(){
-		$('#prizeShow').show();
+		if(angleTemp != 0){
+			$('#prizeShow2').show();
+		}else{
+			$('#prizeShow').show();
+		}
 		click=false;
 		setTimeout(gotoPrize,1000);
 	}
@@ -267,7 +273,7 @@ var lottery={
         var pos = curWwwPath.indexOf(pathName);
         var localhostPaht = curWwwPath.substring(0, pos);
         var projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
-        //return (localhostPaht + projectName);//本地测试改为这个
-        return localhostPaht;
+        return (localhostPaht + projectName);//本地测试改为这个
+        // return localhostPaht;
     }
 })

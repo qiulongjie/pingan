@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.zzcm.fourgad.entity.AddrBean;
+import com.zzcm.fourgad.service.task.CrtOrdService;
 
 @Component
 public class UpdateAddrService {
@@ -20,7 +21,9 @@ public class UpdateAddrService {
 	private LiqiService liqiService;
 	@Autowired
 	private NewMediaService newMediaService;
-	
+	@Autowired
+	private CrtOrdService crtOrdService;
+
 	public void updateAddr(int num){
 		try {
 			List<Map<String, Object>> list = getOrdsNoAddr(num);
@@ -34,14 +37,15 @@ public class UpdateAddrService {
 					String city = addr.getCity();
 					
 					boolean isLiqi = liqiService.check(null,prov,city);
-					if(isLiqi){
+					
+					if(isLiqi && crtOrdService.getOrdCtrl(CrtOrdService.LIQI_KEY)){
 						// 如果是立其娱乐则把 flag设置为8
 						flag = 8; 
 						ads = 5;
 					}else{
 						// 判断是否要传给360新媒体的数据
 						boolean isNewMedia = newMediaService.checkOrd(obj.get("pubcode").toString(),city);
-						if(isNewMedia){
+						if(isNewMedia && crtOrdService.getOrdCtrl(CrtOrdService.NEWMEDIA_KEY)){
 							// 如果是360新媒体则把 flag设置为8
 							flag = 8;
 							ads = 4;
@@ -69,5 +73,7 @@ public class UpdateAddrService {
 		String sql = "update ad_ord_log set flag=?,ads=?,province=?,city=? where id=? ";
 		jdbcTemplate.update(sql,new Object[]{flag, ads, prov, city, id});
 	}
+	
+	
 }
 

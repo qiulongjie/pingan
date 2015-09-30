@@ -20,7 +20,7 @@
 				<img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ddbx/feiji.png" />
 			</div>
 			<div class="che">
-				<img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ddbx/che.png" />
+				<img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/ddbx/che2.png" />
 			</div>
 		</div>
 

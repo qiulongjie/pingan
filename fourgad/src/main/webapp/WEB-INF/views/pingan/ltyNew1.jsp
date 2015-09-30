@@ -16,8 +16,8 @@
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/jquery.cookie.js"></script>
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/jquerysession.js"></script>
 <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/baidu_count.js"></script>
-<script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/ltyGongGe.js"></script>
-<!-- <script type="text/javascript" src="${ctx }/static/js/ltyGongGe.js"></script> -->
+<!-- <script type="text/javascript" src="http://rs.iadcn.com/pingan/static/zhuanpan/js/ltyGongGe.js"></script> -->
+<script type="text/javascript" src="${ctx }/static/js/ltyGongGe.js"></script>
 </head>
 
 <body>
@@ -34,9 +34,15 @@
 	</div>
 </div>
 
-<div  id="prizeShow" style="display:none;">
+<div  id="prizeShow"  style="display:none;">
 	<div class="blackbg"></div>
 	<div class="tanchuang"><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/pupo/winning_box.gif" width="300" /></div>
+</div>
+
+<div  id="prizeShow2"  style="display:none;">
+	<div class="blackbg"></div>
+	<div class="tanchuang"><img src="${ctx }/static/images/pupo/winning_box_2.png" width="300" /></div>
+<!-- 	<div class="tanchuang"><img src="http://rs.iadcn.com/pingan/static/zhuanpan/images/pupo/winning_box_2.png" width="300" /></div> -->
 </div>
 
 <div  id="completeInfoShow" style="display:none;">

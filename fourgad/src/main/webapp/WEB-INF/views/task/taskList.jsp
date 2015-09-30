@@ -52,13 +52,44 @@
 		</c:forEach>
 		</tbody>
 	</table>
-	
 	<tags:pagination page="${tasks}" paginationSize="5"/>
-
 	<div>
 	  <a class="btn" href="${ctx}/task/refureshTasks">刷新任务缓存</a>
 	  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	 <a class="btn" href="${ctx}/task/create">创建任务</a>
 	 </div>
-</body>
+	 <br><br>
+	<h4>------------------是否开始生成订单----------------</h4>
+	<table id="contentTable2" class="table table-striped table-bordered table-condensed">
+		<thead>
+			<tr>
+				<th>订单类型</th>
+				<th>订单生成状态</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		<c:forEach items="${crtOrdCtrls}" var="crtOrdCtrl">
+			<tr>
+				<td><a href="${ctx}/ordCtrl/update/${crtOrdCtrl.id}">${crtOrdCtrl.ordTitle}</a></td>
+				<td>
+					<c:if test="${crtOrdCtrl.crtOrdStatus == 0}">已停止</c:if>
+					<c:if test="${crtOrdCtrl.crtOrdStatus == 1}">正在生成</c:if>
+				</td>
+				<td>
+					<c:if test="${crtOrdCtrl.crtOrdStatus == 0}"><a href="${ctx}/ordCtrl/updateStatus/${crtOrdCtrl.id}/1" onClick="return confirm('确定开始生成订单吗?');">开始生成订单</a></c:if>
+					<c:if test="${crtOrdCtrl.crtOrdStatus == 1}"><a href="${ctx}/ordCtrl/updateStatus/${crtOrdCtrl.id}/0" onClick="return confirm('确定停止生成订单吗?');">停止生成订单</a></c:if>
+					 &nbsp;&nbsp;&nbsp;
+					<a href="${ctx}/ordCtrl/delete/${crtOrdCtrl.id}" onClick="return confirm('确定停止并删除对该任务的订单生成控制吗?');">删除</a>
+				</td>
+			</tr>
+		</c:forEach>
+		</tbody>
+		</table>
+		<div>
+		  <a class="btn" href="${ctx}/ordCtrl/refureshOrdCtrl">刷新订单类型缓存</a>
+		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		 <a class="btn" href="${ctx}/ordCtrl/create">创建订单类型</a>
+		 </div>
+	</body>
 </html>

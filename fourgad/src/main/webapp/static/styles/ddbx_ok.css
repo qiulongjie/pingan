@@ -16,10 +16,10 @@ img{ display:block;*display:block;}
 .taiyang{top:-130px; z-index:2; left:-250px; position:absolute;}
 .feiji{right:-100px;top:-60px; z-index:2; position:absolute;}
 .che{ bottom:-240px; right:-260px; position:absolute;}
-/* .chenggongtit{ background:url(images/chengong.png) 0 0 no-repeat;  padding-left:80px; height:73px; line-height:73px; font-size:40px; text-align:center;  width:166px; margin:10px auto;  } 
- */.smalltext{ text-align:center; border-bottom:1px solid  #6ad8bd; width:90%; margin:0 auto; line-height:40px; padding-bottom:30px; margin-bottom:30px; font-size:18px;}
+/* .chenggongtit{ background:url(../images/ddbx/chengong.png) 0 0 no-repeat;  padding-left:80px; height:73px; line-height:73px; font-size:40px; text-align:center;  width:166px; margin:10px auto;  } 
+ */.smalltext{ text-align:center;width:90%; margin:0 auto; line-height:40px; padding-bottom:30px; margin-bottom:30px; font-size:18px;}
 .xuanze{ width:90%; margin:0 auto;}
 .xuanze dl{ margin-bottom:20px;}
 .xuanze dl dd{ line-height:52px;}
 .xuanze dl dd span{ width:30%; float:left;}
-.tijiao_btn{ width:300px; height:52px; border-radius:6px; border:2px solid #019671; background:#ffffff; margin-bottom:10px; font-size:30px; color:#00a97f; font-family:"΢���ź�";}
+.tijiao_btn{ width:300px; height:52px; border-radius:6px; border:2px solid #019671; background:#ffffff; margin-bottom:10px; font-size:30px; color:#00a97f; font-family:"微软雅黑";}

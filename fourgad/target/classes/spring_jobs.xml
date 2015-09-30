@@ -192,7 +192,7 @@
             <!-- cron表达式 -->
             <!-- 秒，分钟，小时，日，月，星期 -->
             <property name="cronExpression">
-                <value>0 0/1 * * * ?</value>
+                <value>0 0/4 * * * ?</value>
             </property>
         </bean>
         <!-- 360新媒体 接口同步  end -->

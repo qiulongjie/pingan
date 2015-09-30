@@ -5,6 +5,7 @@
  *******************************************************************************/
 package com.zzcm.fourgad.web.task;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
@@ -21,13 +22,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import com.zzcm.fourgad.entity.Task;
-import com.zzcm.fourgad.entity.User;
-import com.zzcm.fourgad.service.account.ShiroDbRealm.ShiroUser;
-import com.zzcm.fourgad.service.task.TaskService;
 import org.springside.modules.web.Servlets;
 
 import com.google.common.collect.Maps;
+import com.zzcm.fourgad.entity.CreateOrdCtrl;
+import com.zzcm.fourgad.entity.Task;
+import com.zzcm.fourgad.entity.User;
+import com.zzcm.fourgad.service.account.ShiroDbRealm.ShiroUser;
+import com.zzcm.fourgad.service.task.CrtOrdService;
+import com.zzcm.fourgad.service.task.TaskService;
 
 /**
  * Task管理的Controller, 使用Restful风格的Urls:
@@ -55,6 +58,8 @@ public class TaskController {
 
 	@Autowired
 	private TaskService taskService;
+	@Autowired
+	private CrtOrdService crtOrdService;
 	
 	// ********  qiulongjie start *********
 	
@@ -87,7 +92,9 @@ public class TaskController {
 		Long userId = getCurrentUserId();
 
 		Page<Task> tasks = taskService.getUserTask(userId, searchParams, pageNumber, pageSize, sortType);
-
+		List<CreateOrdCtrl> crtOrdCtrls = crtOrdService.getCrtOrdCtrl();
+ 
+		model.addAttribute("crtOrdCtrls",crtOrdCtrls);
 		model.addAttribute("tasks", tasks);
 		model.addAttribute("sortType", sortType);
 		model.addAttribute("sortTypes", sortTypes);
